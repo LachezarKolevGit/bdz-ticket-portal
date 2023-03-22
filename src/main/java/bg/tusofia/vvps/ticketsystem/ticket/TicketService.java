@@ -1,5 +1,6 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import bg.tusofia.vvps.ticketsystem.client.Client;
@@ -8,7 +9,7 @@ import bg.tusofia.vvps.ticketsystem.train.Train;
 
 public class TicketService {
 
-	private static int PRICE = 50; //have to be in Enum just for now
+	private static int PRICE = 50;
 	private Client client;
 	private LocalTime currentTime ;  
 	
@@ -25,7 +26,7 @@ public class TicketService {
 		LocalTime eveningPeakHourStart = LocalTime.of(16, 00);
 		LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);		
 		
-		if(client.isHasFamilyWithChildBelow16() == true) {
+		if(LocalDate.now().getYear() - client.getChildBirthYear().getYear() < 16) {
 			return PRICE * numberOfTickets * 50/100;
 		}
 		

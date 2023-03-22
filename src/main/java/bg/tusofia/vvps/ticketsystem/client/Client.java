@@ -1,41 +1,53 @@
 package bg.tusofia.vvps.ticketsystem.client;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.time.LocalDate;
+
+@Entity
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String username;
+    private int age;
+    private boolean hasFamily;
+    private LocalDate childBirthYear;
 
-	private int age;
-	private boolean hasFamily;
-	private boolean hasFamilyWithChildBelow16;
-	
-	public Client(int age, boolean hasFamily, boolean hasFamilyWithChildBelow16) {
-		this.age = age;
-		 this. hasFamily = hasFamily;
-		 this. hasFamilyWithChildBelow16 = hasFamilyWithChildBelow16;
-	}
+    public Client() {
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public Client(String username, int age, boolean hasFamily, LocalDate childBirthYear) {
+        this.username = username;
+        this.age = age;
+        this.hasFamily = hasFamily;
+        this.childBirthYear = childBirthYear;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public boolean isHasFamily() {
-		return hasFamily;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public void setHasFamily(boolean hasFamily) {
-		this.hasFamily = hasFamily;
-	}
+    public boolean isHasFamily() {
+        return hasFamily;
+    }
 
-	public boolean isHasFamilyWithChildBelow16() {
-		return hasFamilyWithChildBelow16;
-	}
+    public void setHasFamily(boolean hasFamily) {
+        this.hasFamily = hasFamily;
+    }
 
-	public void setisHasFamilyWithChildBelow16(boolean hasFamilyWithChildBelow16) {
-		this.hasFamilyWithChildBelow16 = hasFamilyWithChildBelow16;
-	}
-	
-	
-	
+    public LocalDate getChildBirthYear() {
+        return childBirthYear;
+    }
+
+    public void setChildBirthYear(LocalDate childBirthYear) {
+        this.childBirthYear = childBirthYear;
+    }
 }
