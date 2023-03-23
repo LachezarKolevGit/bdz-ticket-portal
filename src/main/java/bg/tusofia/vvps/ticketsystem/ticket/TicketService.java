@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import bg.tusofia.vvps.ticketsystem.client.Client;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 
-
+@Service
 public class TicketService {
 
 	private static int PRICE = 50;

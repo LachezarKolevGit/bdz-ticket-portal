@@ -15,6 +15,7 @@ public class TrainService {
     }
 
     public List<Train> getTrainByArrivalStation(String destination) {
+        
         List<Train> trainList = trainRepository.getTrainsByDestination(destination);
         return trainList;
     }

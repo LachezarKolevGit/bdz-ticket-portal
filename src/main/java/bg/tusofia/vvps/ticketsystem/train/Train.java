@@ -23,13 +23,13 @@ public class Train {
     @JoinColumn(name = "route_id")
     private Route route;
 
-    private String departureTrainStation;
-    private String arrivalTrainStation;
+    private TrainStation departureTrainStation;
+    private TrainStation arrivalTrainStation;
 
     public Train() {
     }
 
-    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalTime departingAt, LocalTime arrivingAt, Route route, String departureTrainStation, String arrivalTrainStation) {
+    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalTime departingAt, LocalTime arrivingAt, Route route, TrainStation departureTrainStation, TrainStation arrivalTrainStation) {
         this.formedByTrainCarriages = formedByTrainCarriages;
         this.departingAt = departingAt;
         this.arrivingAt = arrivingAt;
@@ -70,19 +70,19 @@ public class Train {
         this.route = route;
     }
 
-    public String getDepartureTrainStation() {
+    public TrainStation getDepartureTrainStation() {
         return departureTrainStation;
     }
 
-    public void setDepartureTrainStation(String departureTrainStation) {
+    public void setDepartureTrainStation(TrainStation departureTrainStation) {
         this.departureTrainStation = departureTrainStation;
     }
 
-    public String getArrivalTrainStation() {
+    public TrainStation getArrivalTrainStation() {
         return arrivalTrainStation;
     }
 
-    public void setArrivalTrainStation(String arrivalTrainStation) {
+    public void setArrivalTrainStation(TrainStation arrivalTrainStation) {
         this.arrivalTrainStation = arrivalTrainStation;
     }
 }

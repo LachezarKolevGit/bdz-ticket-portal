@@ -29,7 +29,7 @@ public class Route {
     }
 
     public Set<TrainStation> getStops() {
-        return stops;
+        return Collections.unmodifiableSet(stops);
     }
 
     public void setStops(Set<TrainStation> stops) {
