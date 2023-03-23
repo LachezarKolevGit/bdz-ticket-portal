@@ -23,8 +23,8 @@ public class RailStationTicketSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Train system running");
-		TrainCarriage trainCarriage = new TrainCarriage();
-		Train train = new Train(CarriageType.CLASS_A, );
+		//TrainCarriage trainCarriage = new TrainCarriage();
+		//Train train = new Train(CarriageType.CLASS_A, );
 		trainService.getTrainByArrivalStation("Burgas");
 		trainService.getTrainByArrivalTime(LocalTime.of(5,20));
 

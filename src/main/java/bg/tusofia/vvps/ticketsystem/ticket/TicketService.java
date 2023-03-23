@@ -12,10 +12,12 @@ public class TicketService {
 	private static int PRICE = 50;
 	private Client client;
 	private LocalTime currentTime ;  
+	private SeatService seatService;
 	
-	public TicketService(Client client , LocalTime currentTime) {
+	public TicketService(Client client , LocalTime currentTime, SeatService seatService) {
 			this.client = client;
 			this.currentTime =currentTime ;
+			this.seatService = seatService;
 	}
 	
 	public double calculatePrice(Train train , int numberOfTickets) {
@@ -54,5 +56,11 @@ public class TicketService {
 		
 		return PRICE * numberOfTickets;
 		
+	}
+
+	public void reserveSeat(Long seatId){
+		seatService.changeSeatState(seatId);
+
+
 	}
 }
