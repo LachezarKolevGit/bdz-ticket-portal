@@ -26,7 +26,7 @@ public class TrainCarriage {
     public TrainCarriage() {
     }
 
-    public TrainCarriage(Long id, CarriageType carriageType, Train train, int totalSeats, int remainingSeats) {
+    public TrainCarriage(CarriageType carriageType, Train train, int totalSeats, int remainingSeats) {
         this.id = id;
         this.carriageType = carriageType;
         this.train = train;
