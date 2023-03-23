@@ -13,7 +13,9 @@ public class TicketService {
 	private Client client;
 	private LocalTime currentTime ;  
 	private SeatService seatService;
-	
+	private TrainService trainService;
+ 	public final static float DIESEL_PRICE = 2.80;
+
 	public TicketService(Client client , LocalTime currentTime, SeatService seatService) {
 			this.client = client;
 			this.currentTime =currentTime ;
@@ -26,7 +28,9 @@ public class TicketService {
 		LocalTime morningPeakHourEnd = LocalTime.of(9, 30);
 		
 		LocalTime eveningPeakHourStart = LocalTime.of(16, 00);
-		LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);		
+		LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);	
+
+		trainService.calculateDistanceBetweenStations();	
 		
 		if(LocalDate.now().getYear() - client.getChildBirthYear().getYear() < 16) {
 			return PRICE * numberOfTickets * 50/100;

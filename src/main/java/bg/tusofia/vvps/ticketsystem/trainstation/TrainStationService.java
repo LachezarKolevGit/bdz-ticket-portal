@@ -27,11 +27,10 @@ public class TrainStationService{
     return (int) (Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c));
 }
 
-    public calculateDistanceBetweenStations(TrainStation trainStation1, TrainStation trainStation2){
-           int km = calculateDistanceInKilometer(trainStation1.getLatitude(), trainStation1.getLongitude(),
-             trainStation2.getLatitude(), trainStation2.getLongitude());
-        
+    public double calculateDistanceBetweenStations(TrainStation trainStation1, TrainStation trainStation2){ 
 
+        return calculateDistanceInKilometer(trainStation1.getLatitude(), trainStation1.getLongitude(),
+             trainStation2.getLatitude(), trainStation2.getLongitude());
     }
 
 
