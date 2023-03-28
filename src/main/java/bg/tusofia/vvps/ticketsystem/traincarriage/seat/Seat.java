@@ -1,5 +1,6 @@
-package bg.tusofia.vvps.ticketsystem.traincarriage;
+package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
 
+import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import jakarta.persistence.*;
 
 @Entity

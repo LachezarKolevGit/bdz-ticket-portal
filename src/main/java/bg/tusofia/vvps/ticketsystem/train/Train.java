@@ -2,6 +2,7 @@ package bg.tusofia.vvps.ticketsystem.train;
 
 import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
+import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -17,25 +18,22 @@ public class Train {
 
     @OneToMany(mappedBy = "train", cascade = CascadeType.DETACH)
     private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();
+
     private LocalTime departingAt;
     private LocalTime arrivingAt;
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "route_id")
     private Route route;
 
-    private TrainStation departureTrainStation;
-    private TrainStation arrivalTrainStation;
-
     public Train() {
     }
 
-    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalTime departingAt, LocalTime arrivingAt, Route route, TrainStation departureTrainStation, TrainStation arrivalTrainStation) {
+    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalTime departingAt, LocalTime arrivingAt, Route route) {
         this.formedByTrainCarriages = formedByTrainCarriages;
         this.departingAt = departingAt;
         this.arrivingAt = arrivingAt;
         this.route = route;
-        this.departureTrainStation = departureTrainStation;
-        this.arrivalTrainStation = arrivalTrainStation;
+
     }
 
     public Set<TrainCarriage> getFormedByTrainCarriages() {
@@ -70,19 +68,4 @@ public class Train {
         this.route = route;
     }
 
-    public TrainStation getDepartureTrainStation() {
-        return departureTrainStation;
-    }
-
-    public void setDepartureTrainStation(TrainStation departureTrainStation) {
-        this.departureTrainStation = departureTrainStation;
-    }
-
-    public TrainStation getArrivalTrainStation() {
-        return arrivalTrainStation;
-    }
-
-    public void setArrivalTrainStation(TrainStation arrivalTrainStation) {
-        this.arrivalTrainStation = arrivalTrainStation;
-    }
 }

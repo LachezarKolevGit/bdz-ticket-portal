@@ -1,4 +1,6 @@
-package java/bg/tusofia/vvps/ticketsystem/traincarriage;
+package bg.tusofia.vvps.ticketsystem.traincarriage.seat
+
+import java.SeatRepository;
 
 @Service
 public class SeatService(){

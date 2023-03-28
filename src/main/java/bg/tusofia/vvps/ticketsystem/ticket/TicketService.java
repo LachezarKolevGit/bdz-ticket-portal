@@ -1,10 +1,12 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import bg.tusofia.vvps.ticketsystem.client.Client;
 import bg.tusofia.vvps.ticketsystem.train.Train;
+import bg.tusofia.vvps.ticketsystem.train.TrainService;
 
 @Service
 public class TicketService {
@@ -14,7 +16,7 @@ public class TicketService {
 	private LocalTime currentTime ;  
 	private SeatService seatService;
 	private TrainService trainService;
- 	public final static float DIESEL_PRICE = 2.80;
+ 	public final static double DIESEL_PRICE = 2.80;
 
 	public TicketService(Client client , LocalTime currentTime, SeatService seatService) {
 			this.client = client;
@@ -23,14 +25,16 @@ public class TicketService {
 	}
 	
 	public double calculatePrice(Train train , int numberOfTickets) {
-		
+		/**
+		 * the price will be calculated based on the km of the route and the class of the
+		 */
 		LocalTime morningPeakHourStart = LocalTime.of(7, 30);
 		LocalTime morningPeakHourEnd = LocalTime.of(9, 30);
 		
-		LocalTime eveningPeakHourStart = LocalTime.of(16, 00);
+		LocalTime eveningPeakHourStart = LocalTime.of(16, 0);
 		LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);	
 
-		trainService.calculateDistanceBetweenStations();	
+		//trainService.calculateDistance();
 		
 		if(LocalDate.now().getYear() - client.getChildBirthYear().getYear() < 16) {
 			return PRICE * numberOfTickets * 50/100;

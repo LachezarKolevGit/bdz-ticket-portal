@@ -2,6 +2,7 @@ package bg.tusofia.vvps.ticketsystem;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
+import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

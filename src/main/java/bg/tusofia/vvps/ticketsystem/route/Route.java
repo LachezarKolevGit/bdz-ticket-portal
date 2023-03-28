@@ -5,10 +5,7 @@ import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Route {
@@ -16,28 +13,28 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany(mappedBy = "route", cascade = CascadeType.DETACH)
-    private Set<TrainStation> stops = new HashSet<>();
+    private List<TrainStation> stops = new ArrayList<>();
     @OneToMany(mappedBy = "route", cascade = CascadeType.DETACH)  //probably exception incoming
     private Set<Train> trains = new HashSet<>();
 
     public Route() {
     }
 
-    public Route(Set<TrainStation> stops, Set<Train> trains) {
+    public Route(List<TrainStation> stops, Set<Train> trains) {
         this.stops = stops;
         this.trains = trains;
     }
 
-    public Set<TrainStation> getStops() {
-        return Collections.unmodifiableSet(stops);
+    public List<TrainStation> getStops() {
+        return Collections.unmodifiableList(stops);
     }
 
-    public void setStops(Set<TrainStation> stops) {
+    public void setStops(List<TrainStation> stops) {
         this.stops = stops;
     }
 
     public Set<Train> getTrains() {
-        return trains;
+        return Collections.unmodifiableSet(trains);
     }
 
     public void setTrains(Set<Train> trains) {

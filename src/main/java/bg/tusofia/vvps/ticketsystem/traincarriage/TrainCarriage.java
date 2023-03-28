@@ -1,6 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
 import jakarta.persistence.*;
 
 import java.util.List;
