@@ -36,6 +36,10 @@ public class Train {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Set<TrainCarriage> getFormedByTrainCarriages() {
         return formedByTrainCarriages;
     }

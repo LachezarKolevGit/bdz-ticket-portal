@@ -14,10 +14,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Repository
-public interface TrainRepository extends PagingAndSortingRepository<Train, Long> {
+public interface TrainRepository extends PagingAndSortingRepository<Train, Long>, CrudRepository<Train, Long> {
 
-    @Query("SELECT t FROM Train t where t.route = (SELECT r.train FROM ROUTE r where r.stops = (SELECT route FROM TrainStation ts ) ) ?1")
-    List<Train> getTrainsByDestination(String destination, Pageable pageable); //use paging
+    @Query("SELECT t FROM Train t where t.route = (SELECT r FROM Route r where r.stops = (SELECT ts FROM TrainStation ts ) ) ")
+    Page<Train> getTrainsByDestination(String destination, Pageable pageable); //use paging
 
     List<Train> getTrainsByArrivingAt(LocalTime arrivingAt);
 

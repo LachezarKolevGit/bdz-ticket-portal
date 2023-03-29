@@ -12,25 +12,22 @@ import java.util.Optional;
 public class RouteService {
     public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 
-    private RouteRepository routeRepository;
-    private TrainStationRepository trainStationService;
+    private final RouteRepository routeRepository;
 
-    @Autowired
-    public RouteService(RouteRepository routeRepository, TrainStationRepository trainStationService) {
+    public RouteService(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
-        this.trainStationService = trainStationService;
     }
 
-    public int calculateRouteDistance(Long id) {
-        Optional<Route> routeOptional = routeRepository.findById(id);
+    public int calculateRouteDistance(Route route) {
+        /*Optional<Route> routeOptional = routeRepository.findById(id);
         if (routeOptional.isEmpty()) {
             return -1;
         }
 
-        Route route = routeOptional.get();
+        Route route = routeOptional.get();*/
         int totalDistance = 0;
         List<TrainStation> trainStationList = route.getStops();
-        for (int i = 0; i < trainStationList.size() - 2; i = i + 1) {
+        for (int i = 0; i < trainStationList.size() - 1; i = i + 1) {
             TrainStation station1 = trainStationList.get(i);
             TrainStation station2 = trainStationList.get(i + 1);
             totalDistance += calculateDistanceInKilometer(station1.getLatitude(), station1.getLongitude()

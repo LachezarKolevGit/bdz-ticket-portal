@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
-public class Client {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,10 +17,10 @@ public class Client {
     private boolean hasFamily;
     private LocalDate childBirthYear;
 
-    public Client() {
+    public User() {
     }
 
-    public Client(String username, int age, boolean hasFamily, LocalDate childBirthYear) {
+    public User(String username, int age, boolean hasFamily, LocalDate childBirthYear) {
         this.username = username;
         this.age = age;
         this.hasFamily = hasFamily;

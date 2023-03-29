@@ -11,11 +11,6 @@ import java.time.LocalTime;
 
 @SpringBootApplication
 public class RailStationTicketSystemApplication implements CommandLineRunner {
-	TrainService trainService;
-
-	public RailStationTicketSystemApplication(TrainService trainService) {
-		this.trainService = trainService;
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(RailStationTicketSystemApplication.class, args);
@@ -24,7 +19,7 @@ public class RailStationTicketSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Train system running");
-		TrainStation sofiaTrainStation = new TrainStation("Sofia Central station", 42.712115, 23.321046);
+	/*	TrainStation sofiaTrainStation = new TrainStation("Sofia Central station", 42.712115, 23.321046);
 		TrainStation varnaTrainStation = new TrainStation("Varna railway station", 43.198056, 27.912222);
 		TrainStation plovdivTrainStation = new TrainStation("Plovdiv Central railway station", 42.134444, 24.741389);
 		TrainStation burgasTrainStation = new TrainStation("Burgas Central railway station", 42.490833, 27.4725);
@@ -37,7 +32,7 @@ public class RailStationTicketSystemApplication implements CommandLineRunner {
 		//TrainCarriage trainCarriage = new TrainCarriage();
 		//Train train = new Train(CarriageType.CLASS_A, );
 		trainService.getTrainByArrivalStation("Burgas");
-		trainService.getTrainByArrivalTime(LocalTime.of(5,20));
+		trainService.getTrainByArrivalTime(LocalTime.of(5,20));*/
 
 	}
 }

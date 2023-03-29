@@ -11,8 +11,9 @@ public class TrainCarriage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "train_carriage_id")
     private Long id;
+
     @Enumerated(EnumType.STRING)
-    private CarriageType carriageType;
+    private TrainCarriageType trainCarriageType;
 
     @ManyToOne(fetch = FetchType.LAZY) //cascade type ??
     @JoinColumn(name = "train_id")
@@ -21,17 +22,56 @@ public class TrainCarriage {
     @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL)
     private List<Seat> seats;  //initialize it with totalSeats
     private int totalSeats;
-    private int remainingSeats;
-    private float seatPrice;
+    //private int remainingSeats;
+
+    private double seatBasePrice;
 
     public TrainCarriage() {
     }
 
-    public TrainCarriage(CarriageType carriageType, Train train, int totalSeats, int remainingSeats) {
-        this.id = id;
-        this.carriageType = carriageType;
+    public TrainCarriage(TrainCarriageType trainCarriageType, Train train, int totalSeats) {
+        this.trainCarriageType = trainCarriageType;
         this.train = train;
         this.totalSeats = totalSeats;
-        this.remainingSeats = remainingSeats;
+    }
+
+    public TrainCarriageType getCarriageType() {
+        return trainCarriageType;
+    }
+
+    public void setCarriageType(TrainCarriageType trainCarriageType) {
+        this.trainCarriageType = trainCarriageType;
+    }
+
+    public Train getTrain() {
+        return train;
+    }
+
+    public void setTrain(Train train) {
+        this.train = train;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public double getSeatBasePrice() {
+        return seatBasePrice;
+    }
+
+    public void setSeatBasePrice(double seatBasePrice) {
+        this.seatBasePrice = seatBasePrice;
     }
 }
