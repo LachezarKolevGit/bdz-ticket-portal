@@ -18,6 +18,11 @@ public class Seat {
     public Seat() {
     }
 
+    public Seat(SeatState seatState, TrainCarriage trainCarriage) {
+        this.seatState = seatState;
+        this.trainCarriage = trainCarriage;
+    }
+
     public Long getId() {
         return id;
     }

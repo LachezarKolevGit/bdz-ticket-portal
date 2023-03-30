@@ -35,7 +35,7 @@ public class User {
         this.age = age;
     }
 
-    public boolean isHasFamily() {
+    public boolean hasFamily() {
         return hasFamily;
     }
 

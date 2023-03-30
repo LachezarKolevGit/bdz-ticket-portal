@@ -14,56 +14,64 @@ import org.springframework.stereotype.Service;
 public class TicketService {
 
     private final UserService userService;
-    private LocalTime currentTime;
     private final TrainService trainService;
+
+    private static final LocalTime morningPeakHourStart = LocalTime.of(7, 30);
+    private static final LocalTime morningPeakHourEnd = LocalTime.of(9, 30);
+    private static final LocalTime eveningPeakHourStart = LocalTime.of(16, 0);
+    private static final LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);
 
     @Autowired
     public TicketService(UserService userService, TrainService trainService) {
         this.userService = userService;
         this.trainService = trainService;
-        this.currentTime = LocalTime.now();
     }
 
-    public double calculatePrice(Train train, int numberOfTickets, Long trainCarriageId, Long seatId) {
+    public double calcFinalPrice(Train train, int numberOfTickets, Long trainCarriageId, Long seatId) {
         /**
          * the price will be calculated based on the km of the route and the class of the trainCarriage
          */
-        LocalTime morningPeakHourStart = LocalTime.of(7, 30);
-        LocalTime morningPeakHourEnd = LocalTime.of(9, 30);
-
-        LocalTime eveningPeakHourStart = LocalTime.of(16, 0);
-        LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);
 
         double basePrice = trainService.calculateBasePrice(train.getId());
         double ticketPrice = basePrice * trainService.getTrainCarriageClass(trainCarriageId);
+        double appliedDiscount = userDiscountPriceHandler(ticketPrice);
+        if (appliedDiscount != 0) {
+            peakHoursDiscountHandler(ticketPrice, LocalTime.now());
+        }
         trainService.changeSeatStatus(seatId);
+        return ticketPrice * numberOfTickets;
+    }
 
+    public double userDiscountPriceHandler(double ticketPrice) {
         User user = userService.getLoggedInUser();
-
-        if (LocalDate.now().getYear() - user.getChildBirthYear().getYear() < 16) {
-            return ticketPrice * numberOfTickets * 50 / 100;
+        if (user.getChildBirthYear() != null) { //refactor then nested if statements
+            if (LocalDate.now().getYear() - user.getChildBirthYear().getYear() < 16) {
+                return ticketPrice * 2 * 50 / 100;
+            }
         }
 
         if (user.getAge() > 60) {
-            double priceFirstTicket = (ticketPrice * 34) / 100;
-            return priceFirstTicket + (numberOfTickets - 1) * ticketPrice;
+            return ticketPrice - (ticketPrice * 34/100);
         }
 
-        if (user.isHasFamily()) {
-            return (numberOfTickets * ticketPrice * 10) / 100;
+        if (user.hasFamily()) {
+            return ticketPrice - (ticketPrice * 10/100); //remove the '2'
         }
-
-        if (currentTime.isBefore(morningPeakHourStart) || currentTime.isAfter(morningPeakHourEnd)) {
-            double discount = ticketPrice * 0.05;
-            return (ticketPrice - discount) * numberOfTickets;
-        }
-
-        if (currentTime.isBefore(eveningPeakHourStart) || currentTime.isAfter(eveningPeakHourEnd)) {
-            double discount = ticketPrice * 0.05;
-            return (ticketPrice - discount) * numberOfTickets;
-        }
-
-        return ticketPrice * numberOfTickets;
+        return 10;
     }
+
+    public double peakHoursDiscountHandler(double ticketPrice, LocalTime localTime) {
+        if (localTime.isBefore(morningPeakHourStart) || localTime.isAfter(morningPeakHourEnd)) {
+            double discount = ticketPrice * 0.05;
+            return ticketPrice - discount;
+        }
+
+        if (localTime.isBefore(eveningPeakHourStart) || localTime.isAfter(eveningPeakHourEnd)) {
+            double discount = ticketPrice * 0.05;
+            return ticketPrice - discount;
+        }
+        return ticketPrice;
+    }
+
 
 }

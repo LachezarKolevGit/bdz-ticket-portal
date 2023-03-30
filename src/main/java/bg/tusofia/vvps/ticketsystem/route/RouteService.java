@@ -19,12 +19,6 @@ public class RouteService {
     }
 
     public int calculateRouteDistance(Route route) {
-        /*Optional<Route> routeOptional = routeRepository.findById(id);
-        if (routeOptional.isEmpty()) {
-            return -1;
-        }
-
-        Route route = routeOptional.get();*/
         int totalDistance = 0;
         List<TrainStation> trainStationList = route.getStops();
         for (int i = 0; i < trainStationList.size() - 1; i = i + 1) {

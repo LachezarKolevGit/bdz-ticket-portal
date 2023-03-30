@@ -35,6 +35,14 @@ public class TrainCarriage {
         this.totalSeats = totalSeats;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public TrainCarriageType getTrainCarriageType() {
+        return trainCarriageType;
+    }
+
     public TrainCarriageType getCarriageType() {
         return trainCarriageType;
     }
