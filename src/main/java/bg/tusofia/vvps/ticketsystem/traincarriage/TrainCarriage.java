@@ -2,13 +2,18 @@ package bg.tusofia.vvps.ticketsystem.traincarriage;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Entity
+@Table(name = "train_carriage")
 public class TrainCarriage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "train_carriage_id")
     private Long id;
 
@@ -19,20 +24,20 @@ public class TrainCarriage {
     @JoinColumn(name = "train_id")
     private Train train;
 
-    @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Seat> seats;  //initialize it with totalSeats
     private int totalSeats;
-    //private int remainingSeats;
-
-    private double seatBasePrice;
 
     public TrainCarriage() {
     }
 
-    public TrainCarriage(TrainCarriageType trainCarriageType, Train train, int totalSeats) {
+    public TrainCarriage(TrainCarriageType trainCarriageType, int totalSeats) {
         this.trainCarriageType = trainCarriageType;
-        this.train = train;
         this.totalSeats = totalSeats;
+        this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE, this))
+                        .limit(totalSeats)
+                                .collect(Collectors.toList());
+        System.out.println("Seats in copnstr : " + seats);
     }
 
     public Long getId() {
@@ -75,11 +80,14 @@ public class TrainCarriage {
         this.totalSeats = totalSeats;
     }
 
-    public double getSeatBasePrice() {
-        return seatBasePrice;
-    }
-
-    public void setSeatBasePrice(double seatBasePrice) {
-        this.seatBasePrice = seatBasePrice;
+    @Override
+    public String toString() {
+        return "TrainCarriage{" +
+                "id=" + id +
+                ", trainCarriageType=" + trainCarriageType +
+                ", train=" + train +
+                ", seats=" + seats +
+                ", totalSeats=" + totalSeats +
+                '}';
     }
 }

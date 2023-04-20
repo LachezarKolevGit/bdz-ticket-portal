@@ -8,19 +8,19 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
-public class User {
+public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
     private int age;
     private boolean hasFamily;
     private LocalDate childBirthYear;
 
-    public User() {
+    public Client() {
     }
 
-    public User(String username, int age, boolean hasFamily, LocalDate childBirthYear) {
+    public Client(String username, int age, boolean hasFamily, LocalDate childBirthYear) {
         this.username = username;
         this.age = age;
         this.hasFamily = hasFamily;

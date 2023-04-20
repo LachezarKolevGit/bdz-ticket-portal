@@ -39,7 +39,6 @@ public class TrainService {
     }
 
     public Page<Train> getTrainByArrivalStation(String destination, int page) {
-
         Page<Train> trainsPage = trainRepository.getTrainsByDestination(destination, PageRequest.of(page, PAGE_SIZE));
         return trainsPage;
     }
@@ -47,6 +46,12 @@ public class TrainService {
     public List<Train> getTrainByArrivalTime(LocalTime arrivalTime) {
         List<Train> trainList = trainRepository.getTrainsByArrivingAt(arrivalTime);
         return trainList;
+    }
+
+    public Page<Train> getAllTrains(int page) {
+        int pageSize = 10;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return trainRepository.findAll(pageRequest);
     }
 
     public double calculateBasePrice(Long trainId) { //calculates the base ticket's price
@@ -76,13 +81,6 @@ public class TrainService {
     }
 
     public void changeSeatStatus(Long seatId) {
-       /* Optional<TrainCarriage> trainCarriageOptional = trainCarriageRepository.findById(trainCarriageId);
-        if (trainCarriageOptional.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        List<Seat> seatList = trainCarriageOptional.get().getSeats();
-        seatList.get(seatId);*/
-
         Optional<Seat> seatOptional = seatRepository.findById(seatId);
         if (seatOptional.isEmpty()) {
             throw new EntityNotFoundException();
@@ -90,6 +88,17 @@ public class TrainService {
         Seat seat = seatOptional.get();
         seat.setSeatState(SeatState.SOLD);
         seatRepository.save(seat);
+    }
+
+    public Long saveTrain(TrainDTO trainDTO) {
+        if (trainDTO == null) {
+            throw new IllegalArgumentException("Train can't be null");
+        }
+        Train train = new Train(trainDTO.formedByTrainCarriages(), trainDTO.departingAt(), trainDTO.arrivingAt(), trainDTO.route());
+        trainCarriageRepository.save(new TrainCarriage());
+        System.out.println("Formed by : " + trainDTO.formedByTrainCarriages());
+       // trainRepository.save(train);
+        return train.getId();
     }
 
 }

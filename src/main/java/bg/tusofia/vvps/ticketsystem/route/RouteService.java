@@ -1,12 +1,11 @@
 package bg.tusofia.vvps.ticketsystem.route;
 
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
-import bg.tusofia.vvps.ticketsystem.trainstation.TrainStationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -16,6 +15,18 @@ public class RouteService {
 
     public RouteService(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
+    }
+
+    public Page<Route> getRoutes(int page) {
+        int pageSize = 10;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return routeRepository.findAll(pageRequest);
+    }
+
+    public Long saveRoute(RouteDTO routeDTO) {
+        Route route = new Route(routeDTO.stops(), routeDTO.trains());
+        routeRepository.save(route);
+        return route.getId();
     }
 
     public int calculateRouteDistance(Route route) {

@@ -4,14 +4,15 @@ import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "seat")
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Enumerated
     private SeatState seatState;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "train_carriage_id")
     private TrainCarriage trainCarriage;
 
@@ -33,5 +34,14 @@ public class Seat {
 
     public void setSeatState(SeatState seatState) {
         this.seatState = seatState;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "id=" + id +
+                ", seatState=" + seatState +
+                //", trainCarriage=" + trainCarriage +
+                '}';
     }
 }

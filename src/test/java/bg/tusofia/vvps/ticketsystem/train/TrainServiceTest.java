@@ -10,23 +10,19 @@ import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class TrainServiceTest {
@@ -64,9 +60,9 @@ class TrainServiceTest {
         List<TrainStation> trainStationList = List.of(sofiaTrainStation, plovdivTrainStation, burgasTrainStation);
 
         Route route = new Route(trainStationList, null);
-        Set<TrainCarriage> trainCarriageSet = Set.of(new TrainCarriage(TrainCarriageType.CLASS_A, null, 30),
-                new TrainCarriage(TrainCarriageType.CLASS_B, null, 30),
-                new TrainCarriage(TrainCarriageType.SLEEPER, null, 15));
+        Set<TrainCarriage> trainCarriageSet = Set.of(new TrainCarriage(TrainCarriageType.CLASS_A, 30),
+                new TrainCarriage(TrainCarriageType.CLASS_B , 30),
+                new TrainCarriage(TrainCarriageType.SLEEPER, 15));
 
         Train train = new Train(trainCarriageSet, null, null, route);
         Long trainId = 1L;
@@ -82,7 +78,7 @@ class TrainServiceTest {
     @DisplayName("Test .getTrainCarriageClass() method if it returns the correct value")
     @Test
     void testGetTrainCarriageClass() {
-        TrainCarriage trainCarriage = new TrainCarriage(TrainCarriageType.CLASS_B, null, 30);
+        TrainCarriage trainCarriage = new TrainCarriage(TrainCarriageType.CLASS_B, 30);
         Long trainCarriageId = 1L;
         when(trainCarriageRepository.findById(trainCarriageId)).thenReturn(Optional.of(trainCarriage));
         double actualMultiplier = trainService.getTrainCarriageClass(trainCarriageId);

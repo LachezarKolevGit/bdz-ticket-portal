@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Routes</title>
+</head>
+<body>
+<table border="=1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Train Stops</th>
+        <th>Trains</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="route: ${routePage.content}">
+        <td th:text="${route.getId()}"/>
+        <td th:text="${route.getStops()}"/>
+        <td th:text="${route.getTrains()}"/>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${routePage.totalPages > 0}" class="pagination"
+     th:each="pageNumber :${pageNumbers}">
+
+    <a th:href="@{/routes(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==routePage.number + 1} ? active"></a>
+</div>
+</body>
+</html>

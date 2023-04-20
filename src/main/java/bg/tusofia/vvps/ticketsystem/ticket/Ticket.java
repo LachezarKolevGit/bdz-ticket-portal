@@ -1,10 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 public class Ticket {
-
 
     private Long id;
 

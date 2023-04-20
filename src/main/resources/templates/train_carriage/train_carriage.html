@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Train Carriage Data</title>
+</head>
+<body>
+<h1>Data for train carriage with id : <span th:text="${trainCarriage.id}"></span>
+</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Train carriage class : <span th:text="${trainCarriage.trainCarriageType}"></span></th>
+    </tr>
+    <tr>
+        <th>Total seats <span th:text="${trainCarriage.totalSeats}"></span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="seat : ${trainCarriage.seats}">
+        <td th:text="${seat.id}"/>
+        <td th:text="${seat.seatState}"/>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

@@ -5,7 +5,7 @@ public enum TrainCarriageType {
     CLASS_B(1),
     SLEEPER(2);
 
-    private double multiplier;
+    private final double multiplier;
 
     TrainCarriageType(double multiplier) {
         this.multiplier = multiplier;

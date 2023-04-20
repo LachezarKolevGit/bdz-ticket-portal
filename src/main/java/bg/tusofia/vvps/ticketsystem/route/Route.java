@@ -10,7 +10,7 @@ import java.util.*;
 @Entity
 public class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @OneToMany(mappedBy = "route", cascade = CascadeType.DETACH)
     private List<TrainStation> stops = new ArrayList<>();
@@ -23,6 +23,10 @@ public class Route {
     public Route(List<TrainStation> stops, Set<Train> trains) {
         this.stops = stops;
         this.trains = trains;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public List<TrainStation> getStops() {

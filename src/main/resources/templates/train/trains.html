@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Trains</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Train carriage Id</th>
+        <th>Train carriage type</th>
+        <th>Total seats</th>
+        <th>Departing at</th>
+        <th>Arriving at</th>
+        <th>Route</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="train : ${trainPage}">
+        <td th:text="${train.getId()}">
+            <div th:each="trainCarriage : ${train.getFormedByTrainCarriages()}">
+                <span th:text="${trainCarriage.getId()}"></span>
+                <span th:text="${trainCarriage.trainCarriageType}"/>
+                <span th:text="${trainCarriage.getTotalSeats()}"/>
+            </div>
+        </td>
+        <td th:text="${train.getDepartingAt()}"/>
+        <td th:text="${train.getArrivingAt()}"/>
+        <td th:text="${train.getRoute()}"/>
+
+        <!--  <tr th:text="${trainCarriage.getId()}">
+          </tr>
+
+          th:text="${trainCarriage.getCarriageType()}"
+          th:text="${trainCarriage.getTotalSeats()}"> -->
+
+    </tr>
+    </tbody>
+</table>
+<div th:if="${trainPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber :${pageNumbers}">
+    <a th:href="@{/trains(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==trainPage.number + 1} ? active"></a>
+</div>
+</body>
+</html>

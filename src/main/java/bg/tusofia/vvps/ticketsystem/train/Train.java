@@ -2,25 +2,25 @@ package bg.tusofia.vvps.ticketsystem.train;
 
 import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
-import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "train")
 public class Train {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToMany(mappedBy = "train", cascade = CascadeType.DETACH)
-    private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();
+    private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();  // ?? exception suspicion
 
-    private LocalTime departingAt;
-    private LocalTime arrivingAt;
+    private LocalDateTime departingAt;
+    private LocalDateTime arrivingAt;
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "route_id")
     private Route route;
@@ -28,12 +28,11 @@ public class Train {
     public Train() {
     }
 
-    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalTime departingAt, LocalTime arrivingAt, Route route) {
+    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalDateTime departingAt, LocalDateTime arrivingAt, Route route) {
         this.formedByTrainCarriages = formedByTrainCarriages;
         this.departingAt = departingAt;
         this.arrivingAt = arrivingAt;
         this.route = route;
-
     }
 
     public Long getId() {
@@ -48,19 +47,19 @@ public class Train {
         this.formedByTrainCarriages = formedByTrainCarriages;
     }
 
-    public LocalTime getDepartingAt() {
+    public LocalDateTime getDepartingAt() {
         return departingAt;
     }
 
-    public void setDepartingAt(LocalTime departingAt) {
+    public void setDepartingAt(LocalDateTime departingAt) {
         this.departingAt = departingAt;
     }
 
-    public LocalTime getArrivingAt() {
+    public LocalDateTime getArrivingAt() {
         return arrivingAt;
     }
 
-    public void setArrivingAt(LocalTime arrivingAt) {
+    public void setArrivingAt(LocalDateTime arrivingAt) {
         this.arrivingAt = arrivingAt;
     }
 
@@ -72,4 +71,14 @@ public class Train {
         this.route = route;
     }
 
+    @Override
+    public String toString() {
+        return "Train{" +
+                "id=" + id +
+                ", formedByTrainCarriages=" + formedByTrainCarriages +
+                ", departingAt=" + departingAt +
+                ", arrivingAt=" + arrivingAt +
+                ", route=" + route +
+                '}';
+    }
 }

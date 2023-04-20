@@ -1,11 +1,13 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import bg.tusofia.vvps.ticketsystem.client.User;
-import bg.tusofia.vvps.ticketsystem.client.UserService;
+import bg.tusofia.vvps.ticketsystem.client.Client;
+import bg.tusofia.vvps.ticketsystem.client.ClientService;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,7 +22,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
 class TicketServiceTest {
 
@@ -29,14 +30,14 @@ class TicketServiceTest {
     TicketService ticketService;
 
     @Mock
-    UserService userService;
+    ClientService CLientService;
 
     @Mock
     TrainService trainService;
 
     @BeforeEach
     void init() {
-        ticketService = new TicketService(userService, trainService);
+        ticketService = new TicketService(CLientService, trainService);
     }
 
     @DisplayName("Test .calculatePrice() method")
@@ -61,7 +62,7 @@ class TicketServiceTest {
         // when(routeService.calculateRouteDistance(route)).thenReturn(361);
         when(trainService.calculateBasePrice(train.getId())).thenReturn(6.0);
         when(trainService.getTrainCarriageClass(trainCarriageId)).thenReturn(TrainCarriageType.CLASS_B.getMultiplier());
-        when(userService.getLoggedInUser()).thenReturn(new User("Gosho", 50, false, null));
+        when(CLientService.getLoggedInUser()).thenReturn(new Client("Gosho", 50, false, null));
 
         double actualPrice = ticketService.calcFinalPrice(train, numberOfTickets, trainCarriageId, seatId);
         double expectedPrice = 6;
@@ -71,8 +72,8 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method without meeting the criteria for a discount")
     @Test
     void testUserDiscountPriceHandler() {
-        User user = new User("Georgi", 50, false, null);
-        when(userService.getLoggedInUser()).thenReturn(user);
+        Client client = new Client("Georgi", 50, false, null);
+        when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price");
@@ -81,8 +82,8 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for elderly ticket discount")
     @Test
     void testUserDiscountPriceHandlerForElderlyUser() { //34% discount
-        User user = new User("Georgi", 61, false, null);
-        when(userService.getLoggedInUser()).thenReturn(user);
+        Client client = new Client("Georgi", 61, false, null);
+        when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 6.60;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");
@@ -91,8 +92,8 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for family ticket discount")
     @Test
     void testUserDiscountPriceHandlerForFamilyDiscount() { //10 % discount
-        User user = new User("Georgi", 45, true, null);
-        when(userService.getLoggedInUser()).thenReturn(user);
+        Client client = new Client("Georgi", 45, true, null);
+        when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 9;
         assertEquals(expectedTicketPrice, actualTicketPrice,
@@ -103,8 +104,8 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for having a kid below 16 ticket discount")
     @Test
     void testUserDiscountPriceHandlerForKidBelow16Discount() { //50 % discount for one ticket
-        User user = new User("Georgi", 45, true, LocalDate.of(2010, 1, 1));
-        when(userService.getLoggedInUser()).thenReturn(user);
+        Client client = new Client("Georgi", 45, true, LocalDate.of(2010, 1, 1));
+        when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");

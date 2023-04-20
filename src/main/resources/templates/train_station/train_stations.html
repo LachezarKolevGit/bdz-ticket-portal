@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Train Stations</title>
+</head>
+<body>
+<h1>Train stations present in the database: </h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trainStations : ${trainStationsPage.content}">
+        <td th:text="${trainStations.getId()}"/>
+        <td th:text="${trainStations.getName()}"/>
+        <td th:text="${trainStations.getLatitude()}"/>
+        <td th:text="${trainStations.getLongitude()}"/>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${trainStationsPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber :${pageNumbers}">
+    <a th:href="@{/train-stops(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==trainStationsPage.number + 1} ? active"></a>
+
+</div>
+</body>
+</html>
