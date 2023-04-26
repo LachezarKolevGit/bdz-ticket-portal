@@ -16,10 +16,14 @@
     <tr>
         <th>Total seats <span th:text="${trainCarriage.totalSeats}"></span></th>
     </tr>
+    <tr>
+        <th>Seat id</th>
+        <th>Status</th>
+    </tr>
     </thead>
     <tbody>
-    <tr th:each="seat : ${trainCarriage.seats}">
-        <td th:text="${seat.id}"/>
+    <tr th:each="seat, iterStat : ${trainCarriage.seats}">
+        <td th:text="${iterStat.index}"/>
         <td th:text="${seat.seatState}"/>
     </tr>
 

@@ -1,11 +1,13 @@
 package bg.tusofia.vvps.ticketsystem.route;
 
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -17,14 +19,25 @@ public class RouteService {
         this.routeRepository = routeRepository;
     }
 
+    public Route getRoute(Long routeId) {
+        Optional<Route> routeOptional = routeRepository.findById(routeId);
+        if (routeOptional.isEmpty()) {
+            throw new EntityNotFoundException("Route with that id was not found");
+        }
+        return routeOptional.get();
+    }
+
     public Page<Route> getRoutes(int page) {
         int pageSize = 10;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return routeRepository.findAll(pageRequest);
     }
 
-    public Long saveRoute(RouteDTO routeDTO) {
-        Route route = new Route(routeDTO.stops(), routeDTO.trains());
+    public Long createNewRoute(RouteDTO routeDTO) {
+        if (routeDTO == null) {
+            throw new IllegalArgumentException("Route can't be null");
+        }
+        Route route = new Route(routeDTO.trainStations(), routeDTO.trains());
         routeRepository.save(route);
         return route.getId();
     }

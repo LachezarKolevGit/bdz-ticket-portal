@@ -4,7 +4,6 @@ import bg.tusofia.vvps.ticketsystem.route.Route;
 import jakarta.persistence.*;
 
 @Entity
-//@Table(name = "train_station")
 public class TrainStation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -13,8 +12,8 @@ public class TrainStation {
     private Double latitude;
     private Double longitude;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) //more research for cascade
-    @JoinColumn(name = "route_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id", updatable = false)
     private Route route;
 
     public TrainStation() {
@@ -24,15 +23,17 @@ public class TrainStation {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        route = null;
     }
+
+   /* public TrainStation(String name, Double latitude, Double longitude, Route route) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.route = route;
+    }*/
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -37,9 +37,9 @@ public class RouteController {
         return "route/routes";
     }
 
-    @PostMapping("/routes/create")
+    @PostMapping("/routes")
     public String createRoutes(Model model, @RequestBody RouteDTO routeDTO){
-       Long newRouteId = routeService.saveRoute(routeDTO);
+       Long newRouteId = routeService.createNewRoute(routeDTO);
         model.addAttribute("newRouteId", newRouteId);
 
         return "route/successful_creation_route";

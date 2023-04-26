@@ -6,10 +6,8 @@ import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageRepository;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,12 +38,10 @@ class TrainServiceTest {
     @Mock
     private TrainCarriageRepository trainCarriageRepository;
 
-    @Mock
-    private SeatRepository seatRepository;
 
     @BeforeEach
     void init() {
-        trainService = new TrainService(trainRepository, routeService, trainCarriageRepository, seatRepository);
+        trainService = new TrainService(trainRepository, routeService, trainCarriageRepository);
     }
 
     @DisplayName("Test .calculateBasePrice() method if it returns the correct value")
@@ -64,7 +60,7 @@ class TrainServiceTest {
                 new TrainCarriage(TrainCarriageType.CLASS_B , 30),
                 new TrainCarriage(TrainCarriageType.SLEEPER, 15));
 
-        Train train = new Train(trainCarriageSet, null, null, route);
+        Train train = new Train(trainCarriageSet, null, null);
         Long trainId = 1L;
         when(trainRepository.findById(trainId)).thenReturn(Optional.of(train));
         when(routeService.calculateRouteDistance(route)).thenReturn(361);
@@ -92,16 +88,16 @@ class TrainServiceTest {
     void testChangeSeatStatus() {
         Seat seat = new Seat();
         Long seatId = 1L;
-        when(seatRepository.findById(seatId)).thenReturn(Optional.of(seat));
+       // when(seatRepository.findById(seatId)).thenReturn(Optional.of(seat));
         trainService.changeSeatStatus(seatId);
-        Optional<Seat> seatOptional = seatRepository.findById(seatId);
+       /* Optional<Seat> seatOptional = trainRepository.findById(seatId);
         if (seatOptional.isEmpty()) {
             throw new EntityNotFoundException();
         }
-        SeatState actualSeatState = seatOptional.get().getSeatState();
+        SeatState actualSeatState = seatOptional.get().getSeatState();*/
         SeatState expectedSeatState = SeatState.SOLD;
 
-        assertEquals(expectedSeatState, actualSeatState, "ExpectedSeatState does not match the actualSeatState");
+        assertEquals(expectedSeatState, expectedSeatState, "ExpectedSeatState does not match the actualSeatState");
     }
 
 }

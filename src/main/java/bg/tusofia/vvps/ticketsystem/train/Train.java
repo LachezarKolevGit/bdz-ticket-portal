@@ -16,23 +16,28 @@ public class Train {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany(mappedBy = "train", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "train", cascade = CascadeType.PERSIST)
     private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();  // ?? exception suspicion
 
     private LocalDateTime departingAt;
     private LocalDateTime arrivingAt;
-    @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     private Route route;
 
     public Train() {
     }
 
-    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalDateTime departingAt, LocalDateTime arrivingAt, Route route) {
+    public Train(Set<TrainCarriage> formedByTrainCarriages, LocalDateTime departingAt, LocalDateTime arrivingAt) {
+        if (formedByTrainCarriages != null) {
+            for (TrainCarriage trainCarriage : formedByTrainCarriages) {
+                trainCarriage.setTrain(this);
+            }
+        }
+
         this.formedByTrainCarriages = formedByTrainCarriages;
         this.departingAt = departingAt;
         this.arrivingAt = arrivingAt;
-        this.route = route;
     }
 
     public Long getId() {
@@ -41,10 +46,6 @@ public class Train {
 
     public Set<TrainCarriage> getFormedByTrainCarriages() {
         return formedByTrainCarriages;
-    }
-
-    public void setFormedByTrainCarriages(Set<TrainCarriage> formedByTrainCarriages) {
-        this.formedByTrainCarriages = formedByTrainCarriages;
     }
 
     public LocalDateTime getDepartingAt() {
@@ -68,6 +69,9 @@ public class Train {
     }
 
     public void setRoute(Route route) {
+        if (this.route != null) {
+            throw new IllegalArgumentException("Route is already set to this train");
+        }
         this.route = route;
     }
 
@@ -78,7 +82,13 @@ public class Train {
                 ", formedByTrainCarriages=" + formedByTrainCarriages +
                 ", departingAt=" + departingAt +
                 ", arrivingAt=" + arrivingAt +
-                ", route=" + route +
                 '}';
+    }
+
+    public void assignRoute(Route route) {
+        if (this.route != null) {
+            throw new IllegalArgumentException("Train is already assigned to route");
+        }
+        this.route = route;
     }
 }

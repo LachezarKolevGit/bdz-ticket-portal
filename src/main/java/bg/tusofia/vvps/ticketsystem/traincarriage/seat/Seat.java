@@ -1,31 +1,20 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
 
-import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 
-@Entity
+@Embeddable
 @Table(name = "seat")
 public class Seat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
     @Enumerated
     private SeatState seatState;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "train_carriage_id")
-    private TrainCarriage trainCarriage;
 
     public Seat() {
     }
 
-    public Seat(SeatState seatState, TrainCarriage trainCarriage) {
+    public Seat(SeatState seatState) {
         this.seatState = seatState;
-        this.trainCarriage = trainCarriage;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public SeatState getSeatState() {
@@ -38,10 +27,6 @@ public class Seat {
 
     @Override
     public String toString() {
-        return "Seat{" +
-                "id=" + id +
-                ", seatState=" + seatState +
-                //", trainCarriage=" + trainCarriage +
-                '}';
+        return "Seat{" + ", seatState=" + seatState + '}';
     }
 }

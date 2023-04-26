@@ -4,16 +4,12 @@ import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageRepository;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,28 +21,20 @@ public class TrainService {
 
     private final TrainCarriageRepository trainCarriageRepository;
 
-    private final SeatRepository seatRepository;
-
     public final static double DIESEL_PRICE = 2.80;
 
     public final static int PAGE_SIZE = 10;
 
-    public TrainService(TrainRepository trainRepository, RouteService routeService, TrainCarriageRepository trainCarriageRepository, SeatRepository seatRepository) {
+    public TrainService(TrainRepository trainRepository, RouteService routeService, TrainCarriageRepository trainCarriageRepository) {
         this.trainRepository = trainRepository;
         this.routeService = routeService;
         this.trainCarriageRepository = trainCarriageRepository;
-        this.seatRepository = seatRepository;
     }
 
-    public Page<Train> getTrainByArrivalStation(String destination, int page) {
-        Page<Train> trainsPage = trainRepository.getTrainsByDestination(destination, PageRequest.of(page, PAGE_SIZE));
-        return trainsPage;
+    public Page<Train> getTrainByArrivalStationAndArrivalTime(String destination, LocalDateTime arrivalDateTime, int page) {
+        return trainRepository.getTrainsByDestination(destination, arrivalDateTime, PageRequest.of(page, PAGE_SIZE));
     }
 
-    public List<Train> getTrainByArrivalTime(LocalTime arrivalTime) {
-        List<Train> trainList = trainRepository.getTrainsByArrivingAt(arrivalTime);
-        return trainList;
-    }
 
     public Page<Train> getAllTrains(int page) {
         int pageSize = 10;
@@ -81,24 +69,34 @@ public class TrainService {
     }
 
     public void changeSeatStatus(Long seatId) {
-        Optional<Seat> seatOptional = seatRepository.findById(seatId);
+      /*  Optional<Seat> seatOptional = seatRepository.findById(seatId);
         if (seatOptional.isEmpty()) {
             throw new EntityNotFoundException();
         }
         Seat seat = seatOptional.get();
         seat.setSeatState(SeatState.SOLD);
-        seatRepository.save(seat);
+        seatRepository.save(seat);*/
     }
 
-    public Long saveTrain(TrainDTO trainDTO) {
+    public Long createTrain(TrainDTO trainDTO) {
         if (trainDTO == null) {
             throw new IllegalArgumentException("Train can't be null");
         }
-        Train train = new Train(trainDTO.formedByTrainCarriages(), trainDTO.departingAt(), trainDTO.arrivingAt(), trainDTO.route());
-        trainCarriageRepository.save(new TrainCarriage());
+        Train train = new Train(trainDTO.formedByTrainCarriages(), trainDTO.departingAt(), trainDTO.arrivingAt());
         System.out.println("Formed by : " + trainDTO.formedByTrainCarriages());
-       // trainRepository.save(train);
+        trainRepository.save(train);
         return train.getId();
+    }
+
+    public void assignTrainToRoute(String trainId, String routeId) {
+        Optional<Train> trainOptional = trainRepository.findById(Long.valueOf(trainId));
+        if (trainOptional.isEmpty()) {
+            throw new EntityNotFoundException("Train with that id was not found");
+        }
+        Route route = routeService.getRoute(Long.valueOf(routeId));
+        Train train = trainOptional.get();
+        train.assignRoute(route);
+        trainRepository.save(train);
     }
 
 }

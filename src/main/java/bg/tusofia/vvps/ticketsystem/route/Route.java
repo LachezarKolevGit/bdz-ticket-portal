@@ -12,17 +12,30 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @OneToMany(mappedBy = "route", cascade = CascadeType.DETACH)
-    private List<TrainStation> stops = new ArrayList<>();
-    @OneToMany(mappedBy = "route", cascade = CascadeType.DETACH)  //probably exception incoming
+    @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)
+    @OrderColumn()
+    private List<TrainStation> trainStations = new ArrayList<>();
+    @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)  //probably exception incoming
     private Set<Train> trains = new HashSet<>();
 
     public Route() {
     }
 
-    public Route(List<TrainStation> stops, Set<Train> trains) {
-        this.stops = stops;
-        this.trains = trains;
+    public Route(List<TrainStation> trainStations, Set<Train> trains) {
+        if (trainStations != null) {
+            for (TrainStation trainStation : trainStations) {
+                System.out.println("Editing rotue");
+                trainStation.setRoute(this);
+                this.trainStations = trainStations;
+            }
+        } // data integrity missing
+
+        if (trains != null) {
+            for (Train train : trains) {
+                train.setRoute(this);
+            }
+            this.trains = trains;
+        }
     }
 
     public Long getId() {
@@ -30,22 +43,25 @@ public class Route {
     }
 
     public List<TrainStation> getStops() {
-        return Collections.unmodifiableList(stops);
-    }
-
-    public void setStops(List<TrainStation> stops) {
-        this.stops = stops;
+        return Collections.unmodifiableList(trainStations);
     }
 
     public Set<Train> getTrains() {
         return Collections.unmodifiableSet(trains);
     }
 
-    public void setTrains(Set<Train> trains) {
-        this.trains = trains;
+    public void addStop(TrainStation trainStation) { // call when initializing a train station
+        //exception checks
+        trainStations.add(trainStation);
+        trainStation.setRoute(this);
     }
 
-    //good practise to initialize collections right away
-    //has to be ordered which needs to be fixed
-
+    @Override
+    public String toString() {
+        return "Route{" +
+                "id=" + id +
+                ", trainStations=" + trainStations +
+                ", trains=" + trains +
+                '}';
+    }
 }

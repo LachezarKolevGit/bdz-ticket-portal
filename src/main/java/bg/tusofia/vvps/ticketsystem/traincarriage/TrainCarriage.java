@@ -20,11 +20,13 @@ public class TrainCarriage {
     @Enumerated(EnumType.STRING)
     private TrainCarriageType trainCarriageType;
 
-    @ManyToOne(fetch = FetchType.LAZY) //cascade type ??
-    @JoinColumn(name = "train_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "train_id", updatable = false)
     private Train train;
 
-    @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "seat", joinColumns = @JoinColumn(name = "train_carriage_id"))
+    @OrderColumn(name = "seat_index" , nullable = false)
     private List<Seat> seats;  //initialize it with totalSeats
     private int totalSeats;
 
@@ -34,7 +36,7 @@ public class TrainCarriage {
     public TrainCarriage(TrainCarriageType trainCarriageType, int totalSeats) {
         this.trainCarriageType = trainCarriageType;
         this.totalSeats = totalSeats;
-        this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE, this))
+        this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE))
                         .limit(totalSeats)
                                 .collect(Collectors.toList());
         System.out.println("Seats in copnstr : " + seats);
@@ -85,7 +87,6 @@ public class TrainCarriage {
         return "TrainCarriage{" +
                 "id=" + id +
                 ", trainCarriageType=" + trainCarriageType +
-                ", train=" + train +
                 ", seats=" + seats +
                 ", totalSeats=" + totalSeats +
                 '}';

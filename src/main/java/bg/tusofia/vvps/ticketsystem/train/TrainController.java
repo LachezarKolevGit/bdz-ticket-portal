@@ -28,7 +28,7 @@ public class TrainController {
         model.addAttribute("trainPage", trainPage);
 
         int totalPages = trainPage.getTotalPages();
-        if(totalPages > 0){
+        if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
@@ -44,9 +44,18 @@ public class TrainController {
             throw new IllegalArgumentException("Train can't be null");
         }
         System.out.println(trainDTO);
-        Long newTrainId = trainService.saveTrain(trainDTO);
+        Long newTrainId = trainService.createTrain(trainDTO);
 
         model.addAttribute("newTrainId", newTrainId);
+
+        return "train/train_added_successfully";
+    }
+
+    @PostMapping("/trains/assign-route")
+    public String createTrain(Model model, @RequestParam(name = "trainId") String trainId, @RequestParam(name = "trainId") String routeId) {
+        trainService.assignTrainToRoute(trainId, routeId);
+
+
 
         return "train/train_added_successfully";
     }

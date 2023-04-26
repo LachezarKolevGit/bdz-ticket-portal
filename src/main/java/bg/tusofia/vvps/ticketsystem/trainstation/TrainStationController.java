@@ -40,7 +40,7 @@ public class TrainStationController {
         return "train_station/train_stations";
     }
 
-    @PostMapping("/train-stops/create")
+    @PostMapping("/train-stops")
     public String createNewTrainStation(@RequestBody TrainStationDTO trainStationDTO, Model model) {
         Long trainStationId = trainStationService.createNewTrainStation(trainStationDTO);
         model.addAttribute("newTrainStationId", trainStationId);
