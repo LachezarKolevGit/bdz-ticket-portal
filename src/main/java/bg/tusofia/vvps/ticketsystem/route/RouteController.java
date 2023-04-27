@@ -3,10 +3,7 @@ package bg.tusofia.vvps.ticketsystem.route;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +19,12 @@ public class RouteController {
     }
 
     @GetMapping("/routes")
-    public String getRoutes(Model model, @RequestParam(name = "page") int page){
+    public String getRoutes(Model model, @RequestParam(name = "page") int page) {
         Page<Route> routePage = routeService.getRoutes(page);
         model.addAttribute("routePage", routePage);
 
         int totalPages = routePage.getTotalPages();
-        if(totalPages > 0){
+        if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
@@ -37,11 +34,21 @@ public class RouteController {
         return "route/routes";
     }
 
+    @GetMapping("/routes/{id}")
+    public String getRoute(Model model, @PathVariable(name = "id") String id) {
+        Route route = routeService.getRoute(Long.valueOf(id));
+        model.addAttribute("route", route);
+
+        return "route/route_train_stations";
+    }
+
     @PostMapping("/routes")
-    public String createRoutes(Model model, @RequestBody RouteDTO routeDTO){
-       Long newRouteId = routeService.createNewRoute(routeDTO);
+    public String createRoutes(Model model, @RequestBody RouteDTO routeDTO) {
+        Long newRouteId = routeService.createNewRoute(routeDTO);
         model.addAttribute("newRouteId", newRouteId);
 
         return "route/successful_creation_route";
     }
+
+
 }

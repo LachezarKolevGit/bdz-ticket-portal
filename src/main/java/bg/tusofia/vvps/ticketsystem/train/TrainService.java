@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,8 +32,10 @@ public class TrainService {
         this.trainCarriageRepository = trainCarriageRepository;
     }
 
-    public Page<Train> getTrainByArrivalStationAndArrivalTime(String destination, LocalDateTime arrivalDateTime, int page) {
-        return trainRepository.getTrainsByDestination(destination, arrivalDateTime, PageRequest.of(page, PAGE_SIZE));
+    public List<Train> getTrainByArrivalStationAndDepartureTime(String destination, LocalDateTime departureDateTime) {
+        List<Train> trainList = trainRepository.getTrainsByDestinationAndDateTime(destination, departureDateTime);
+        System.out.println(trainList);
+        return trainList;
     }
 
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,6 +27,7 @@ public class TrainController {
         Page<Train> trainPage = trainService.getAllTrains(page);
         System.out.println(trainPage.getContent());
         model.addAttribute("trainPage", trainPage);
+
 
         int totalPages = trainPage.getTotalPages();
         if (totalPages > 0) {
@@ -51,10 +53,18 @@ public class TrainController {
         return "train/train_added_successfully";
     }
 
+    @GetMapping("/trains/search")
+    public String getTrainByDestinationAndDepartureHour(Model model, @RequestParam(name = "destination") String destination, @RequestParam(name = "departureDateTime") LocalDateTime departureDateTime) {
+
+        List<Train> trains = trainService.getTrainByArrivalStationAndDepartureTime(destination, departureDateTime);
+        model.addAttribute("trains",trains);
+
+        return "train/trains_by_destination_and_date_time";
+    }
+
     @PostMapping("/trains/assign-route")
     public String createTrain(Model model, @RequestParam(name = "trainId") String trainId, @RequestParam(name = "trainId") String routeId) {
         trainService.assignTrainToRoute(trainId, routeId);
-
 
 
         return "train/train_added_successfully";

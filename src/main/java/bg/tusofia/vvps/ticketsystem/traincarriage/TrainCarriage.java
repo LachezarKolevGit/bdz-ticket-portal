@@ -24,10 +24,8 @@ public class TrainCarriage {
     @JoinColumn(name = "train_id", updatable = false)
     private Train train;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "seat", joinColumns = @JoinColumn(name = "train_carriage_id"))
-    @OrderColumn(name = "seat_index" , nullable = false)
-    private List<Seat> seats;  //initialize it with totalSeats
+    @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL)
+    private List<Seat> seats;  //initialized with totalSeats
     private int totalSeats;
 
     public TrainCarriage() {
@@ -37,8 +35,8 @@ public class TrainCarriage {
         this.trainCarriageType = trainCarriageType;
         this.totalSeats = totalSeats;
         this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE))
-                        .limit(totalSeats)
-                                .collect(Collectors.toList());
+                .limit(totalSeats)
+                .collect(Collectors.toList());
         System.out.println("Seats in copnstr : " + seats);
     }
 

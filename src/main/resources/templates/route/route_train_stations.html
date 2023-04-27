@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Route details</title>
+</head>
+<body>
+<h1>Train stations for route with id : <span th:text="${route.id}"></span></h1>
+<table>
+    <thead>
+    <th>Train station Id</th>
+    <th>Train station name</th>
+    <th>Train station order</th>
+    </thead>
+    <tbody>
+    <tr th:each="trainStation, iterStat : ${route.stops}">
+        <td th:text="${trainStation.id}"/>
+        <td th:text="${trainStation.name}"/>
+        <td th:text="${iterStat.index}"/>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

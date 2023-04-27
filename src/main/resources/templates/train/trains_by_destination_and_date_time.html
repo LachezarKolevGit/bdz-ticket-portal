@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Trains</title>
+    <title>Title</title>
 </head>
 <body>
-<h3>Note: if the train doesn't have a link to a route it isn't assigned one</h3>
 <table>
     <thead>
     <tr>
-        <th>Id</th>
+        <th>Train id</th>
         <th>Train carriage Id</th>
         <th>Train carriage type</th>
         <th>Total seats</th>
@@ -21,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="train : ${trainPage}">
+    <tr th:each="train : ${trains}">
         <td th:text="${train.id}"/>
         <td>
             <div th:each="trainCarriage : ${train.formedByTrainCarriages}">
@@ -38,11 +36,5 @@
     </tr>
     </tbody>
 </table>
-<div th:if="${trainPage.totalPages > 0}" class="pagination"
-     th:each="pageNumber :${pageNumbers}">
-    <a th:href="@{/trains(page=${pageNumber})}"
-       th:text="${pageNumber}"
-       th:class="${pageNumber==trainPage.number + 1} ? active"></a>
-</div>
 </body>
 </html>

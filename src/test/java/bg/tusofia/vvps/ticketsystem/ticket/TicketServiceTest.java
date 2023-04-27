@@ -1,10 +1,10 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import bg.tusofia.vvps.ticketsystem.client.Client;
-import bg.tusofia.vvps.ticketsystem.client.ClientService;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
+import bg.tusofia.vvps.ticketsystem.user.User;
+import bg.tusofia.vvps.ticketsystem.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class TicketServiceTest {
     TicketService ticketService;
 
     @Mock
-    ClientService CLientService;
+    UserService CLientService;
 
     @Mock
     TrainService trainService;
@@ -62,7 +62,7 @@ class TicketServiceTest {
         // when(routeService.calculateRouteDistance(route)).thenReturn(361);
         when(trainService.calculateBasePrice(train.getId())).thenReturn(6.0);
         when(trainService.getTrainCarriageClass(trainCarriageId)).thenReturn(TrainCarriageType.CLASS_B.getMultiplier());
-        when(CLientService.getLoggedInUser()).thenReturn(new Client("Gosho", 50, false, null));
+        when(CLientService.getLoggedInUser()).thenReturn(new User("Gosho","Goshev",  50, false, null));
 
         double actualPrice = ticketService.calcFinalPrice(train, numberOfTickets, trainCarriageId, seatId);
         double expectedPrice = 6;
@@ -72,7 +72,7 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method without meeting the criteria for a discount")
     @Test
     void testUserDiscountPriceHandler() {
-        Client client = new Client("Georgi", 50, false, null);
+        User client = new User("Georgi", "Goshev", 50, false, null);
         when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;
@@ -82,7 +82,7 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for elderly ticket discount")
     @Test
     void testUserDiscountPriceHandlerForElderlyUser() { //34% discount
-        Client client = new Client("Georgi", 61, false, null);
+        User client = new User("Georgi", "Goshev", 61, false, null);
         when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 6.60;
@@ -92,7 +92,7 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for family ticket discount")
     @Test
     void testUserDiscountPriceHandlerForFamilyDiscount() { //10 % discount
-        Client client = new Client("Georgi", 45, true, null);
+        User client = new User("Georgi", "Goshev", 45, true, null);
         when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 9;
@@ -104,7 +104,7 @@ class TicketServiceTest {
     @DisplayName("Test .userDiscountPriceHandler() method for having a kid below 16 ticket discount")
     @Test
     void testUserDiscountPriceHandlerForKidBelow16Discount() { //50 % discount for one ticket
-        Client client = new Client("Georgi", 45, true, LocalDate.of(2010, 1, 1));
+        User client = new User("Georgi", "Goshev", 45, true, LocalDate.of(2010, 1, 1));
         when(CLientService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;

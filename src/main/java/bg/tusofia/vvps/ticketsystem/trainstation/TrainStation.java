@@ -25,13 +25,6 @@ public class TrainStation {
         this.longitude = longitude;
     }
 
-   /* public TrainStation(String name, Double latitude, Double longitude, Route route) {
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.route = route;
-    }*/
-
     public Long getId() {
         return id;
     }

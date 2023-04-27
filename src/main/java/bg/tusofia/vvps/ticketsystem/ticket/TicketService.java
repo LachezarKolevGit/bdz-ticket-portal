@@ -1,9 +1,9 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import bg.tusofia.vvps.ticketsystem.client.Client;
-import bg.tusofia.vvps.ticketsystem.client.ClientService;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
+import bg.tusofia.vvps.ticketsystem.user.User;
+import bg.tusofia.vvps.ticketsystem.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Service
 public class TicketService {
 
-    private final ClientService CLientService;
+    private final UserService CLientService;
     private final TrainService trainService;
 
     private static final LocalTime morningPeakHourStart = LocalTime.of(7, 30);
@@ -22,7 +22,7 @@ public class TicketService {
     private static final LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);
 
     @Autowired
-    public TicketService(ClientService CLientService, TrainService trainService) {
+    public TicketService(UserService CLientService, TrainService trainService) {
         this.CLientService = CLientService;
         this.trainService = trainService;
     }
@@ -43,7 +43,7 @@ public class TicketService {
     }
 
     public double userDiscountPriceHandler(double ticketPrice) {
-        Client client = CLientService.getLoggedInUser();
+        User client = CLientService.getLoggedInUser();
         if (client.getChildBirthYear() != null) { //refactor then nested if statements
             if (LocalDate.now().getYear() - client.getChildBirthYear().getYear() < 16) {
                 return ticketPrice * 2 * 50 / 100;

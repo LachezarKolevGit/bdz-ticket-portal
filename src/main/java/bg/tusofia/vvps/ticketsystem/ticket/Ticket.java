@@ -1,48 +1,37 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
+@Entity
 public class Ticket {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private Long trainCarriageId;
-
-    private Long seatId;
-    private Timestamp receivedAt;
+    @OneToOne //research more
+    private Seat seat;
+    private Timestamp purchasedAt;
     private float price;
 
     public Ticket() {
     }
 
-    public Ticket(Long trainCarriageId, Long seatId, Timestamp receivedAt, float price) {
-        this.trainCarriageId = trainCarriageId;
-        this.seatId = seatId;
-        this.receivedAt = receivedAt;
+    public Ticket(Seat seat, Timestamp purchasedAt, float price) {
+        this.seat = seat;
+        this.purchasedAt = purchasedAt;
         this.price = price;
     }
 
-    public Long getTrainCarriageId() {
-        return trainCarriageId;
-    }
-
-    public void setTrainCarriageId(Long trainCarriageId) {
-        this.trainCarriageId = trainCarriageId;
-    }
-
-    public Long getSeatId() {
-        return seatId;
-    }
-
-    public void setSeatId(Long seatId) {
-        this.seatId = seatId;
-    }
 
     public Timestamp getReceivedAt() {
-        return receivedAt;
+        return purchasedAt;
     }
 
-    public void setReceivedAt(Timestamp receivedAt) {
-        this.receivedAt = receivedAt;
+    public void setReceivedAt(Timestamp purchasedAt) {
+        this.purchasedAt = purchasedAt;
     }
 
     public float getPrice() {
