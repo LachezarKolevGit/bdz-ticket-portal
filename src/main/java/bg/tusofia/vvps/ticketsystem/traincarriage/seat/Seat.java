@@ -10,15 +10,18 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
     @Enumerated
     private SeatState seatState;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", updatable = false)
+    @JoinColumn(name = "train_carriage_id", updatable = false)
     private TrainCarriage trainCarriage;
 
     @OneToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
+
     public Seat() {
     }
 

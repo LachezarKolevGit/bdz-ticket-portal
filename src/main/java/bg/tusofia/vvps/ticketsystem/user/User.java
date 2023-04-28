@@ -27,7 +27,7 @@ public class User {
 
     private Role role;
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private Set<Ticket> boughtTickets = new HashSet<>();
 
     public User() {
@@ -41,16 +41,40 @@ public class User {
         this.childBirthYear = childBirthYear;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public Role getRole() {
-        return role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getAge() {
@@ -65,7 +89,7 @@ public class User {
         return hasFamily;
     }
 
-    public void setHasFamily(boolean hasFamily) {
+    public void hasFamily(boolean hasFamily) {
         this.hasFamily = hasFamily;
     }
 
@@ -75,5 +99,36 @@ public class User {
 
     public void setChildBirthYear(LocalDate childBirthYear) {
         this.childBirthYear = childBirthYear;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Ticket> getBoughtTickets() {
+        return boughtTickets;
+    }
+
+    public void setBoughtTickets(Set<Ticket> boughtTickets) {
+        this.boughtTickets = boughtTickets;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", hasFamily=" + hasFamily +
+                ", childBirthYear=" + childBirthYear +
+                ", role=" + role +
+                ", boughtTickets=" + boughtTickets +
+                '}';
     }
 }

@@ -8,35 +8,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer {
-    public static final String[] ENDPOINTS_WHITELIST = {
-            "/",
-            "/login"
-    };
 
-    private final UserDetailsService userDetailsService; //injects UserService
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoderConfig passwordEncoderConfig;
 
-    public WebSecurityConfigurer(UserDetailsService userDetailsService) {
+    public WebSecurityConfigurer(UserDetailsService userDetailsService, PasswordEncoderConfig passwordEncoderConfig) {
         this.userDetailsService = userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10, new SecureRandom());
+        this.passwordEncoderConfig = passwordEncoderConfig;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setPasswordEncoder(passwordEncoderConfig.getPasswordEncoder());
         authenticationProvider.setUserDetailsService(this.userDetailsService);
         return authenticationProvider;
     }
@@ -45,13 +34,14 @@ public class WebSecurityConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/user/login")
-                                .permitAll()
-                                .requestMatchers("user/register")
-                                .permitAll()
+                        request.requestMatchers("/user/**").permitAll()
                                 .anyRequest().authenticated())
-                .formLogin(form -> form.loginProcessingUrl("user/login")
-                        .defaultSuccessUrl("/"))
+                .formLogin(form -> form.loginPage("/user/login")
+                        .loginProcessingUrl("/user/login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/user/login?error=true")
+                        //.permitAll()  idk ?
+                )
                 .logout(logout -> logout.logoutUrl("/user/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")

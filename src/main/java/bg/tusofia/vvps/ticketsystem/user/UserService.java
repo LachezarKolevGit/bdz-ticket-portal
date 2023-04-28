@@ -1,32 +1,41 @@
 package bg.tusofia.vvps.ticketsystem.user;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationProvider authenticationProvider;
+
+    public UserService(UserRepository userRepository, AuthenticationProvider authenticationProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.authenticationProvider = authenticationProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void registerUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.CLIENT);
+
         userRepository.save(user);
     }
 
-    public ResponseEntity<?> tryToAuthenticateUser(User user) {
-        return null;
+    public String tryToAuthenticateUser(UserDTO userDTO) {
+        Authentication authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(userDTO.email(), userDTO.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return authentication.getName();
     }
 
     public User getLoggedInUser() { //rework !!!
@@ -34,13 +43,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with that email was not found"));
-        SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRole().name());
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(role);
+    public void registerAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ADMINISTRATOR);
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
+        userRepository.save(user);
     }
 }

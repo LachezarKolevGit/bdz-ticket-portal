@@ -1,9 +1,11 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.user.User;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+
 @Entity
 public class Ticket {
 
@@ -11,8 +13,12 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToOne //research more
+    @OneToOne(mappedBy = "ticket", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Seat seat;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
     private Timestamp purchasedAt;
     private float price;
 
