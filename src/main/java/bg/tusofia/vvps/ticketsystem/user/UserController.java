@@ -24,12 +24,11 @@ public class UserController {
     public String registerUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-
         return "user/user_register";
     }
 
     @PostMapping("/register")
-    public String registerUser(User user) {
+    public String registerUser(@ModelAttribute("user") User user) {
         System.out.println("Submitted user is" + user);
         userService.registerUser(user);
         return "user/user_registered_successfully";
@@ -46,19 +45,54 @@ public class UserController {
         return "user/user_login";
     }
 
+    @GetMapping("/register/admin")
+    public String registerAdminPage(Model model) {
+        UserDTO admin = new UserDTO();
+        model.addAttribute("admin", admin);
+        return "admin/admin_register_page";
+    }
+
     @PostMapping("/register/admin")
-    public String registerAdmin(@RequestBody User user) {
-        userService.registerAdmin(user);
+    public String registerAdmin(@ModelAttribute("user") UserDTO userDTO) {
+        userService.registerAdmin(userDTO);
 
         return "admin/admin_registered_successfully";
     }
 
-    @PostMapping("/login/admin")  //add authentication for admin
-    public String loginAdmin(Model model, @RequestBody UserDTO userDTO) {
-        String username = userService.tryToAuthenticateUser(userDTO);
-        model.addAttribute("username", username);
-
-        return "admin/admin_login_successfully";
+    @GetMapping("/add")
+    public String addUserPage(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "user/user_register";
     }
+
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.registerUser(user);
+        return "user/user_registered_successfully";
+    }
+
+    @GetMapping("/edit")
+    public String editUserProfilePage(@ModelAttribute(name = "user") User user, Model model) {
+        System.out.println(user);
+        model.addAttribute("user", user);
+        return "user/user_edit_details"; //change
+    }
+
+    @PostMapping("/edit")
+    public String editUserProfile(@ModelAttribute(name = "user") User user, Model model) {
+        model.addAttribute("user", userService.editProfile(user));
+        return "user/user_details";
+    }
+
+    @GetMapping("/getUser/{userId}")
+    public String getUserProfile(Model model, @PathVariable(name = "userId") String userId) {
+        User user = userService.findUserById(userId);
+        System.out.println("User in getUser " + user);
+        model.addAttribute("user", user);
+
+        return "user/user_details";
+    }
+
 
 }

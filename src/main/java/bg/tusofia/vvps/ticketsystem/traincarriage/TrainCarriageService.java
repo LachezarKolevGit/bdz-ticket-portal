@@ -44,10 +44,16 @@ public class TrainCarriageService {
         return null;
     }
 
-
-    public Page<TrainCarriage> getAllTrains(int page) {
+    public Page<TrainCarriage> getAllTrainCarriages(int page) {
         int pageSize = 10;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return trainCarriageRepository.findAll(pageRequest);
+    }
+
+    public double getTrainCarriageClassPriceMultiplier(Long seatId) {
+        TrainCarriage trainCarriage = trainCarriageRepository.findTrainCarriageBySeatId(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Train Carriage was not found"));
+
+        return trainCarriage.getCarriageType().getMultiplier();
     }
 }

@@ -5,8 +5,6 @@ import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageRepository;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,6 +69,7 @@ class TrainServiceTest {
         assertEquals(expectedBasePrice, actualBasePrice, "ExpectedBasePrice does not match the actualBasePrice");
     }
 
+    /*@Disabled
     @DisplayName("Test .getTrainCarriageClass() method if it returns the correct value")
     @Test
     void testGetTrainCarriageClass() {
@@ -81,23 +80,23 @@ class TrainServiceTest {
         double expectedMultiplier = 1;
 
         assertEquals(expectedMultiplier, actualMultiplier, "ExpectedMultiplier is not the same as actualMultiplier");
-    }
+    }*/
 
-    @DisplayName("Test .changeSeatStatus() method")
+   /* @DisplayName("Test .changeSeatStatus() method")
     @Test
     void testChangeSeatStatus() {
         Seat seat = new Seat();
         Long seatId = 1L;
        // when(seatRepository.findById(seatId)).thenReturn(Optional.of(seat));
         trainService.changeSeatStatus(seatId);
-       /* Optional<Seat> seatOptional = trainRepository.findById(seatId);
+       *//* Optional<Seat> seatOptional = trainRepository.findById(seatId);
         if (seatOptional.isEmpty()) {
             throw new EntityNotFoundException();
         }
-        SeatState actualSeatState = seatOptional.get().getSeatState();*/
+        SeatState actualSeatState = seatOptional.get().getSeatState();*//*
         SeatState expectedSeatState = SeatState.SOLD;
 
         assertEquals(expectedSeatState, expectedSeatState, "ExpectedSeatState does not match the actualSeatState");
-    }
+    }*/
 
 }

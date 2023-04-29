@@ -15,10 +15,6 @@
             .login-form {
                 margin-top: 10%;
             }
-
-            .register-form {
-                margin-top: 10%;
-            }
         }
 
         @media screen and (min-width: 768px) {
@@ -26,19 +22,12 @@
                 margin-left: 30%;
             }
 
-            .sidenav {
-                width: 40%;
-                position: fixed;
-                z-index: 1;
-                top: 0;
-                left: 0;
-            }
         }
     </style>
     <div class="main">
         <div class="col-md-6 col-sm-12">
             <div th:if="${param.fail}" class="alert alert-success">
-                Username or email already exists
+                Error
             </div>
             <div class="login-form">
                 <form method="post" role="form" th:action="@{/user/register}" th:object="${user}">
@@ -47,20 +36,10 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                placeholder="Email"
+                                th:placeholder="*{email}"
                                 th:field="*{email}">
                     </div>
                     <p th:if="${#fields.hasErrors('email')}" class="text-danger"></p>
-                    <!-- triggered for invalid mail -->
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input
-                                type="password"
-                                class="form-control"
-                                placeholder="Password"
-                                th:field="*{password}">
-                    </div>
-                    <p th:if="${#fields.hasErrors('password')}" class="text-danger"></p>
                     <!-- triggered for invalid mail -->
                     <div class="form-group">
                         <label>First name</label>
@@ -107,8 +86,7 @@
                                 th:field="*{childBirthYear}">
                     </div>
                     <p th:if="${#fields.hasErrors('email')}" class="text-danger"></p>
-                    <button th:formmethod="get" th:formaction="@{/user/login}" type="submit" class="btn btn-black">Login here.</button>
-                    <button th:href="@{/register}" type="submit" class="btn btn-secondary">Register</button>
+                    <button th:href="@{/user/edit}" type="submit" class="btn btn-secondary">Submit changes</button>
                 </form>
             </div>
         </div>

@@ -2,7 +2,9 @@ package bg.tusofia.vvps.ticketsystem.ticket;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
+import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,17 +29,22 @@ class TicketServiceTest {
 
     public final static double DIESEL_PRICE = 2.80;
 
-    TicketService ticketService;
-
+    private TicketService ticketService;
     @Mock
-    UserService CLientService;
-
+    private UserService userService;
     @Mock
-    TrainService trainService;
+    private TrainService trainService;
+    @Mock
+    private SeatService seatService;
+    @Mock
+    private TrainCarriageService trainCarriageService;
+    @Mock
+    private TicketRepository ticketRepository;
+
 
     @BeforeEach
     void init() {
-        ticketService = new TicketService(CLientService, trainService);
+        ticketService = new TicketService(userService, trainService, seatService, trainCarriageService, ticketRepository);
     }
 
     @DisplayName("Test .calculatePrice() method")
@@ -61,10 +68,12 @@ class TicketServiceTest {
 
         // when(routeService.calculateRouteDistance(route)).thenReturn(361);
         when(trainService.calculateBasePrice(train.getId())).thenReturn(6.0);
-        when(trainService.getTrainCarriageClass(trainCarriageId)).thenReturn(TrainCarriageType.CLASS_B.getMultiplier());
-        when(CLientService.getLoggedInUser()).thenReturn(new User("Gosho","Goshev",  50, false, null));
+        when(trainCarriageService.getTrainCarriageClassPriceMultiplier(trainCarriageId)).thenReturn(TrainCarriageType.CLASS_B.getMultiplier());
+        when(userService.getLoggedInUser()).thenReturn(new User("Gosho", "Goshev", 50, false, null));
 
-        double actualPrice = ticketService.calcFinalPrice(train, numberOfTickets, trainCarriageId, seatId);
+        double trainBasePrice = 6.0;
+        double trainCarriageIdClassMultiplier = 1;
+        double actualPrice = ticketService.calculateFinalPrice(trainBasePrice, trainCarriageIdClassMultiplier, numberOfTickets);
         double expectedPrice = 6;
         assertEquals(expectedPrice, actualPrice, "ExpectedPrice does not match the actualPrice");
     }
@@ -73,7 +82,7 @@ class TicketServiceTest {
     @Test
     void testUserDiscountPriceHandler() {
         User client = new User("Georgi", "Goshev", 50, false, null);
-        when(CLientService.getLoggedInUser()).thenReturn(client);
+        when(userService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price");
@@ -83,7 +92,7 @@ class TicketServiceTest {
     @Test
     void testUserDiscountPriceHandlerForElderlyUser() { //34% discount
         User client = new User("Georgi", "Goshev", 61, false, null);
-        when(CLientService.getLoggedInUser()).thenReturn(client);
+        when(userService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 6.60;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");
@@ -93,7 +102,7 @@ class TicketServiceTest {
     @Test
     void testUserDiscountPriceHandlerForFamilyDiscount() { //10 % discount
         User client = new User("Georgi", "Goshev", 45, true, null);
-        when(CLientService.getLoggedInUser()).thenReturn(client);
+        when(userService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 9;
         assertEquals(expectedTicketPrice, actualTicketPrice,
@@ -105,13 +114,13 @@ class TicketServiceTest {
     @Test
     void testUserDiscountPriceHandlerForKidBelow16Discount() { //50 % discount for one ticket
         User client = new User("Georgi", "Goshev", 45, true, LocalDate.of(2010, 1, 1));
-        when(CLientService.getLoggedInUser()).thenReturn(client);
+        when(userService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
         double expectedTicketPrice = 10;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");
     }
 
-    private static Stream<Arguments> providePeakHoursRanges(){
+    private static Stream<Arguments> providePeakHoursRanges() {
         return Stream.of(
                 Arguments.of(7, 29),
                 Arguments.of(9, 31),
@@ -124,7 +133,7 @@ class TicketServiceTest {
     @ParameterizedTest()
     @MethodSource("providePeakHoursRanges")
     void testPeakHoursDiscountHandlerAfterMorningPeakHour(int hour, int minutes) {
-        double actualTicketPrice = ticketService.peakHoursDiscountHandler(10, LocalTime.of(hour,minutes));
+        double actualTicketPrice = ticketService.peakHoursDiscountHandler(10, LocalTime.of(hour, minutes));
         double expectedTicketPrice = 9.50;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price regarding peak hours discount");
     }

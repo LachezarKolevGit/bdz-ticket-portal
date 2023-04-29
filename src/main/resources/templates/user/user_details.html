@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+</head>
+<body> <!- Add an edit button that forwards the request to get user/edit and that contains info for the user -->
+<table>
+    <thead>
+    <th>Id</th>
+    <th>Email</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Age</th>
+    <th>Married</th>
+    <th>Child birth year</th>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${user.id}"/>
+        <td th:text="${user.email}"/>
+        <td th:text="${user.firstName}"/>
+        <td th:text="${user.lastName}"/>
+        <td th:text="${user.age}"/>
+        <td th:text="${user.married}"/>
+        <td th:text="${user.childBirthYear}"/>
+    </tr>
+    </tbody>
+</table>
+<form method="get" role="form" th:action="@{/user/edit}" th:object="${user}">
+    <!- Send the user object to the edit url, so the data can be visualized-->
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   th:field="*{email}">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text"
+                   class="form-control"
+                   id="description"
+                   th:field="*{firstName}">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-black">Edit user details</button>
+</form>
+</body>
+</html>

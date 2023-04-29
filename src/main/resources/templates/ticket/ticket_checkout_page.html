@@ -1,0 +1,88 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+<head>
+    <title>Purchase ticket</title>
+</head>
+<section layout:fragment="body">
+    <style>
+        .main {
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-width: 450px) {
+            .login-form {
+                margin-top: 10%;
+            }
+
+            .register-form {
+                margin-top: 10%;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            .main {
+                margin-left: 30%;
+            }
+
+            .sidenav {
+                width: 40%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+    <div class="main">
+        <div class="col-md-6 col-sm-12">
+            <div th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <div class="login-form">
+                <form method="post" th:action="@{/ticket/checkout}" th:object="${ticket}">
+                    <div class="form-group">
+                        <label>Train Id</label>
+                        <input
+                                id="trainId"
+                                type="text"
+                                class="form-control"
+                                placeholder="train Id"
+                                name="trainId"
+                        th:field = "*{trainId}"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label>Seat Id</label>
+                        <input
+                                id="seatId"
+                                type="text"
+                                class="form-control"
+                                placeholder="seat Id"
+                                name="seatId"
+                                th:field = "*{seatId}">
+                    </div>
+                    <div class="form-group">
+                        <label>Enter how many tickets you want to buy</label>
+                        <input
+                                id="numberOfTickets"
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter the number of tickets"
+                                name="numberOfTickets"
+                                th:field = "*{numberOfTickets}">
+                    </div>
+
+                    <button th:href="@{/trains}" type="submit" class="btn btn-black">See trains</button>
+                    <button type="submit" value="BuyTicket" class="btn btn-secondary">Buy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</html>
+

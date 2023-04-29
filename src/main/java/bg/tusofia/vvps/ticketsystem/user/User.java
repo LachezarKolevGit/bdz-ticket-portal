@@ -22,7 +22,7 @@ public class User {
 
     private String password;
     private int age;
-    private boolean hasFamily;
+    private boolean married;
     private LocalDate childBirthYear;
 
     private Role role;
@@ -33,11 +33,11 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, int age, boolean hasFamily, LocalDate childBirthYear) {
+    public User(String firstName, String lastName, int age, boolean married, LocalDate childBirthYear) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.hasFamily = hasFamily;
+        this.married = married;
         this.childBirthYear = childBirthYear;
     }
 
@@ -85,12 +85,12 @@ public class User {
         this.age = age;
     }
 
-    public boolean hasFamily() {
-        return hasFamily;
+    public boolean getMarried() {
+        return married;
     }
 
-    public void hasFamily(boolean hasFamily) {
-        this.hasFamily = hasFamily;
+    public void setMarried(boolean married) {
+        this.married = married;
     }
 
     public LocalDate getChildBirthYear() {
@@ -125,7 +125,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", hasFamily=" + hasFamily +
+                ", hasFamily=" + married +
                 ", childBirthYear=" + childBirthYear +
                 ", role=" + role +
                 ", boughtTickets=" + boughtTickets +

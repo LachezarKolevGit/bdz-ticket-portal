@@ -20,17 +20,32 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User user;
     private Timestamp purchasedAt;
-    private float price;
+    private double price;
 
     public Ticket() {
     }
 
-    public Ticket(Seat seat, Timestamp purchasedAt, float price) {
+    public Ticket(Seat seat, Timestamp purchasedAt, double price) {
         this.seat = seat;
         this.purchasedAt = purchasedAt;
         this.price = price;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Timestamp getPurchasedAt() {
+        return purchasedAt;
+    }
 
     public Timestamp getReceivedAt() {
         return purchasedAt;
@@ -40,7 +55,7 @@ public class Ticket {
         this.purchasedAt = purchasedAt;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 

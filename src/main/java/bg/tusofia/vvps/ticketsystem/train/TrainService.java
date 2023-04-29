@@ -62,25 +62,6 @@ public class TrainService {
         return priceOfFuel / totalSeats;
     }
 
-    public double getTrainCarriageClass(Long id) {
-        Optional<TrainCarriage> trainCarriageOptional = trainCarriageRepository.findById(id);
-        if (trainCarriageOptional.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        TrainCarriage trainCarriage = trainCarriageOptional.get();
-        return trainCarriage.getCarriageType().getMultiplier();
-    }
-
-    public void changeSeatStatus(Long seatId) {
-      /*  Optional<Seat> seatOptional = seatRepository.findById(seatId);
-        if (seatOptional.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        Seat seat = seatOptional.get();
-        seat.setSeatState(SeatState.SOLD);
-        seatRepository.save(seat);*/
-    }
-
     public Long createTrain(TrainDTO trainDTO) {
         if (trainDTO == null) {
             throw new IllegalArgumentException("Train can't be null");

@@ -36,7 +36,7 @@ public class TrainCarriageController {
 
     @GetMapping("/train-carriages")
     public String getTrains(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-        Page<TrainCarriage> trainCarriagePage = trainCarriageService.getAllTrains(page);
+        Page<TrainCarriage> trainCarriagePage = trainCarriageService.getAllTrainCarriages(page);
         System.out.println(trainCarriagePage.getContent());
         model.addAttribute("trainCarriagePage", trainCarriagePage);
 
