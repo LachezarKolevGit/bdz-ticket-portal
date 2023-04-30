@@ -34,22 +34,29 @@ public class WebSecurityConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/user/register", "/user/login").permitAll()
-                                .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/user/login")
-                        .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/")
-                        .failureUrl("/user/login?error=true")
-                        //.permitAll()  idk ?
+                        request.requestMatchers("/", "/user/register", "/user/login",
+                                        "/user/login/admin").permitAll()
+                                .requestMatchers("/user/register/admin", "/user/add",
+                                         "/user/add", "/user/edit", "user/getUser/*"
+                                ).hasRole("ADMINISTRATOR")
+                                .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.logoutUrl("/user/logout")
+                .formLogin(form -> form.loginPage("/user/login")
+                                .loginProcessingUrl("/user/login")
+                                .defaultSuccessUrl("/")
+                                .failureUrl("/user/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/user/logout")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/"))
+                        .deleteCookies("JSESSIONID"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .invalidSessionUrl("/invalidSession.htm")
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true));
+                        .maxSessionsPreventsLogin(true)
+                );
 
         return http.build();
     }

@@ -81,15 +81,28 @@ public class UserController {
 
     @PostMapping("/edit")
     public String editUserProfile(@ModelAttribute(name = "user") User user, Model model) {
-        model.addAttribute("user", userService.editProfile(user));
+        System.out.println("User in edit " + user);
+        user = userService.editProfile(user);
+        model.addAttribute("user", user);
         return "user/user_details";
     }
 
-    @GetMapping("/getUser/{userId}")
+    /* @PostMapping("/edit/save")
+     public String saveChangesToUserProfile(@ModelAttribute(name = "user") User user, Model model) {
+         model.addAttribute("user", userService.editProfile(user));
+         return "user/user_details";
+     }
+ */
+    @GetMapping("/profile/{userId}")
     public String getUserProfile(Model model, @PathVariable(name = "userId") String userId) {
-        User user = userService.findUserById(userId);
-        System.out.println("User in getUser " + user);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findUserById(userId));
+
+        return "user/user_details";
+    }
+
+    @GetMapping("/profile")
+    public String getUserProfile(Model model) {
+        model.addAttribute("user", userService.getLoggedInUser());
 
         return "user/user_details";
     }

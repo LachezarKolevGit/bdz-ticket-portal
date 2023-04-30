@@ -1,11 +1,11 @@
 package bg.tusofia.vvps.ticketsystem.user;
 
+import bg.tusofia.vvps.ticketsystem.security.AuthenticationFacade;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 public class UserService {
@@ -29,15 +29,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-  /*  public String tryToAuthenticateUser(UserDTO userDTO) {
-        Authentication authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(userDTO.email(), userDTO.password()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return authentication.getName();
-    }*/
-
-    public User getLoggedInUser() { //rework !!!
-        User user = new User("Gosho", "Goshev", 50, true, LocalDate.of(1976, 2, 1));
+    public User getLoggedInUser() {
+        Authentication authentication = new AuthenticationFacade().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new EntityNotFoundException("Currently logged in user was not found"));
         return user;
     }
 
@@ -58,17 +53,15 @@ public class UserService {
     }
 
     public User editProfile(User redactedUser) {
-       /*User oldUserProfile = userRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new EntityNotFoundException("User with that id was not found"));*//*
-        oldUserProfile.setEmail(user.getEmail());
-        oldUserProfile.setFirstName(user.getFirstName());
-        oldUserProfile.setLastName(user.getLastName());
-        oldUserProfile.setAge(user.getAge());
-        oldUserProfile.setMarried(user.getMarried());
-        oldUserProfile.setChildBirthYear(user.getChildBirthYear());*/
-
+        User savedUser = userRepository.findById(redactedUser.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User was not found"));
+        redactedUser.setPassword(savedUser.getPassword());
         userRepository.save(redactedUser);
 
         return redactedUser;
+    }
+
+    public void changePassword() {
+
     }
 }

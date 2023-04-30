@@ -45,6 +45,10 @@ public class User {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -124,6 +128,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\''+
                 ", age=" + age +
                 ", hasFamily=" + married +
                 ", childBirthYear=" + childBirthYear +

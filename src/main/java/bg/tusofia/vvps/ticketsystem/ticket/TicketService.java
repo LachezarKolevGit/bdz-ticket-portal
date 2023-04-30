@@ -64,19 +64,20 @@ public class TicketService {
     }
 
     public double userDiscountPriceHandler(double ticketPrice) {
-        User client = userService.getLoggedInUser();
-        if (client.getChildBirthYear() != null) { //refactor then nested if statements
-            if (LocalDate.now().getYear() - client.getChildBirthYear().getYear() < 16) {
+        User user = userService.getLoggedInUser();
+
+        if (user.getChildBirthYear() != null) { //refactor then nested if statements
+            if (LocalDate.now().getYear() - user.getChildBirthYear().getYear() < 16) {
                 return ticketPrice * 2 * 50 / 100;
             }
         }
-        if (client.getAge() > 60) {
+        if (user.getAge() > 60) {
             return ticketPrice - (ticketPrice * 34 / 100);
         }
-        if (client.getMarried()) {
+        if (user.getMarried()) {
             return ticketPrice - (ticketPrice * 10 / 100); //remove the '2'
         }
-        return 10;
+        return 10; //probably has to rework
     }
 
     public double peakHoursDiscountHandler(double ticketPrice, LocalTime localTime) {
