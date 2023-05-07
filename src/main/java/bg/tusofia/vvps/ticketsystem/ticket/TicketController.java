@@ -54,26 +54,23 @@ public class TicketController {
 
     @GetMapping("/reservations")
     public String getAllReservations(Model model, @RequestParam(name = "page", defaultValue = "0") int page) {
-        Page<Ticket> ticketPage = ticketService.getAllReservations(page);
-        model.addAttribute("reservedTickets", ticketPage);
+        Page<Ticket> reservedTicketsPage = ticketService.getAllReservations(page);
+        model.addAttribute("reservedTickets", reservedTicketsPage);
 
-        int totalPages = ticketPage.getTotalPages();
+        int totalPages = reservedTicketsPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-
-        return "ticket/tickets_page";
+        return "ticket/reservations_all_by_user";
     }
 
-    @DeleteMapping("/reservation")
-    public String cancelReservation(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
-        /*Long ticketId = ticketService.reserveTicket(ticketDTO.getTrainId(),
-                ticketDTO.getSeatId(), ticketDTO.getNumberOfTickets());
-        model.addAttribute("ticketId", ticketId);*/
-        return "ticket/ticket_purchased_successfully";  //must be a path that we are returning
+    @DeleteMapping("/reservation/{id}")
+    public String cancelReservation(@PathVariable(name = "id") String ticketId) {
+        ticketService.deleteReservation(Long.valueOf(ticketId));
+        return "ticket/reservation_deleted_successfully";
     }
 
     @PostMapping("/reservation/{id}")

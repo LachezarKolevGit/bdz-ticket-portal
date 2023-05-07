@@ -83,19 +83,19 @@ public class TicketService {
         if (user.getMarried()) {
             return ticketPrice - (ticketPrice * 10 / 100); //remove the '2'
         }
-        return 10; //probably has to rework
+        return ticketPrice; //probably has to rework
     }
 
     public double peakHoursDiscountHandler(double ticketPrice, LocalTime localTime) {
-        if (localTime.isBefore(morningPeakHourStart) || localTime.isAfter(morningPeakHourEnd)) {
-            double discount = ticketPrice * 0.05;
-            return ticketPrice - discount;
+        if (localTime.isAfter(morningPeakHourStart) && localTime.isBefore(morningPeakHourEnd)){
+            return ticketPrice;
         }
-        if (localTime.isBefore(eveningPeakHourStart) || localTime.isAfter(eveningPeakHourEnd)) {
-            double discount = ticketPrice * 0.05;
-            return ticketPrice - discount;
+        if (localTime.isAfter(eveningPeakHourStart) && localTime.isBefore(eveningPeakHourEnd)){
+            return ticketPrice;
         }
-        return ticketPrice;
+
+        double discount = ticketPrice * 0.05;
+        return ticketPrice - discount;
     }
 
     public Long reserveTicket(TicketDTO ticketDTO) {
@@ -127,4 +127,7 @@ public class TicketService {
         return ticket.getId();
     }
 
+    public void deleteReservation(Long ticketId) {
+        ticketRepository.deleteById(ticketId);
+    }
 }

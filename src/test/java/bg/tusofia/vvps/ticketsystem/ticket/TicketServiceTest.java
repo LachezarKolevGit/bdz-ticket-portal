@@ -120,7 +120,7 @@ class TicketServiceTest {
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");
     }
 
-    private static Stream<Arguments> providePeakHoursRanges() {
+    private static Stream<Arguments> provideOutsidePeakHoursRanges() {
         return Stream.of(
                 Arguments.of(7, 29),
                 Arguments.of(9, 31),
@@ -131,10 +131,28 @@ class TicketServiceTest {
 
     @DisplayName("Test .peakHoursDiscountHandler() method for applied discount at a purchase time outside peak hours")
     @ParameterizedTest()
-    @MethodSource("providePeakHoursRanges")
+    @MethodSource("provideOutsidePeakHoursRanges")
     void testPeakHoursDiscountHandlerAfterMorningPeakHour(int hour, int minutes) {
         double actualTicketPrice = ticketService.peakHoursDiscountHandler(10, LocalTime.of(hour, minutes));
         double expectedTicketPrice = 9.50;
+        assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price regarding peak hours discount");
+    }
+
+    private static Stream<Arguments> providePeakHoursRanges() {
+        return Stream.of(
+                Arguments.of(7, 31),
+                Arguments.of(9, 29),
+                Arguments.of(16, 1),
+                Arguments.of(19, 29)
+        );
+    }
+
+    @DisplayName("Test .peakHoursDiscountHandler() method for purchasing a ticket in peak hours")
+    @ParameterizedTest
+    @MethodSource("providePeakHoursRanges")
+    void testPeakHoursTicketPrice(int hour, int minutes) {
+        double actualTicketPrice = ticketService.peakHoursDiscountHandler(10, LocalTime.of(hour, minutes));
+        double expectedTicketPrice = 10;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price regarding peak hours discount");
     }
 

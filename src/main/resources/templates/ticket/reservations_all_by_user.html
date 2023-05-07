@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Reservations</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Ticket Id</th>
+        <th>Purchased at</th>
+        <th>Price</th>
+        <th>Seat id</th>
+        <th>TrainCarriage Id</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ticket : ${reservedTickets}">
+        <td th:text="${ticket.id}"/>
+        <td th:text="${ticket.purchasedAt}"/>
+        <td th:text="${ticket.price}"/>
+        <td>
+            <div th:each="seat : ${ticket.seat}">
+                <span th:text="${seat.id}"></span>
+                <div th:each="trainCarriage : ${seat.trainCarriage}">
+                    <span th:text="${trainCarriage.id}"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${reservedTickets.totalPages > 0}" class="pagination"
+     th:each="pageNumber :${pageNumbers}">
+    <a th:href="@{/reservations(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==reservedTickets.number + 1} ? active"></a>
+</div>
+</body>
+</html>
