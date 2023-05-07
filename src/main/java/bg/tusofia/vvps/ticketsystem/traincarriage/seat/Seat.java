@@ -29,6 +29,18 @@ public class Seat {
         this.seatState = seatState;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public TrainCarriage getTrainCarriage() {
+        return trainCarriage;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
     public SeatState getSeatState() {
         return seatState;
     }
@@ -37,8 +49,36 @@ public class Seat {
         this.seatState = seatState;
     }
 
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
     @Override
     public String toString() {
         return "Seat{" + ", seatState=" + seatState + '}';
+    }
+
+    public void markSeatAsSold(Ticket ticket) { //add check first if the ticket is not already set
+        if (this.ticket  != null){
+            throw new IllegalArgumentException("Seat is not available");
+        }
+        this.ticket = ticket;
+        this.seatState = SeatState.SOLD;
+        ticket.setSeat(this);
+    }
+
+    public void markSeatAsReserved(Ticket ticket) { //add check first if the ticket is not already set
+        if (this.ticket  != null){
+            throw new IllegalArgumentException("Seat is not available");
+        }
+        this.ticket = ticket;
+        this.seatState = SeatState.RESERVED;
+        ticket.setSeat(this);
+    }
+
+    public void markSeatAsAvailable(Ticket ticket) { //add check first if the ticket is not already set
+        this.ticket = null;
+        this.seatState = SeatState.AVAILABLE;
+        ticket.setSeat(null);
     }
 }

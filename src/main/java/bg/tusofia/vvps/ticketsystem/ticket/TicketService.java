@@ -2,10 +2,14 @@ package bg.tusofia.vvps.ticketsystem.ticket;
 
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -38,15 +42,17 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
-    public Long paymentProcess(Long trainId, Long seatId, int numberOfTickets) {
-        double trainBasePrice = trainService.calculateBasePrice(trainId);
-        double trainCarriageClassMultiplier = trainCarriageService.getTrainCarriageClassPriceMultiplier(seatId);
-        double ticketPrice = calculateFinalPrice(trainBasePrice, trainCarriageClassMultiplier, numberOfTickets);
+    public Long paymentProcess(TicketDTO ticketDTO) {
+        //every db action must be in a transaction
+        double trainBasePrice = trainService.calculateBasePrice(ticketDTO.getTrainId());
+        double trainCarriageClassMultiplier = trainCarriageService.getTrainCarriageClassPriceMultiplier(ticketDTO.getSeatId());
+        double ticketPrice = calculateFinalPrice(trainBasePrice, trainCarriageClassMultiplier, ticketDTO.getNumberOfTickets());
 
-        seatService.markSeatAsSold(seatId);
-
-        Ticket ticket = new Ticket(null, new Timestamp(System.currentTimeMillis()), ticketPrice);
+        Seat seat = seatService.markSeatAsSold(ticketDTO.getSeatId());
+        Ticket ticket = new Ticket(seat,
+                new Timestamp(System.currentTimeMillis()), ticketPrice, ticketDTO.getBuyer());
         ticketRepository.save(ticket);
+
         return ticket.getId();
     }
 
@@ -92,5 +98,33 @@ public class TicketService {
         return ticketPrice;
     }
 
+    public Long reserveTicket(TicketDTO ticketDTO) {
+        Seat seat = seatService.markSeatAsReserved(ticketDTO.getSeatId());
+        Ticket ticket = new Ticket(seat,
+                new Timestamp(System.currentTimeMillis()), ticketDTO.getBuyer());
+        ticketRepository.save(ticket);
+        return ticket.getId();
+    }
+
+    public Page<Ticket> getAllReservations(int page) {
+        int pageSize = 10;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        User currentlyLoggedInUser = userService.getLoggedInUser();
+        return ticketRepository.findAllByTicketStateAndUser
+                (TicketState.RESERVED, currentlyLoggedInUser, pageRequest);
+
+    }
+
+    public Long editReservation(Long ticketId, Long newSeatId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket was not found"));
+        Seat oldSeat = ticket.getSeat();
+        oldSeat.markSeatAsAvailable(ticket);
+        Seat seat = seatService.markSeatAsReserved(newSeatId);
+        ticket.setSeat(seat);
+
+        ticketRepository.save(ticket);
+        return ticket.getId();
+    }
 
 }

@@ -27,7 +27,7 @@ public class User {
 
     private Role role;
 
-    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> boughtTickets = new HashSet<>();
 
     public User() {
@@ -128,12 +128,16 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\''+
+                ", password='" + password + '\'' +
                 ", age=" + age +
                 ", hasFamily=" + married +
                 ", childBirthYear=" + childBirthYear +
                 ", role=" + role +
                 ", boughtTickets=" + boughtTickets +
                 '}';
+    }
+
+    public void addBoughtTicket(Ticket ticket) {
+        boughtTickets.add(ticket);
     }
 }

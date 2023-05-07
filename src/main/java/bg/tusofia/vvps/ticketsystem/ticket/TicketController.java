@@ -1,11 +1,13 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/ticket")
@@ -32,23 +34,56 @@ public class TicketController {
      */
     @PostMapping("/checkout")
     public String purchaseTicket(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
-        Long ticketId = ticketService.paymentProcess(ticketDTO.getTrainId(),
-                ticketDTO.getSeatId(), ticketDTO.getNumberOfTickets());
+        Long ticketId = ticketService.paymentProcess(ticketDTO);
         model.addAttribute("ticketId", ticketId);
         return "ticket/ticket_purchased_successfully";
     }
 
-    @GetMapping("/reserve")
+    @GetMapping("/reservation")
     public String reserveTicketPage(Model model) {
         model.addAttribute("ticket", new TicketDTO());
         return "ticket/reserve_ticket_page";
     }
 
-    @PostMapping("/reserve")
+    @PostMapping("/reservation")
     public String reserveTicket(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
+        Long ticketId = ticketService.reserveTicket(ticketDTO);
+        model.addAttribute("ticketId", ticketId);
+        return "ticket/ticket_reserved_successfully";  //must be a path that we are returning
+    }
+
+    @GetMapping("/reservations")
+    public String getAllReservations(Model model, @RequestParam(name = "page", defaultValue = "0") int page) {
+        Page<Ticket> ticketPage = ticketService.getAllReservations(page);
+        model.addAttribute("reservedTickets", ticketPage);
+
+        int totalPages = ticketPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "ticket/tickets_page";
+    }
+
+    @DeleteMapping("/reservation")
+    public String cancelReservation(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
         /*Long ticketId = ticketService.reserveTicket(ticketDTO.getTrainId(),
                 ticketDTO.getSeatId(), ticketDTO.getNumberOfTickets());
         model.addAttribute("ticketId", ticketId);*/
         return "ticket/ticket_purchased_successfully";  //must be a path that we are returning
     }
+
+    @PostMapping("/reservation/{id}")
+    public String editReservation(Model model,
+                                  @PathVariable(name = "id") String ticketId,
+                                  @RequestParam(name = "seatId") Long newSeatId) {
+        Long editedTicketId = ticketService.editReservation(Long.valueOf(ticketId), newSeatId);
+        model.addAttribute("ticketId", editedTicketId);
+        return "ticket/ticket_reservation_edit_successfully";
+    }
+
+
 }

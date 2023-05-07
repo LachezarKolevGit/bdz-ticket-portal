@@ -1,9 +1,13 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import bg.tusofia.vvps.ticketsystem.user.User;
+
 public class TicketDTO {
     private Long trainId;
     private Long seatId;
     private int numberOfTickets;
+
+    private User buyer;
 
     public TicketDTO() {
     }
@@ -37,4 +41,10 @@ public class TicketDTO {
     public void setNumberOfTickets(int numberOfTickets) {
         this.numberOfTickets = numberOfTickets;
     }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+
 }

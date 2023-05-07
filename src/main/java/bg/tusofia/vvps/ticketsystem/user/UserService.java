@@ -1,6 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.user;
 
 import bg.tusofia.vvps.ticketsystem.security.AuthenticationFacade;
+import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -62,6 +63,11 @@ public class UserService {
     }
 
     public void changePassword() {
+
+    }
+
+    public void addBoughtTicket(Ticket ticket, User user){
+        user.addBoughtTicket(ticket);
 
     }
 }

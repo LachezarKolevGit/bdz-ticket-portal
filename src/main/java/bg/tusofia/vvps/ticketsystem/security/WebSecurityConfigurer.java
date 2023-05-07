@@ -8,7 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -31,25 +32,33 @@ public class WebSecurityConfigurer {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName(null);
+
         http
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/", "/user/register", "/user/login",
                                         "/user/login/admin").permitAll()
                                 .requestMatchers("/user/register/admin", "/user/add",
-                                         "/user/add", "/user/edit", "user/getUser/*"
+                                          "/user/edit", "user/getUser/*"
                                 ).hasRole("ADMINISTRATOR")
+                                .requestMatchers("/user/profile",
+                                        "/user/edit"
+                                ).hasRole("CLIENT")
                                 .anyRequest().authenticated()
                 )
+                .requestCache((cache) -> cache.requestCache(requestCache))
                 .formLogin(form -> form.loginPage("/user/login")
                                 .loginProcessingUrl("/user/login")
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/user/profile")
                                 .failureUrl("/user/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/user/logout")
-                        .logoutSuccessUrl("/")
+                        .permitAll()
+                        .logoutSuccessUrl("/user/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)

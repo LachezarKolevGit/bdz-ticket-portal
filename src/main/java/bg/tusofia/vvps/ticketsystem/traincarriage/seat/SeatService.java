@@ -12,18 +12,29 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    public void markSeatAsSold(Long seatId) {
+    public Seat markSeatAsSold(Long seatId) {
         Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat was not found"));
         seat.setSeatState(SeatState.SOLD);
         seatRepository.save(seat);
+        return seat;
     }
 
-    public void markSeatAsReserved(Long seatId) {
+    public Seat markSeatAsReserved(Long seatId) {
         Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat was not found"));
         seat.setSeatState(SeatState.RESERVED);
         seatRepository.save(seat);
+
+        return seat;
     }
 
+    public Seat markSeatAsAvailable(Long seatId) {
+        Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat was not found"));
+        seat.setSeatState(SeatState.AVAILABLE);
+        seatRepository.save(seat);
+
+        return seat;
+    }
 }

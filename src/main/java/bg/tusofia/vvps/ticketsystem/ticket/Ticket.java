@@ -19,16 +19,29 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     private Timestamp purchasedAt;
+
     private double price;
+
+    @Enumerated  //check if it is correct
+    private TicketState ticketState;
+
 
     public Ticket() {
     }
 
-    public Ticket(Seat seat, Timestamp purchasedAt, double price) {
+    public Ticket(Seat seat, Timestamp purchasedAt, User user) {
+        this.seat = seat;
+        this.purchasedAt = purchasedAt;
+        this.user = user;
+    }
+
+    public Ticket(Seat seat, Timestamp purchasedAt, double price, User user) {
         this.seat = seat;
         this.purchasedAt = purchasedAt;
         this.price = price;
+        this.user = user;
     }
 
     public Long getId() {
@@ -62,4 +75,16 @@ public class Ticket {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
+    public void sellTicket(User user, Seat seat) {
+        this.user = user;
+        user.addBoughtTicket(this);
+        this.seat = seat;
+        seat.markSeatAsSold(this);
+    }
+
 }

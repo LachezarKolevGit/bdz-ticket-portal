@@ -41,7 +41,6 @@ public class UserController {
         if (error != null) {
             model.addObject("error", "Invalid Credentials provided.");
         }
-
         return "user/user_login";
     }
 
@@ -59,6 +58,7 @@ public class UserController {
         return "admin/admin_registered_successfully";
     }
 
+    //give it some thought for regarding admin
     @GetMapping("/add")
     public String addUserPage(Model model) {
         User user = new User();
@@ -72,14 +72,19 @@ public class UserController {
         return "user/user_registered_successfully";
     }
 
-    @GetMapping("/edit")
-    public String editUserProfilePage(@ModelAttribute(name = "user") User user, Model model) {
-        System.out.println(user);
-        model.addAttribute("user", user);
-        return "user/user_edit_details"; //change
+    @GetMapping("/profile/{userId}")
+    public String getUserProfile(Model model, @PathVariable(name = "userId") String userId) {
+        model.addAttribute("user", userService.findUserById(userId));
+        return "user/user_details";
     }
 
-    @PostMapping("/edit")
+    @GetMapping("/profile")
+    public String getUserProfile(Model model) {
+        model.addAttribute("user", userService.getLoggedInUser());
+        return "user/user_details";
+    }
+
+    @PostMapping("/profile")
     public String editUserProfile(@ModelAttribute(name = "user") User user, Model model) {
         System.out.println("User in edit " + user);
         user = userService.editProfile(user);
@@ -87,25 +92,13 @@ public class UserController {
         return "user/user_details";
     }
 
-    /* @PostMapping("/edit/save")
-     public String saveChangesToUserProfile(@ModelAttribute(name = "user") User user, Model model) {
-         model.addAttribute("user", userService.editProfile(user));
-         return "user/user_details";
-     }
- */
-    @GetMapping("/profile/{userId}")
-    public String getUserProfile(Model model, @PathVariable(name = "userId") String userId) {
-        model.addAttribute("user", userService.findUserById(userId));
-
-        return "user/user_details";
+   /* @GetMapping("/edit")
+    public String editUserProfilePage(@ModelAttribute(name = "user") User user, Model model) {
+        System.out.println(user);
+        model.addAttribute("user", user);
+        return "user/user_edit_details"; //change
     }
-
-    @GetMapping("/profile")
-    public String getUserProfile(Model model) {
-        model.addAttribute("user", userService.getLoggedInUser());
-
-        return "user/user_details";
-    }
+*/
 
 
 }

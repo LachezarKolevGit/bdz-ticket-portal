@@ -14,7 +14,7 @@ public interface TrainRepository extends PagingAndSortingRepository<Train, Long>
 
     @Query(value = "SELECT * FROM train WHERE train.route_id = (SELECT id FROM route WHERE route.id = (SELECT route_id FROM train_station WHERE train_station.name = :destination ORDER BY train_stations_order DESC LIMIT 1)) AND train.departing_at = :departureDateTime",
             nativeQuery = true)
-    List<Train> getTrainsByDestinationAndDateTime(@Param("destination") String destination, @Param("departureDateTime") LocalDateTime departureDateTime);
+    public List<Train> getTrainsByDestinationAndDateTime(@Param("destination") String destination, @Param("departureDateTime") LocalDateTime departureDateTime);
 
 
 }

@@ -35,8 +35,7 @@
 
 <h3>Edit user details below</h3>
 
-<form method="post" role="form" th:action="@{/user/edit}" th:object="${user}">
-    <!- Send the user object to the edit url, so the data can be visualized-->
+<form method="post" role="form" th:action="@{/user/profile}" th:object="${user}">
     <div class="form-group">
         <label>Id</label>
         <input
@@ -100,9 +99,8 @@
                     th:value="${roleOpt}" th:text="${roleOpt}"></option>
         </select>
     </div>
-
-
     <button type="submit" class="btn btn-black">Edit user details</button>
+    <button th:formmethod="post" th:formaction="@{/user/logout}" type="submit" class="btn btn-black">Logout</button>
 </form>
 </body>
 </html>
