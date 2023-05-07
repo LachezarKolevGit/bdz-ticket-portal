@@ -24,6 +24,7 @@ public class UserDetailsConfig implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with that email was not found"));
         SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRole().name());
+        System.out.println(role);
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(role);
 

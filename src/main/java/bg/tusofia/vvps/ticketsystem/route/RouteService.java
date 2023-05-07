@@ -35,7 +35,7 @@ public class RouteService {
 
     public Long createNewRoute(RouteDTO routeDTO) {
         if (routeDTO == null) {
-            throw new IllegalArgumentException("Route can't be null");
+            throw new IllegalArgumentException("Route can't be null");  //change with @NotNull
         }
         Route route = new Route(routeDTO.trainStations(), routeDTO.trains());
         routeRepository.save(route);

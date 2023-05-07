@@ -25,7 +25,7 @@ public class UserService {
 
     public void registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.CLIENT);
+        user.setRole(Role.ROLE_CLIENT);
 
         userRepository.save(user);
     }
@@ -43,7 +43,7 @@ public class UserService {
         admin.setFirstName(userDTO.getFirstName());
         admin.setLastName(userDTO.getLastName());
         admin.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        admin.setRole(Role.ADMINISTRATOR);
+        admin.setRole(Role.ROLE_ADMINISTRATOR);
 
         userRepository.save(admin);
     }

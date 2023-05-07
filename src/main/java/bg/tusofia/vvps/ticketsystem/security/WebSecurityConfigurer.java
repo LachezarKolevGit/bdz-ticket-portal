@@ -1,5 +1,6 @@
 package bg.tusofia.vvps.ticketsystem.security;
 
+import bg.tusofia.vvps.ticketsystem.user.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,21 +39,25 @@ public class WebSecurityConfigurer {
 
         http
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/", "/user/register", "/user/login",
-                                        "/user/login/admin").permitAll()
-                                .requestMatchers("/user/register/admin", "/user/add",
-                                          "/user/edit", "user/getUser/*"
-                                ).hasRole("ADMINISTRATOR")
-                                .requestMatchers("/user/profile",
-                                        "/user/edit"
-                                ).hasRole("CLIENT")
-                                .anyRequest().authenticated()
+                        request.requestMatchers("/", "/user/register", "/user/login")
+                                .permitAll())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/user/profile", "/user/edit")
+                                .authenticated()
+                )
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/user/register/admin", "/user/add",
+                                "/user/profile/**"
+                        ).hasRole(Role.ROLE_ADMINISTRATOR.name()))
+
+                .authorizeHttpRequests(request -> request
+                        .anyRequest().authenticated()
                 )
                 .requestCache((cache) -> cache.requestCache(requestCache))
                 .formLogin(form -> form.loginPage("/user/login")
-                                .loginProcessingUrl("/user/login")
-                                .defaultSuccessUrl("/user/profile")
-                                .failureUrl("/user/login?error=true")
+                        .loginProcessingUrl("/user/login")
+                        .defaultSuccessUrl("/user/profile")
+                        .failureUrl("/user/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

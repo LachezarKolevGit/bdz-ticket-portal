@@ -80,7 +80,9 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getUserProfile(Model model) {
-        model.addAttribute("user", userService.getLoggedInUser());
+        User user = userService.getLoggedInUser();
+        System.out.println(user);
+        model.addAttribute("user", user);
         return "user/user_details";
     }
 

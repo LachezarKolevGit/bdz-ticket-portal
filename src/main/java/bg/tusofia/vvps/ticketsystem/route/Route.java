@@ -24,12 +24,10 @@ public class Route {
     public Route(List<TrainStation> trainStations, Set<Train> trains) {
         if (trainStations != null) {
             for (TrainStation trainStation : trainStations) {
-                System.out.println("Editing rotue");
                 trainStation.setRoute(this);
                 this.trainStations = trainStations;
             }
-        } // data integrity missing
-
+        }
         if (trains != null) {
             for (Train train : trains) {
                 train.setRoute(this);

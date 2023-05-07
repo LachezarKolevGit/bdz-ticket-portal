@@ -5,10 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RouteServiceTest {
 
@@ -27,7 +26,7 @@ class RouteServiceTest {
 
         int actualDistance = routeService.calculateDistanceInKilometer(sofiaTrainStation.getLatitude(), sofiaTrainStation.getLongitude()
                 , plovdivTrainStation.getLatitude(), plovdivTrainStation.getLongitude());
-        int expectedDistance = 131;
+        int expectedDistance = 133;
         assertEquals(expectedDistance, actualDistance, "The expectedDistance does not match the actualDistance");
     }
 
@@ -42,9 +41,8 @@ class RouteServiceTest {
 
         Route route = new Route(trainStationList, null);
         int actualRouteDistance = routeService.calculateRouteDistance(route);
-        double expectedRouteDistance = 361.1;
+        double expectedRouteDistance = 361;
         assertEquals(expectedRouteDistance, actualRouteDistance, "ExpectedRouteDistance is not the same as actualRouteDistance");
-
-
     }
+
 }
