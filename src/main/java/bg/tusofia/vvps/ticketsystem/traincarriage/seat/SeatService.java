@@ -1,5 +1,6 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
 
+import bg.tusofia.vvps.ticketsystem.train.Train;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,11 @@ public class SeatService {
 
     public SeatService(SeatRepository seatRepository) {
         this.seatRepository = seatRepository;
+    }
+
+    public Train findTrainBySeatId(Long seatId){
+       return seatRepository.findTrainBySeatId(seatId)
+               .orElseThrow(() -> new EntityNotFoundException("Train was not found by the provided seat id"));
     }
 
     public Seat markSeatAsSold(Long seatId) {

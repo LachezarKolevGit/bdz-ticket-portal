@@ -3,6 +3,7 @@ package bg.tusofia.vvps.ticketsystem.security;
 import bg.tusofia.vvps.ticketsystem.user.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,16 +41,21 @@ public class WebSecurityConfigurer {
         http
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/", "/user/register", "/user/login")
-                                .permitAll())
+                                .permitAll()
+                )
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/user/profile", "/user/edit")
                                 .authenticated()
                 )
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/user/register/admin", "/user/add",
-                                "/user/profile/**"
-                        ).hasRole(Role.ROLE_ADMINISTRATOR.name()))
-
+                                "/user/profile/**")
+                                .hasRole(Role.ROLE_ADMINISTRATOR.name())
+                )
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.POST, "/route")
+                        .hasRole(Role.ROLE_ADMINISTRATOR.name())
+                )
                 .authorizeHttpRequests(request -> request
                         .anyRequest().authenticated()
                 )

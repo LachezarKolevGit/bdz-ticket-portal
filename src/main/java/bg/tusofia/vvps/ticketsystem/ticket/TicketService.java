@@ -1,5 +1,6 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
@@ -43,8 +44,9 @@ public class TicketService {
     }
 
     public Long paymentProcess(TicketDTO ticketDTO) {
+        Train train = seatService.findTrainBySeatId(ticketDTO.getSeatId());
         //every db action must be in a transaction
-        double trainBasePrice = trainService.calculateBasePrice(ticketDTO.getTrainId());
+        double trainBasePrice = trainService.calculateBasePrice(train.getId());
         double trainCarriageClassMultiplier = trainCarriageService.getTrainCarriageClassPriceMultiplier(ticketDTO.getSeatId());
         double ticketPrice = calculateFinalPrice(trainBasePrice, trainCarriageClassMultiplier, ticketDTO.getNumberOfTickets());
 
@@ -62,19 +64,18 @@ public class TicketService {
     public double calculateFinalPrice(double trainBasePrice, double trainCarriageClassMultiplier, int numberOfTickets) {
         double ticketPrice = trainBasePrice * trainCarriageClassMultiplier;
         double appliedDiscount = userDiscountPriceHandler(ticketPrice);
-        if (appliedDiscount != 0) { //doesnt work
-            peakHoursDiscountHandler(ticketPrice, LocalTime.now());
+        if (appliedDiscount == ticketPrice) {
+            return peakHoursDiscountHandler(ticketPrice, LocalTime.now());
         }
 
-        return ticketPrice * numberOfTickets;
+        return appliedDiscount * numberOfTickets;
     }
 
     public double userDiscountPriceHandler(double ticketPrice) {
         User user = userService.getLoggedInUser();
-
         if (user.getChildBirthYear() != null) { //refactor then nested if statements
-            if (LocalDate.now().getYear() - user.getChildBirthYear().getYear() < 16) {
-                return ticketPrice * 2 * 50 / 100;
+            if ((LocalDate.now().getYear() - user.getChildBirthYear().getYear()) < 16) {
+                return ticketPrice * 50 / 100;
             }
         }
         if (user.getAge() > 60) {
@@ -87,10 +88,10 @@ public class TicketService {
     }
 
     public double peakHoursDiscountHandler(double ticketPrice, LocalTime localTime) {
-        if (localTime.isAfter(morningPeakHourStart) && localTime.isBefore(morningPeakHourEnd)){
+        if (localTime.isAfter(morningPeakHourStart) && localTime.isBefore(morningPeakHourEnd)) {
             return ticketPrice;
         }
-        if (localTime.isAfter(eveningPeakHourStart) && localTime.isBefore(eveningPeakHourEnd)){
+        if (localTime.isAfter(eveningPeakHourStart) && localTime.isBefore(eveningPeakHourEnd)) {
             return ticketPrice;
         }
 

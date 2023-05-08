@@ -1,9 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
-import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
@@ -26,9 +24,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TicketServiceTest {
-
-    public final static double DIESEL_PRICE = 2.80;
-
     private TicketService ticketService;
     @Mock
     private UserService userService;
@@ -47,34 +42,16 @@ class TicketServiceTest {
         ticketService = new TicketService(userService, trainService, seatService, trainCarriageService, ticketRepository);
     }
 
-    @DisplayName("Test .calculatePrice() method")
+    @DisplayName("Test .calculatePrice() method for applying highest discount")
     @Test
-    void testCalculatePrice() {
-        Train train = new Train();
-        Long trainCarriageId = 1L;
-        Long seatId = 1L;
+    void testCalculatePriceForHighestDiscountCondition() {
         int numberOfTickets = 1;
+        when(userService.getLoggedInUser()).thenReturn(new User("Gosho", "Goshev", 65, true, LocalDate.of(2010, 10, 1)));
 
-       /* TrainStation sofiaTrainStation = new TrainStation("Sofia Central station", 42.712115, 23.321046);
-        TrainStation plovdivTrainStation = new TrainStation("Plovdiv Central railway station", 42.134444, 24.741389);
-        TrainStation burgasTrainStation = new TrainStation("Burgas Central railway station", 42.490833, 27.4725);
-        List<TrainStation> trainStationList = List.of(sofiaTrainStation, plovdivTrainStation, burgasTrainStation);
-*/
-
-       /* Route route = new Route(trainStationList, null);
-        //TrainCarriage trainCarriage = new TrainCarriage();
-        //Train train = new Train(CarriageType.CLASS_A, );
-        RouteService routeService = new RouteService(null);*/
-
-        // when(routeService.calculateRouteDistance(route)).thenReturn(361);
-        when(trainService.calculateBasePrice(train.getId())).thenReturn(6.0);
-        when(trainCarriageService.getTrainCarriageClassPriceMultiplier(trainCarriageId)).thenReturn(TrainCarriageType.CLASS_B.getMultiplier());
-        when(userService.getLoggedInUser()).thenReturn(new User("Gosho", "Goshev", 50, false, null));
-
-        double trainBasePrice = 6.0;
+        double trainBasePrice = 10.0;
         double trainCarriageIdClassMultiplier = 1;
         double actualPrice = ticketService.calculateFinalPrice(trainBasePrice, trainCarriageIdClassMultiplier, numberOfTickets);
-        double expectedPrice = 6;
+        double expectedPrice = 5;
         assertEquals(expectedPrice, actualPrice, "ExpectedPrice does not match the actualPrice");
     }
 
@@ -112,11 +89,11 @@ class TicketServiceTest {
 
     @DisplayName("Test .userDiscountPriceHandler() method for having a kid below 16 ticket discount")
     @Test
-    void testUserDiscountPriceHandlerForKidBelow16Discount() { //50 % discount for one ticket
+    void testUserDiscountPriceHandlerForKidBelow16Discount() { //50% discount
         User client = new User("Georgi", "Goshev", 45, true, LocalDate.of(2010, 1, 1));
         when(userService.getLoggedInUser()).thenReturn(client);
         double actualTicketPrice = ticketService.userDiscountPriceHandler(10);
-        double expectedTicketPrice = 10;
+        double expectedTicketPrice = 5;
         assertEquals(expectedTicketPrice, actualTicketPrice, "Expected ticket price does not match actual ticket price for elderly user");
     }
 

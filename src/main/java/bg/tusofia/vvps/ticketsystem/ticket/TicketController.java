@@ -25,13 +25,6 @@ public class TicketController {
         return "ticket/ticket_checkout_page";
     }
 
-    /**
-     * Currently the system allows only one ticket per checkout request, work on that
-     *
-     * @param model
-     * @param ticketDTO
-     * @return
-     */
     @PostMapping("/checkout")
     public String purchaseTicket(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
         Long ticketId = ticketService.paymentProcess(ticketDTO);

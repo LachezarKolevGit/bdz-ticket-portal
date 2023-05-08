@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class RouteIntegrationTest {
+public class RouteAndPersistenceLayerIntegrationTest {
 
     @Autowired
     private RouteRepository routeRepository;

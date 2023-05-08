@@ -19,7 +19,7 @@ public class RouteController {
     }
 
     @GetMapping("/routes")
-    public String getRoutes(Model model, @RequestParam(name = "page") int page) {
+    public String getRoutes(Model model, @RequestParam(name = "page", defaultValue = "0") int page) {
         Page<Route> routePage = routeService.getRoutes(page);
         model.addAttribute("routePage", routePage);
 
@@ -34,7 +34,7 @@ public class RouteController {
         return "route/routes";
     }
 
-    @GetMapping("/routes/{id}")
+    @GetMapping("/route/{id}")
     public String getRoute(Model model, @PathVariable(name = "id") String id) {
         Route route = routeService.getRoute(Long.valueOf(id));
         model.addAttribute("route", route);
@@ -42,12 +42,19 @@ public class RouteController {
         return "route/route_train_stations";
     }
 
-    @PostMapping("/routes")
-    public String createRoutes(Model model, @RequestBody RouteDTO routeDTO) {
+    @GetMapping("/route")
+    public String createRoute(Model model) {
+        RouteDTO routeDTO = new RouteDTO(null, null);
+        model.addAttribute("route", routeDTO);
+        return "route/route_upload_page";
+    }
+
+    @PostMapping("/route")
+    public String createRoutes(Model model, @ModelAttribute RouteDTO routeDTO) {
         Long newRouteId = routeService.createNewRoute(routeDTO);
         model.addAttribute("newRouteId", newRouteId);
 
-        return "route/successful_creation_route";
+        return "route/route_created_successfully";
     }
 
 

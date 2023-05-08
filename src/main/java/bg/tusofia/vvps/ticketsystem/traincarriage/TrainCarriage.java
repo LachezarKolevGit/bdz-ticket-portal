@@ -37,7 +37,6 @@ public class TrainCarriage {
         this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE))
                 .limit(totalSeats)
                 .collect(Collectors.toList());
-        System.out.println("Seats in copnstr : " + seats);
     }
 
     public Long getId() {
