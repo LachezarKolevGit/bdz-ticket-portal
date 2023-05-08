@@ -29,7 +29,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user) {
-        System.out.println("Submitted user is" + user);
         userService.registerUser(user);
         return "user/user_registered_successfully";
     }
@@ -81,14 +80,12 @@ public class UserController {
     @GetMapping("/profile")
     public String getUserProfile(Model model) {
         User user = userService.getLoggedInUser();
-        System.out.println(user);
         model.addAttribute("user", user);
         return "user/user_details";
     }
 
     @PostMapping("/profile")
     public String editUserProfile(@ModelAttribute(name = "user") User user, Model model) {
-        System.out.println("User in edit " + user);
         user = userService.editProfile(user);
         model.addAttribute("user", user);
         return "user/user_details";
@@ -96,7 +93,7 @@ public class UserController {
 
    /* @GetMapping("/edit")
     public String editUserProfilePage(@ModelAttribute(name = "user") User user, Model model) {
-        System.out.println(user);
+        (user);
         model.addAttribute("user", user);
         return "user/user_edit_details"; //change
     }

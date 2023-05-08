@@ -20,24 +20,20 @@ public class TrainCarriageController {
 
     @GetMapping("/train-carriages/seat/{id}")
     public Seat getSeat(@PathVariable(name = "id") String id) {
-
-        System.out.println("seat is" + trainCarriageService.getSeat(id));
         return null;
     }
 
     @GetMapping("/train-carriages/{id}")
     public String getTrainCarriage(Model model, @PathVariable(name = "id") String id) {
         TrainCarriage trainCarriage = trainCarriageService.getTrainCarriage(id);
-        System.out.println("TrainCarraige is : " + trainCarriage);
         model.addAttribute("trainCarriage", trainCarriage);
-        // System.out.println(trainCarriage.getSeats());
+        // (trainCarriage.getSeats());
         return "train_carriage/train_carriage";
     }
 
     @GetMapping("/train-carriages")
     public String getTrains(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
         Page<TrainCarriage> trainCarriagePage = trainCarriageService.getAllTrainCarriages(page);
-        System.out.println(trainCarriagePage.getContent());
         model.addAttribute("trainCarriagePage", trainCarriagePage);
 
         int totalPages = trainCarriagePage.getTotalPages();
@@ -56,7 +52,6 @@ public class TrainCarriageController {
         if (trainCarriageDTO == null) {
             throw new IllegalArgumentException("Train can't be null");
         }
-        System.out.println(trainCarriageDTO);
         Long newTrainCarriageId = trainCarriageService.saveNewTrainCarriage(trainCarriageDTO);
 
         model.addAttribute("newTrainCarriageId", newTrainCarriageId);

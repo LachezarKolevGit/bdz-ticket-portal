@@ -24,10 +24,8 @@ public class TrainStationService {
         if (trainStation == null) {
             throw new IllegalArgumentException("Train Station can't be null");
         }
-        System.out.println(trainStation);
         TrainStation newTrainStation = new TrainStation(trainStation.name(), trainStation.latitude(), trainStation.longitude());
         trainStationRepository.save(newTrainStation);
-        System.out.println("Successful save");
         return newTrainStation.getId();
     }
 }

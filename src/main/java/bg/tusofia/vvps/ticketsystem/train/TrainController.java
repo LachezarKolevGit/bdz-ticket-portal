@@ -24,7 +24,6 @@ public class TrainController {
     @GetMapping("/trains")
     public String getTrains(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
         Page<Train> trainPage = trainService.getAllTrains(page);
-        System.out.println(trainPage.getContent());
         model.addAttribute("trainPage", trainPage);
 
 
@@ -44,7 +43,6 @@ public class TrainController {
         if (trainDTO == null) {
             throw new IllegalArgumentException("Train can't be null");
         }
-        System.out.println(trainDTO);
         Long newTrainId = trainService.createTrain(trainDTO);
 
         model.addAttribute("newTrainId", newTrainId);

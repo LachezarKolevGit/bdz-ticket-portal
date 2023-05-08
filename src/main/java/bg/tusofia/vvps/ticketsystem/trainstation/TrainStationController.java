@@ -25,7 +25,6 @@ public class TrainStationController {
     @GetMapping("/train-stops")
     public String getAllTrainStations(Model model, @RequestParam("page") int page) {
         Page<TrainStation> trainStationsPage = trainStationService.getAllTrainStations(page);
-        System.out.println(trainStationsPage.getContent());
         model.addAttribute("trainStationsPage", trainStationsPage);
         //trainStationsPage.getContent()
 

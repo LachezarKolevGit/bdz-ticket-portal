@@ -14,11 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -98,7 +99,54 @@ public class TicketIntegrationTest {
                 () -> assertTrue(currentlyLoggedInUser.getBoughtTickets().contains(ticket),
                         "The bought ticket is missing from the user's account")
         );
+    }
 
+    @Test
+    void testDeleteReservation() throws Exception {
+        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
+        this.mockMvc.perform(post("/reservation")
+                        .with(user("client").roles("CLIENT"))
+                        .param("seatId", ticketDTO.getSeatId().toString())
+                        .param("numberOfTickets", String.valueOf(ticketDTO.getNumberOfTickets()))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ticket/reservation_deleted_successfully"))
+                .andExpect(model().attributeExists("ticketId"));
+
+        this.mockMvc.perform(delete("/reservation/" + model().toString())
+                        .with(user("client").roles("CLIENT"))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ticket/reservation_deleted_successfully"));
+
+            Set<Ticket> ticketList = userService.getLoggedInUser().getBoughtTickets();
+            assertTrue(ticketList.contains(model().toString()), "Reserved ticket is present in the list after deletion");
+    }
+
+    @Test
+    void testEditReservation() throws Exception {
+        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
+        int ticketId = 10;
+        int newSeatId = 50;
+        this.mockMvc.perform(post("/reservation/" + ticketId)
+                        .with(user("client").roles("CLIENT"))
+                        .param("seatId", String.valueOf(newSeatId))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ticket/ticket_reservation_edit_successfully"))
+                .andExpect(model().attributeExists("ticketId"));
+
+        Seat seat = seatRepository.findById((long) ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat with that id was not found"));
+        Seat newSeat = seatRepository.findById((long) newSeatId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat with that id was not found"));
+
+        assertAll(
+                () -> assertEquals(seat.getSeatState(), SeatState.AVAILABLE,
+                        "The old seat is expected to be set to AVAILABLE, but its not"),
+                () -> assertEquals(newSeat.getSeatState(), SeatState.RESERVED,
+                        "The new seat is expected to be set to RESERVED, but its not")
+        );
     }
 
 }

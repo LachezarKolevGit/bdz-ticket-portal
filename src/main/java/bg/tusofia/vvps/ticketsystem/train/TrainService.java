@@ -33,11 +33,8 @@ public class TrainService {
     }
 
     public List<Train> getTrainByArrivalStationAndDepartureTime(String destination, LocalDateTime departureDateTime) {
-        List<Train> trainList = trainRepository.getTrainsByDestinationAndDateTime(destination, departureDateTime);
-        System.out.println(trainList);
-        return trainList;
+        return trainRepository.getTrainsByDestinationAndDateTime(destination, departureDateTime);
     }
-
 
     public Page<Train> getAllTrains(int page) {
         int pageSize = 10;
@@ -51,8 +48,8 @@ public class TrainService {
             throw new EntityNotFoundException();
         }
         Train train = optionalTrain.get();
-        Route route = train.getRoute();
-        int distance = routeService.calculateRouteDistance(route);
+        Route routeId = train.getRoute();
+        int distance = routeService.calculateRouteDistance(routeId);
         double priceOfFuel = distance * DIESEL_PRICE;
         int totalSeats = 0;
         Set<TrainCarriage> trainCarriageSet = train.getFormedByTrainCarriages();
@@ -67,7 +64,6 @@ public class TrainService {
             throw new IllegalArgumentException("Train can't be null");
         }
         Train train = new Train(trainDTO.formedByTrainCarriages(), trainDTO.departingAt(), trainDTO.arrivingAt());
-        System.out.println("Formed by : " + trainDTO.formedByTrainCarriages());
         trainRepository.save(train);
         return train.getId();
     }

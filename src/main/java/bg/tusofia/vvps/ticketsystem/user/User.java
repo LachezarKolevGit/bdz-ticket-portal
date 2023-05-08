@@ -4,6 +4,7 @@ import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -114,7 +115,7 @@ public class User {
     }
 
     public Set<Ticket> getBoughtTickets() {
-        return boughtTickets;
+        return Collections.unmodifiableSet(boughtTickets);
     }
 
     public void setBoughtTickets(Set<Ticket> boughtTickets) {
@@ -140,4 +141,10 @@ public class User {
     public void addBoughtTicket(Ticket ticket) {
         boughtTickets.add(ticket);
     }
+
+    public void deleteTicket(Ticket ticket){
+        boughtTickets.remove(ticket);
+    }
+
+
 }

@@ -55,7 +55,6 @@ public class RouteService {
     }
 
     public int calculateDistanceInKilometer(double userLat, double userLng, double venueLat, double venueLng) {
-
         double latDistance = Math.toRadians(userLat - venueLat);
         double lngDistance = Math.toRadians(userLng - venueLng);
 

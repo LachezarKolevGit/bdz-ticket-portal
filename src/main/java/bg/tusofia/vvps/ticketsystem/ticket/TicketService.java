@@ -9,6 +9,7 @@ import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -129,6 +130,13 @@ public class TicketService {
     }
 
     public void deleteReservation(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket was not found"));
+
+        if (!ticket.getUser().equals(userService.getLoggedInUser())) {
+            throw new PermissionDeniedDataAccessException("You can't delete a ticket which is not bought by you", new Throwable());
+        }
+        ticket.deleteTicket();
         ticketRepository.deleteById(ticketId);
     }
 }

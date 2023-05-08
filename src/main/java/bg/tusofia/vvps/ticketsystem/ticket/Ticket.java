@@ -87,4 +87,9 @@ public class Ticket {
         seat.markSeatAsSold(this);
     }
 
+    public void deleteTicket(){
+        this.seat.markSeatAsAvailable(this);
+        this.user.deleteTicket(this);
+    }
+
 }

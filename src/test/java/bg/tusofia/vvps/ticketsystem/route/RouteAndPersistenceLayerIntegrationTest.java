@@ -85,7 +85,6 @@ public class RouteAndPersistenceLayerIntegrationTest {
 
         RouteDTO routeDTO = new RouteDTO(trainStationList, Set.of(train));
         Long routeId = routeService.createNewRoute(routeDTO);
-        System.out.println("rotue id " + routeId);
 
         Route actualRoute = routeService.getRoute(routeId);
         assertEquals(Set.of(train), actualRoute.getTrains(),

@@ -1,14 +1,5 @@
 ## Java coding conventions for the project
 
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-
-
 ### 1.Структура на класа : 
 1. Пакети
 2. Включени библиотеки
@@ -69,9 +60,10 @@
   try {
     doSomething();
   } catch (Exception e) {}
+  
 ~~~
 
-Maximum Column limit is 100, which means that the max number of characters on a row mustn't exceed 100 characters. There are some exceptions like :
+Максималният лимит на символи на един ред е 100. Има някои изключения, като:
  - вмъквания на библиотеки
  - URL адреси за връзка в приложението
  - Много дълги имена на променливи, при които нямаме друг избор
