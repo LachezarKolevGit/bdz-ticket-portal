@@ -32,13 +32,13 @@ public class TicketController {
         return "ticket/ticket_purchased_successfully";
     }
 
-    @GetMapping("/reservation")
+    @GetMapping("/reserve")
     public String reserveTicketPage(Model model) {
         model.addAttribute("ticket", new TicketDTO());
         return "ticket/reserve_ticket_page";
     }
 
-    @PostMapping("/reservation")
+    @PostMapping("/reserve")
     public String reserveTicket(Model model, @ModelAttribute("ticket") TicketDTO ticketDTO) {
         Long ticketId = ticketService.reserveTicket(ticketDTO);
         model.addAttribute("ticketId", ticketId);

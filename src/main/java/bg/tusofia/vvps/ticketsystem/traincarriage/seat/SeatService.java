@@ -13,9 +13,9 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    public Train findTrainBySeatId(Long seatId){
-       return seatRepository.findTrainBySeatId(seatId)
-               .orElseThrow(() -> new EntityNotFoundException("Train was not found by the provided seat id"));
+    public Train findTrainBySeatId(Long seatId) {
+        return seatRepository.findTrainBySeatId(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Train was not found by the provided seat id"));
     }
 
     public Seat markSeatAsSold(Long seatId) {
@@ -42,5 +42,10 @@ public class SeatService {
         seatRepository.save(seat);
 
         return seat;
+    }
+
+    public Seat getSeatById(Long seatId) {
+        return seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat with that id was not found"));
     }
 }

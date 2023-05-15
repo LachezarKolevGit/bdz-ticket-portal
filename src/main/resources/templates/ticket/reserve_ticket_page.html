@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head
+        xmlns:th="http://thymeleaf.org"
+>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Reserve a ticket</title>
 </head>
 <body>
+<header></header>
+<main>
+        <div th:if="${param.fail}" class="alert alert-success">
+          Error
+        </div>
+        <div class="ticket-reserve-form">
+            <form method="post" role="form" th:action="@{/ticket/reserve}" th:object="${ticket}">
+                <div class="form-group">
+                    <label>Seat Id</label>
+                    <input
+                            type="number"
+                            class="form-control"
+                            placeholder="seat id"
+                            th:field="*{seatId}">
+                </div>
+                <p th:if="${#fields.hasErrors('seatId')}" class="text-danger"></p>
+                <div class="form-group">
+                    <label>How many tickets would you like to purchase</label>
+                    <input
+                            type="number"
+                            class="form-control"
+                            placeholder="number of tickets"
+                            th:field="*{numberOfTickets}">
+                </div>
+                <p th:if="${#fields.hasErrors('numberOfTickets')}" class="text-danger"></p>
+                <button th:formmethod="get" th:formaction="@{/trains}" type="submit" class="btn btn-black">See available trains</button>
+                <button th:href="@{/ticket/reserve}" type="submit" class="btn btn-secondary">Reserve ticket</button>
+            </form>
+        </div>
+</main>
+<aside></aside>
+<footer></footer>
 
 </body>
 </html>

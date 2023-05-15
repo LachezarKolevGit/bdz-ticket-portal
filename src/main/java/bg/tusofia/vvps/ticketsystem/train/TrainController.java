@@ -21,6 +21,22 @@ public class TrainController {
         this.trainService = trainService;
     }
 
+    @GetMapping("/train")
+    public String getTrain(Model model) {
+        model.addAttribute("train", new TrainDTO());
+        return "train/train_add";
+    }
+
+    @PostMapping("/train")
+    public String createTrain(Model model, @RequestBody TrainDTO trainDTO) {
+        if (trainDTO == null) {
+            throw new IllegalArgumentException("Train can't be null");
+        }
+        Long newTrainId = trainService.createTrain(trainDTO);
+        model.addAttribute("newTrainId", newTrainId);
+
+        return "train/train_added_successfully";
+    }
     @GetMapping("/trains")
     public String getTrains(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
         Page<Train> trainPage = trainService.getAllTrains(page);
@@ -36,18 +52,6 @@ public class TrainController {
         }
 
         return "train/trains";
-    }
-
-    @PostMapping("/trains")
-    public String createTrain(Model model, @RequestBody TrainDTO trainDTO) {
-        if (trainDTO == null) {
-            throw new IllegalArgumentException("Train can't be null");
-        }
-        Long newTrainId = trainService.createTrain(trainDTO);
-
-        model.addAttribute("newTrainId", newTrainId);
-
-        return "train/train_added_successfully";
     }
 
     @GetMapping("/trains/search")

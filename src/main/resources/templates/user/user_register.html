@@ -1,4 +1,6 @@
+<!DOCTYPE html>
 <html
+        lang="en"
         xmlns:th="http://thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout}">
@@ -107,7 +109,9 @@
                                 th:field="*{childBirthYear}">
                     </div>
                     <p th:if="${#fields.hasErrors('email')}" class="text-danger"></p>
-                    <button th:formmethod="get" th:formaction="@{/user/login}" type="submit" class="btn btn-black">Login here.</button>
+                    <button th:formmethod="get" th:formaction="@{/user/login}" type="submit" class="btn btn-black">Login
+                        here.
+                    </button>
                     <button th:href="@{/register}" type="submit" class="btn btn-secondary">Register</button>
                 </form>
             </div>

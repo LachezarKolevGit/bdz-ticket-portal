@@ -1,10 +1,12 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
+import bg.tusofia.vvps.ticketsystem.exceptions.SeatAlreadyTakenException;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -30,10 +32,10 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    private static final LocalTime morningPeakHourStart = LocalTime.of(7, 30);
-    private static final LocalTime morningPeakHourEnd = LocalTime.of(9, 30);
-    private static final LocalTime eveningPeakHourStart = LocalTime.of(16, 0);
-    private static final LocalTime eveningPeakHourEnd = LocalTime.of(19, 30);
+    private static final LocalTime morningPeakHourStart = LocalTime.of(7, 30, 0, 0);
+    private static final LocalTime morningPeakHourEnd = LocalTime.of(9, 30, 0, 0);
+    private static final LocalTime eveningPeakHourStart = LocalTime.of(16, 0, 0, 0);
+    private static final LocalTime eveningPeakHourEnd = LocalTime.of(19, 30, 0, 0);
 
     @Autowired
     public TicketService(UserService userService, TrainService trainService, SeatService seatService, TrainCarriageService trainCarriageService, TicketRepository ticketRepository) {
@@ -74,7 +76,7 @@ public class TicketService {
 
     public double userDiscountPriceHandler(double ticketPrice) {
         User user = userService.getLoggedInUser();
-        if (user.getChildBirthYear() != null) { //refactor then nested if statements
+        if (user.getChildBirthYear() != null) {
             if ((LocalDate.now().getYear() - user.getChildBirthYear().getYear()) < 16) {
                 return ticketPrice * 50 / 100;
             }
@@ -101,11 +103,16 @@ public class TicketService {
     }
 
     public Long reserveTicket(TicketDTO ticketDTO) {
-        Seat seat = seatService.markSeatAsReserved(ticketDTO.getSeatId());
-        Ticket ticket = new Ticket(seat,
-                new Timestamp(System.currentTimeMillis()), ticketDTO.getBuyer());
-        ticketRepository.save(ticket);
-        return ticket.getId();
+        Seat seat = seatService.getSeatById(ticketDTO.getSeatId());
+        if (seat.getSeatState() .equals(SeatState.AVAILABLE)) {
+            seatService.markSeatAsReserved(seat.getId());
+            Ticket ticket = new Ticket(seat,
+                    new Timestamp(System.currentTimeMillis()), ticketDTO.getBuyer());
+            ticketRepository.save(ticket);
+            return ticket.getId();
+        } else {
+            throw new SeatAlreadyTakenException("Seat is not available for reservation");
+        }
     }
 
     public Page<Ticket> getAllReservations(int page) {

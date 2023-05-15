@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,7 +64,20 @@ public class TrainService {
         if (trainDTO == null) {
             throw new IllegalArgumentException("Train can't be null");
         }
-        Train train = new Train(trainDTO.formedByTrainCarriages(), trainDTO.departingAt(), trainDTO.arrivingAt());
+        Integer[] ids = trainDTO.trainCarriagesId();
+        Set<TrainCarriage> trainCarriageList = new HashSet<>();
+        for (Integer id : ids) {
+            TrainCarriage trainCarriage = trainCarriageRepository.findById(Long.valueOf(id))
+                    .orElseThrow(() -> new EntityNotFoundException("Train carriage with id " + id + " was not found"));
+            trainCarriageList.add(trainCarriage);
+
+        }
+        Route route = null;
+        if (trainDTO.routeId() != null) {
+             route = routeService.getRoute(Long.valueOf(trainDTO.routeId()));
+        }
+        Train train = new Train(trainCarriageList, trainDTO.departingAt(), trainDTO.arrivingAt(), route);
+
         trainRepository.save(train);
         return train.getId();
     }

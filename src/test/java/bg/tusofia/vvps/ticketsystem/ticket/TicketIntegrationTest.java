@@ -77,13 +77,13 @@ public class TicketIntegrationTest {
     @Test
     void testSavedReservation() throws Exception {
         TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
-        this.mockMvc.perform(post("/reservation")
+        this.mockMvc.perform(post("/ticket/reservation")
                         .with(user("client").roles("CLIENT"))
                         .param("seatId", ticketDTO.getSeatId().toString())
                         .param("numberOfTickets", String.valueOf(ticketDTO.getNumberOfTickets()))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ticket/ticket_reserved_successfully"))
+                .andExpect(view().name("/ticket/ticket_reserved_successfully"))
                 .andExpect(model().attributeExists("ticketId"));
 
         Seat seat = seatRepository.findById(ticketDTO.getSeatId())

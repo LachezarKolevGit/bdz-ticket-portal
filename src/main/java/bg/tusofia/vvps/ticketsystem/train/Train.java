@@ -40,6 +40,9 @@ public class Train {
         this.arrivingAt = arrivingAt;
     }
 
+    public Train(Set<TrainCarriage> trainCarriageList, LocalDateTime departingAt, LocalDateTime arrivingAt, Route route) {
+    }
+
     public Long getId() {
         return id;
     }
