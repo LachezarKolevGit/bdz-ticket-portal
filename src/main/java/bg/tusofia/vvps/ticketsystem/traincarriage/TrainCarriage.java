@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 public class TrainCarriage {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "train_carriage_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -34,7 +33,7 @@ public class TrainCarriage {
     public TrainCarriage(TrainCarriageType trainCarriageType, int totalSeats) {
         this.trainCarriageType = trainCarriageType;
         this.totalSeats = totalSeats;
-        this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE))
+        this.seats = Stream.generate(() -> new Seat(SeatState.AVAILABLE, this))
                 .limit(totalSeats)
                 .collect(Collectors.toList());
     }

@@ -17,7 +17,8 @@ public class TrainCarriageService {
     }
 
     public Long saveNewTrainCarriage(TrainCarriageDTO trainCarriageDTO) {
-        TrainCarriage trainCarriage = new TrainCarriage(trainCarriageDTO.trainCarriageType(), trainCarriageDTO.totalSeats());
+        TrainCarriage trainCarriage = new TrainCarriage(trainCarriageDTO.getTrainCarriageType(), trainCarriageDTO.getTotalSeats());
+        System.out.println(trainCarriage);
         trainCarriageRepository.save(trainCarriage);
         return trainCarriage.getId();
     }

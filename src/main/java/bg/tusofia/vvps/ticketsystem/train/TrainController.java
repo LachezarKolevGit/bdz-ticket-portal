@@ -1,5 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.train;
 
+import bg.tusofia.vvps.ticketsystem.route.Route;
+import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +19,17 @@ import java.util.stream.IntStream;
 public class TrainController {
     private final TrainService trainService;
 
-    public TrainController(TrainService trainService) {
+    private final RouteService routeService;
+
+    public TrainController(TrainService trainService, RouteService routeService) {
         this.trainService = trainService;
+        this.routeService = routeService;
     }
 
     @GetMapping("/train")
     public String getTrain(Model model) {
+        List<Route> routeList = routeService.getAllRoutes();
+        model.addAttribute("routes", routeList);
         model.addAttribute("train", new TrainDTO());
         return "train/train_add";
     }
@@ -37,6 +44,7 @@ public class TrainController {
 
         return "train/train_added_successfully";
     }
+
     @GetMapping("/trains")
     public String getTrains(Model model, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
         Page<Train> trainPage = trainService.getAllTrains(page);
@@ -58,7 +66,7 @@ public class TrainController {
     public String getTrainByDestinationAndDepartureHour(Model model, @RequestParam(name = "destination") String destination, @RequestParam(name = "departureDateTime") LocalDateTime departureDateTime) {
 
         List<Train> trains = trainService.getTrainByArrivalStationAndDepartureTime(destination, departureDateTime);
-        model.addAttribute("trains",trains);
+        model.addAttribute("trains", trains);
 
         return "train/trains_by_destination_and_date_time";
     }

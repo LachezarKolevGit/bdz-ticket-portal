@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class RouteService {
-    public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 
     private final RouteRepository routeRepository;
 
@@ -31,6 +31,10 @@ public class RouteService {
         int pageSize = 10;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return routeRepository.findAll(pageRequest);
+    }
+
+    public List<Route> getAllRoutes() {
+        return routeRepository.findAll();
     }
 
     public Long createNewRoute(RouteDTO routeDTO) {

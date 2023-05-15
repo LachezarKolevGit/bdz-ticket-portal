@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head
+        xmlns:th="http://thymeleaf.org"
+>
+  <meta charset="UTF-8">
+  <title>Add train carriage</title>
+</head>
+<body>
+<header></header>
+<main>
+  <div th:if="${param.fail}" class="alert alert-success">
+    Error
+  </div>
+  <div class="train-create-form">
+    <form method="post" role="form" th:action="@{/train-carriage}" th:object="${trainCarriage}">
+      <div class="form-group">
+        <label>Enter train carriage's class </label>
+        <div th:each="type : ${T(bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageType).values()}">
+          <div class="train-classes">
+            <input type="radio" th:field="*{trainCarriageType}" th:value="${type}" class="class-radio-button">
+            <label class="class-radio-label" th:for="${#ids.prev('trainCarriageType')}" th:text="${type}">Type</label>
+          </div>
+        </div>
+      <div class="form-group">
+        <label>Enter the number of seats the carriage has</label>
+        <input
+                type="number"
+                class="form-control"
+                th:field="*{totalSeats}">
+      </div>
+      <p th:if="${#fields.hasErrors('totalSeats')}" class="text-danger"></p>
+      <button th:formmethod="get" th:formaction="@{/train-carriages}" type="submit" class="btn btn-black">See available train carriages</button>
+      <button th:href="@{/train-carriage}" type="submit" class="btn btn-secondary">Save train carriage</button>
+    </form>
+  </div>
+</main>
+<aside></aside>
+<footer></footer>
+
+</body>
+</html>

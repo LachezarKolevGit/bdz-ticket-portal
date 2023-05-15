@@ -23,9 +23,9 @@ public class TrainService {
 
     private final TrainCarriageRepository trainCarriageRepository;
 
-    public final static double DIESEL_PRICE = 2.80;
+    public static final double DIESEL_PRICE = 2.80;
 
-    public final static int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 10;
 
     public TrainService(TrainRepository trainRepository, RouteService routeService, TrainCarriageRepository trainCarriageRepository) {
         this.trainRepository = trainRepository;

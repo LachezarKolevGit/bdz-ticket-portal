@@ -25,8 +25,9 @@ public class Seat {
     public Seat() {
     }
 
-    public Seat(SeatState seatState) {
+    public Seat(SeatState seatState, TrainCarriage trainCarriage) {
         this.seatState = seatState;
+        this.trainCarriage = trainCarriage;
     }
 
     public Long getId() {
@@ -59,7 +60,7 @@ public class Seat {
     }
 
     public void markSeatAsSold(Ticket ticket) { //add check first if the ticket is not already set
-        if (this.ticket  != null){
+        if (this.ticket != null) {
             throw new IllegalArgumentException("Seat is not available");
         }
         this.ticket = ticket;
@@ -68,7 +69,7 @@ public class Seat {
     }
 
     public void markSeatAsReserved(Ticket ticket) { //add check first if the ticket is not already set
-        if (this.ticket  != null){
+        if (this.ticket != null) {
             throw new IllegalArgumentException("Seat is not available");
         }
         this.ticket = ticket;

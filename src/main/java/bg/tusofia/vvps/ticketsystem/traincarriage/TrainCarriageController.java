@@ -18,17 +18,31 @@ public class TrainCarriageController {
         this.trainCarriageService = trainCarriageService;
     }
 
-    @GetMapping("/train-carriages/seat/{id}")
-    public Seat getSeat(@PathVariable(name = "id") String id) {
-        return null;
+    @GetMapping("/train-carriage")
+    public String createTrainPage(Model model) {
+        model.addAttribute("trainCarriage", new TrainCarriageDTO());
+        return "train_carriage/train_carriage_add_page";
     }
 
-    @GetMapping("/train-carriages/{id}")
+    @PostMapping("/train-carriage")
+    public String createTrain(Model model, @ModelAttribute TrainCarriageDTO trainCarriageDTO) {
+        System.out.println(trainCarriageDTO);
+        Long newTrainCarriageId = trainCarriageService.saveNewTrainCarriage(trainCarriageDTO);
+        model.addAttribute("newTrainCarriageId", newTrainCarriageId);
+
+        return "train_carriage/train_carriage_added_successfully";
+    }
+
+    @GetMapping("/train-carriage/{id}")
     public String getTrainCarriage(Model model, @PathVariable(name = "id") String id) {
         TrainCarriage trainCarriage = trainCarriageService.getTrainCarriage(id);
         model.addAttribute("trainCarriage", trainCarriage);
-        // (trainCarriage.getSeats());
         return "train_carriage/train_carriage";
+    }
+
+    @GetMapping("/train-carriage/seat/{id}")
+    public Seat getSeat(@PathVariable(name = "id") String id) {
+        return null;
     }
 
     @GetMapping("/train-carriages")
@@ -47,16 +61,5 @@ public class TrainCarriageController {
         return "train_carriage/train_carriages";
     }
 
-    @PostMapping("/train-carriages")
-    public String createTrain(Model model, @RequestBody TrainCarriageDTO trainCarriageDTO) {
-        if (trainCarriageDTO == null) {
-            throw new IllegalArgumentException("Train can't be null");
-        }
-        Long newTrainCarriageId = trainCarriageService.saveNewTrainCarriage(trainCarriageDTO);
-
-        model.addAttribute("newTrainCarriageId", newTrainCarriageId);
-
-        return "train_carriage/train_carriage_added_successfully";
-    }
 
 }
