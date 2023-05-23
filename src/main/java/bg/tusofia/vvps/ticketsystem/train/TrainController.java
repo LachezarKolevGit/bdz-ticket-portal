@@ -2,6 +2,8 @@ package bg.tusofia.vvps.ticketsystem.train;
 
 import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.route.RouteService;
+import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
+import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +23,20 @@ public class TrainController {
 
     private final RouteService routeService;
 
-    public TrainController(TrainService trainService, RouteService routeService) {
+    private final TrainCarriageService trainCarriageService;
+
+    public TrainController(TrainService trainService, RouteService routeService, TrainCarriageService trainCarriageService) {
         this.trainService = trainService;
         this.routeService = routeService;
+        this.trainCarriageService = trainCarriageService;
     }
 
     @GetMapping("/train")
     public String getTrain(Model model) {
-        List<Route> routeList = routeService.getAllRoutes();
-        model.addAttribute("routes", routeList);
+        List<Route> routes = routeService.getAllRoutes();
+        List<TrainCarriage> trainCarriages = trainCarriageService.getAllTrainCarriages();
+        model.addAttribute("trainCarriages", trainCarriages);
+        model.addAttribute("routes", routes);
         model.addAttribute("train", new TrainDTO());
         return "train/train_add";
     }

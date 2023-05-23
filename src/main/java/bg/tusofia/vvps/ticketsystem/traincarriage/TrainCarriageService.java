@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,6 +48,10 @@ public class TrainCarriageService {
         int pageSize = 10;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return trainCarriageRepository.findAll(pageRequest);
+    }
+
+    public List<TrainCarriage> getAllTrainCarriages() {
+        return trainCarriageRepository.findAll();
     }
 
     public double getTrainCarriageClassPriceMultiplier(Long seatId) {

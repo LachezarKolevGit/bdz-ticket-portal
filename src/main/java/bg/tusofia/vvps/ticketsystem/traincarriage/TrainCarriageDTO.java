@@ -1,10 +1,13 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage;
 
-public class TrainCarriageDTO {
+import java.util.List;
 
+public class TrainCarriageDTO {
     private TrainCarriageType trainCarriageType;
+
     private int totalSeats;
 
+    private List<TrainCarriage> trainCarriageList;
 
     public TrainCarriageDTO() {
     }

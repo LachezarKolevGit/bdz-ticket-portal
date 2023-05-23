@@ -15,6 +15,11 @@
   <div class="train-create-form">
     <form method="post" role="form" th:action="@{/train}" th:object="${train}">
       <div class="form-group">
+        <!-- <select name="form-control" id="trainCarriagesDropDown">
+          <option value="0" >Select train carriage id </option>
+          <option  th:each="trainCarriage : ${trainCarriages}" th:value="${trainCarriage}"  th:text="${trainCarriage}"></option>
+        </select> -->
+
         <label>Enter the train carriages' ids that form the train </label>
         <input
                 type="number"
@@ -43,11 +48,11 @@
       <p th:if="${#fields.hasErrors('arrivingAt')}" class="text-danger"></p>
       <div class="form-group">
         <label>Enter the route id</label>
-        <input
-                type="number"
-                class="form-control"
-                placeholder="route id"
-                th:field="*{routeId}">
+        <select name="form-control" id="routesDropDown">
+          <option value="0">Select route id</option>
+          <option th:each = "route : ${routes}" th:value="${route}" th:text="${route}"></option>
+        </select>
+
       </div>
       <p th:if="${#fields.hasErrors('routeId')}" class="text-danger"></p>
       <button th:formmethod="get" th:formaction="@{/train-carriages}" type="submit" class="btn btn-black">See available train carriages</button>
