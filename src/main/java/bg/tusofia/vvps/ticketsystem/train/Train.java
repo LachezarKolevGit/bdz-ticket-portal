@@ -11,14 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "train")
 public class Train {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
     @OneToMany(mappedBy = "train", cascade = CascadeType.PERSIST)
-    private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();  // ?? exception suspicion
-
+    private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();
     private LocalDateTime departingAt;
     private LocalDateTime arrivingAt;
     @ManyToOne(fetch = FetchType.LAZY)

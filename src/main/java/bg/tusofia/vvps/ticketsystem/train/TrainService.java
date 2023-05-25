@@ -5,6 +5,7 @@ import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,30 +17,25 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class TrainService {
-    private final TrainRepository trainRepository;
-
-    private final RouteService routeService;
-
-    private final TrainCarriageRepository trainCarriageRepository;
-
     public static final double DIESEL_PRICE = 2.80;
-
     public static final int PAGE_SIZE = 10;
-
-    public TrainService(TrainRepository trainRepository, RouteService routeService, TrainCarriageRepository trainCarriageRepository) {
-        this.trainRepository = trainRepository;
-        this.routeService = routeService;
-        this.trainCarriageRepository = trainCarriageRepository;
-    }
+    private final TrainRepository trainRepository;
+    private final RouteService routeService;
+    private final TrainCarriageRepository trainCarriageRepository;
 
     public List<Train> getTrainByArrivalStationAndDepartureTime(String destination, LocalDateTime departureDateTime) {
         return trainRepository.getTrainsByDestinationAndDateTime(destination, departureDateTime);
     }
 
+    public Train getTrainById(Long id) {
+        return trainRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Train with that id was not found"));
+    }
+
     public Page<Train> getAllTrains(int page) {
-        int pageSize = 10;
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
         return trainRepository.findAll(pageRequest);
     }
 
@@ -64,7 +60,7 @@ public class TrainService {
         if (trainDTO == null) {
             throw new IllegalArgumentException("Train can't be null");
         }
-        Integer[] ids = trainDTO.trainCarriagesId();
+        Integer[] ids = trainDTO.getTrainCarriagesId();
         Set<TrainCarriage> trainCarriageList = new HashSet<>();
         for (Integer id : ids) {
             TrainCarriage trainCarriage = trainCarriageRepository.findById(Long.valueOf(id))
@@ -73,10 +69,10 @@ public class TrainService {
 
         }
         Route route = null;
-        if (trainDTO.routeId() != null) {
-             route = routeService.getRoute(Long.valueOf(trainDTO.routeId()));
+        if (trainDTO.getRouteId() != null) {
+            route = routeService.getRoute(Long.valueOf(trainDTO.getRouteId()));
         }
-        Train train = new Train(trainCarriageList, trainDTO.departingAt(), trainDTO.arrivingAt(), route);
+        Train train = new Train(trainCarriageList, trainDTO.getDepartingAt(), trainDTO.getArrivingAt(), route);
 
         trainRepository.save(train);
         return train.getId();

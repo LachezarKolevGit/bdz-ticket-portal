@@ -1,13 +1,21 @@
 package bg.tusofia.vvps.ticketsystem.train;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-public record TrainDTO(Integer[] trainCarriagesId,
-                       LocalDateTime departingAt,
-                       LocalDateTime arrivingAt,
-                       Integer routeId) {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class TrainDTO {
+    private Integer[] trainCarriagesId;
+    private LocalDateTime departingAt;
+    private LocalDateTime arrivingAt;
+    private Integer routeId;
 
-    public TrainDTO(){
-        this(null, null, null, null);
-    }
+
 }

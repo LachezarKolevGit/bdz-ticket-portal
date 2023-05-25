@@ -24,7 +24,7 @@ public class TrainCarriage {
     private Train train;
 
     @OneToMany(mappedBy = "trainCarriage", cascade = CascadeType.ALL)
-    private List<Seat> seats;  //initialized with totalSeats
+    private List<Seat> seats;
     private int totalSeats;
 
     public TrainCarriage() {

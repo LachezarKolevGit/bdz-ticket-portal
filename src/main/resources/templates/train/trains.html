@@ -32,7 +32,7 @@
         </td>
         <td th:text="${train.departingAt}"/>
         <td th:text="${train.arrivingAt}"/>
-        <td><a th:href="@{'/routes/' + ${train.route.id}}" th:if="${train.route != null}">Click here for more
+        <td><a th:href="@{'/route/' + ${train.route.id}}" th:if="${train.route != null}">Click here for more
             information
             about the route</a></td>
     </tr>

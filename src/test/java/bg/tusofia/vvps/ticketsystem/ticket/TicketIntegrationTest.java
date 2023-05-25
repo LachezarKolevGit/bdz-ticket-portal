@@ -76,7 +76,7 @@ public class TicketIntegrationTest {
 
     @Test
     void testSavedReservation() throws Exception {
-        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
+        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1, null); //change the entry data
         this.mockMvc.perform(post("/ticket/reservation")
                         .with(user("client").roles("CLIENT"))
                         .param("seatId", ticketDTO.getSeatId().toString())
@@ -103,7 +103,7 @@ public class TicketIntegrationTest {
 
     @Test
     void testDeleteReservation() throws Exception {
-        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
+        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1, null); //change the entry data
         this.mockMvc.perform(post("/reservation")
                         .with(user("client").roles("CLIENT"))
                         .param("seatId", ticketDTO.getSeatId().toString())
@@ -125,7 +125,7 @@ public class TicketIntegrationTest {
 
     @Test
     void testEditReservation() throws Exception {
-        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1); //change the entry data
+        TicketDTO ticketDTO = new TicketDTO(1L, 5L, 1, null); //change the entry data
         int ticketId = 10;
         int newSeatId = 50;
         this.mockMvc.perform(post("/reservation/" + ticketId)

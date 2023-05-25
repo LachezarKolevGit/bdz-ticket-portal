@@ -3,24 +3,22 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Train details</title>
 </head>
 <body>
+<h1>Data for train with id : <span th:text="${train.id}"></span>
+</h1>
 <table>
     <thead>
     <tr>
-        <th>Train id</th>
-        <th>Train carriage Id</th>
-        <th>Train carriage type</th>
-        <th>Total seats</th>
+        <th>Train carriages </th>
         <th>Departing at</th>
         <th>Arriving at</th>
         <th>Route</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="train : ${trains}">
-        <td th:text="${train.id}"/>
+    <tr >
         <td>
             <div th:each="trainCarriage : ${train.formedByTrainCarriages}">
                 <span th:text="${trainCarriage.id}"></span>
@@ -30,8 +28,7 @@
         </td>
         <td th:text="${train.departingAt}"/>
         <td th:text="${train.arrivingAt}"/>
-        <td><a th:href="@{'/routes/' + ${train.route.id}}" th:if="${train.route != null}">
-            Click here for more information about the route</a></td>
+        <td th:text="${train.route}"/>
     </tr>
     </tbody>
 </table>

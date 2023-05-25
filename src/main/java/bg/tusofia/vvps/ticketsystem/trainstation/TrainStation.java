@@ -11,7 +11,6 @@ public class TrainStation {
     private String name;
     private Double latitude;
     private Double longitude;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", updatable = false)
     private Route route;
