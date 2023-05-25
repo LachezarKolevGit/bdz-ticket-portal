@@ -1,22 +1,28 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage;
 
 import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
+@Transactional(readOnly = true)
 @Service
 public class TrainCarriageService {
     private final TrainCarriageRepository trainCarriageRepository;
+    private final SeatRepository seatRepository;
 
-    public TrainCarriageService(TrainCarriageRepository trainCarriageRepository) {
+    public TrainCarriageService(TrainCarriageRepository trainCarriageRepository,
+                                SeatRepository seatRepository) {
         this.trainCarriageRepository = trainCarriageRepository;
+        this.seatRepository = seatRepository;
     }
 
+    @Transactional(readOnly = false)
     public Long saveNewTrainCarriage(TrainCarriageDTO trainCarriageDTO) {
         TrainCarriage trainCarriage = new TrainCarriage(trainCarriageDTO.getTrainCarriageType(), trainCarriageDTO.getTotalSeats());
         System.out.println(trainCarriage);
@@ -34,14 +40,9 @@ public class TrainCarriageService {
     }
 
     public Seat getSeat(String seatId) {
-        Long id = Long.valueOf(seatId);
-        /*Optional<Seat> seatOptional = seatRepository.findById(id);
-        if (seatOptional.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        Seat seat = seatOptional.get();
-        Hibernate.initialize(seat);*/
-        return null;
+        return seatRepository.findById(Long.valueOf(seatId))
+                .orElseThrow(() -> new EntityNotFoundException("Seat with that id was not found"));
+
     }
 
     public Page<TrainCarriage> getAllTrainCarriages(int page) {
