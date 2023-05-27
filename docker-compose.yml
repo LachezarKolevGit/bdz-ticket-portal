@@ -1,0 +1,6 @@
+version:
+
+services:
+
+  db:
+    image: postgres:alpine

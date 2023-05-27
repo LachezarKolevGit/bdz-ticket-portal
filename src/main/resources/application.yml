@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: prod
+  application:
+    name: This is the default profile
+app:
+  name: This is the primary application yml file
