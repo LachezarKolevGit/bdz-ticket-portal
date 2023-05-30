@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 @Table(name = "train_carriage")
 public class TrainCarriage {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_carriage_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)

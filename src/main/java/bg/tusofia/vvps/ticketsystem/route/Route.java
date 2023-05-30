@@ -10,7 +10,7 @@ import java.util.*;
 @Entity
 public class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "route_id_seq")
     private Long id;
     @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)
     @OrderColumn()

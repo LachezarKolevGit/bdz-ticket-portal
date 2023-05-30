@@ -5,7 +5,7 @@
 -- Dumped from database version 12.15 (Ubuntu 12.15-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.15 (Ubuntu 12.15-0ubuntu0.20.04.1)
 
--- Started on 2023-05-29 12:39:10 EEST
+-- Started on 2023-05-30 14:05:34 EEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,24 +18,30 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 3 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
---
-DROP SCHEMA IF EXISTS public CASCADE;
-CREATE SCHEMA public;
+SET default_tablespace = '';
 
-
-ALTER SCHEMA public OWNER TO postgres;
+SET default_table_access_method = heap;
 
 --
--- TOC entry 3062 (class 0 OID 0)
--- Dependencies: 3
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+-- TOC entry 216 (class 1259 OID 24814)
+-- Name: flyway_schema_history; Type: TABLE; Schema: public; Owner: postgres
 --
 
-COMMENT ON SCHEMA public IS 'standard public schema';
+CREATE TABLE public.flyway_schema_history (
+    installed_rank integer NOT NULL,
+    version character varying(50),
+    description character varying(200) NOT NULL,
+    type character varying(20) NOT NULL,
+    script character varying(1000) NOT NULL,
+    checksum integer,
+    installed_by character varying(100) NOT NULL,
+    installed_on timestamp without time zone DEFAULT now() NOT NULL,
+    execution_time integer NOT NULL,
+    success boolean NOT NULL
+);
 
+
+ALTER TABLE public.flyway_schema_history OWNER TO postgres;
 
 --
 -- TOC entry 210 (class 1259 OID 24782)
@@ -44,17 +50,13 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 CREATE SEQUENCE public.route_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
 
 ALTER TABLE public.route_id_seq OWNER TO postgres;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- TOC entry 202 (class 1259 OID 24678)
@@ -69,28 +71,13 @@ CREATE TABLE public.route (
 ALTER TABLE public.route OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 24800)
--- Name: route_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.route_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.route_seq OWNER TO postgres;
-
---
 -- TOC entry 213 (class 1259 OID 24791)
 -- Name: seat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.seat_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 60
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -114,28 +101,13 @@ CREATE TABLE public.seat (
 ALTER TABLE public.seat OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 24802)
--- Name: seat_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.seat_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.seat_seq OWNER TO postgres;
-
---
 -- TOC entry 214 (class 1259 OID 24794)
 -- Name: ticket_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.ticket_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 60
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -160,28 +132,13 @@ CREATE TABLE public.ticket (
 ALTER TABLE public.ticket OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 24804)
--- Name: ticket_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.ticket_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.ticket_seq OWNER TO postgres;
-
---
 -- TOC entry 209 (class 1259 OID 24748)
 -- Name: train_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.train_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -211,7 +168,7 @@ ALTER TABLE public.train OWNER TO postgres;
 
 CREATE SEQUENCE public.train_carriage_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -235,43 +192,13 @@ CREATE TABLE public.train_carriage (
 ALTER TABLE public.train_carriage OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 24806)
--- Name: train_carriage_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.train_carriage_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.train_carriage_seq OWNER TO postgres;
-
---
--- TOC entry 220 (class 1259 OID 24808)
--- Name: train_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.train_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.train_seq OWNER TO postgres;
-
---
 -- TOC entry 211 (class 1259 OID 24785)
 -- Name: train_station_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.train_station_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -297,28 +224,13 @@ CREATE TABLE public.train_station (
 ALTER TABLE public.train_station OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 24810)
--- Name: train_station_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.train_station_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.train_station_seq OWNER TO postgres;
-
---
 -- TOC entry 215 (class 1259 OID 24797)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.users_id_seq
     START WITH 1
-    INCREMENT BY 1
+    INCREMENT BY 60
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -347,22 +259,16 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 24812)
--- Name: users_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 3045 (class 0 OID 24814)
+-- Dependencies: 216
+-- Data for Name: flyway_schema_history; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.users_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+INSERT INTO public.flyway_schema_history VALUES (1, '1', '<< Flyway Baseline >>', 'BASELINE', '<< Flyway Baseline >>', NULL, 'postgres', '2023-05-29 15:16:45.909974', 0, true);
 
-
-ALTER TABLE public.users_seq OWNER TO postgres;
 
 --
--- TOC entry 3036 (class 0 OID 24678)
+-- TOC entry 3031 (class 0 OID 24678)
 -- Dependencies: 202
 -- Data for Name: route; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -380,7 +286,7 @@ INSERT INTO public.route VALUES (1502);
 
 
 --
--- TOC entry 3037 (class 0 OID 24683)
+-- TOC entry 3032 (class 0 OID 24683)
 -- Dependencies: 203
 -- Data for Name: seat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -616,7 +522,7 @@ INSERT INTO public.seat VALUES (2381, 1, NULL, 1152);
 
 
 --
--- TOC entry 3038 (class 0 OID 24688)
+-- TOC entry 3033 (class 0 OID 24688)
 -- Dependencies: 204
 -- Data for Name: ticket; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -624,7 +530,7 @@ INSERT INTO public.seat VALUES (2381, 1, NULL, 1152);
 
 
 --
--- TOC entry 3039 (class 0 OID 24693)
+-- TOC entry 3034 (class 0 OID 24693)
 -- Dependencies: 205
 -- Data for Name: train; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -633,7 +539,7 @@ INSERT INTO public.train VALUES (2, '2023-05-26 10:20:00', '2023-05-25 07:30:00'
 
 
 --
--- TOC entry 3040 (class 0 OID 24698)
+-- TOC entry 3035 (class 0 OID 24698)
 -- Dependencies: 206
 -- Data for Name: train_carriage; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -650,7 +556,7 @@ INSERT INTO public.train_carriage VALUES (1152, 30, 'CLASS_B', 2);
 
 
 --
--- TOC entry 3041 (class 0 OID 24703)
+-- TOC entry 3036 (class 0 OID 24703)
 -- Dependencies: 207
 -- Data for Name: train_station; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -685,7 +591,7 @@ INSERT INTO public.train_station VALUES (1254, 42.490833, 27.4725, 'Burgas Centr
 
 
 --
--- TOC entry 3042 (class 0 OID 24708)
+-- TOC entry 3037 (class 0 OID 24708)
 -- Dependencies: 208
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -698,7 +604,7 @@ INSERT INTO public.users VALUES (302, 22, '2010-10-01', 'luchezarkolev@gmail.com
 
 
 --
--- TOC entry 3063 (class 0 OID 0)
+-- TOC entry 3051 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: route_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -707,16 +613,7 @@ SELECT pg_catalog.setval('public.route_id_seq', 1, false);
 
 
 --
--- TOC entry 3064 (class 0 OID 0)
--- Dependencies: 216
--- Name: route_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.route_seq', 1, false);
-
-
---
--- TOC entry 3065 (class 0 OID 0)
+-- TOC entry 3052 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -725,16 +622,7 @@ SELECT pg_catalog.setval('public.seat_id_seq', 1, false);
 
 
 --
--- TOC entry 3066 (class 0 OID 0)
--- Dependencies: 217
--- Name: seat_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.seat_seq', 1, false);
-
-
---
--- TOC entry 3067 (class 0 OID 0)
+-- TOC entry 3053 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: ticket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -743,16 +631,7 @@ SELECT pg_catalog.setval('public.ticket_id_seq', 1, false);
 
 
 --
--- TOC entry 3068 (class 0 OID 0)
--- Dependencies: 218
--- Name: ticket_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.ticket_seq', 1, false);
-
-
---
--- TOC entry 3069 (class 0 OID 0)
+-- TOC entry 3054 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: train_carriage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -761,16 +640,7 @@ SELECT pg_catalog.setval('public.train_carriage_id_seq', 1, false);
 
 
 --
--- TOC entry 3070 (class 0 OID 0)
--- Dependencies: 219
--- Name: train_carriage_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.train_carriage_seq', 1, false);
-
-
---
--- TOC entry 3071 (class 0 OID 0)
+-- TOC entry 3055 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: train_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -779,16 +649,7 @@ SELECT pg_catalog.setval('public.train_id_seq', 2, true);
 
 
 --
--- TOC entry 3072 (class 0 OID 0)
--- Dependencies: 220
--- Name: train_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.train_seq', 1, false);
-
-
---
--- TOC entry 3073 (class 0 OID 0)
+-- TOC entry 3056 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: train_station_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -797,16 +658,7 @@ SELECT pg_catalog.setval('public.train_station_id_seq', 1, false);
 
 
 --
--- TOC entry 3074 (class 0 OID 0)
--- Dependencies: 221
--- Name: train_station_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.train_station_seq', 1, false);
-
-
---
--- TOC entry 3075 (class 0 OID 0)
+-- TOC entry 3057 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -815,16 +667,16 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
--- TOC entry 3076 (class 0 OID 0)
--- Dependencies: 222
--- Name: users_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- TOC entry 2897 (class 2606 OID 24822)
+-- Name: flyway_schema_history flyway_schema_history_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_seq', 1, false);
+ALTER TABLE ONLY public.flyway_schema_history
+    ADD CONSTRAINT flyway_schema_history_pk PRIMARY KEY (installed_rank);
 
 
 --
--- TOC entry 2891 (class 2606 OID 24682)
+-- TOC entry 2883 (class 2606 OID 24682)
 -- Name: route route_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -833,7 +685,7 @@ ALTER TABLE ONLY public.route
 
 
 --
--- TOC entry 2893 (class 2606 OID 24687)
+-- TOC entry 2885 (class 2606 OID 24687)
 -- Name: seat seat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -842,7 +694,7 @@ ALTER TABLE ONLY public.seat
 
 
 --
--- TOC entry 2895 (class 2606 OID 24692)
+-- TOC entry 2887 (class 2606 OID 24692)
 -- Name: ticket ticket_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -851,7 +703,7 @@ ALTER TABLE ONLY public.ticket
 
 
 --
--- TOC entry 2899 (class 2606 OID 24702)
+-- TOC entry 2891 (class 2606 OID 24702)
 -- Name: train_carriage train_carriage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -860,7 +712,7 @@ ALTER TABLE ONLY public.train_carriage
 
 
 --
--- TOC entry 2897 (class 2606 OID 24697)
+-- TOC entry 2889 (class 2606 OID 24697)
 -- Name: train train_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -869,7 +721,7 @@ ALTER TABLE ONLY public.train
 
 
 --
--- TOC entry 2901 (class 2606 OID 24707)
+-- TOC entry 2893 (class 2606 OID 24707)
 -- Name: train_station train_station_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -878,7 +730,7 @@ ALTER TABLE ONLY public.train_station
 
 
 --
--- TOC entry 2903 (class 2606 OID 24715)
+-- TOC entry 2895 (class 2606 OID 24715)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -887,7 +739,15 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2907 (class 2606 OID 24731)
+-- TOC entry 2898 (class 1259 OID 24823)
+-- Name: flyway_schema_history_s_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX flyway_schema_history_s_idx ON public.flyway_schema_history USING btree (success);
+
+
+--
+-- TOC entry 2902 (class 2606 OID 24731)
 -- Name: train fk189619hk9k3ovx3iu8s9n7t3i; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -896,7 +756,7 @@ ALTER TABLE ONLY public.train
 
 
 --
--- TOC entry 2904 (class 2606 OID 24716)
+-- TOC entry 2899 (class 2606 OID 24716)
 -- Name: seat fk8ngrgsadp7q1lcakg3kkdmvqj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -905,7 +765,7 @@ ALTER TABLE ONLY public.seat
 
 
 --
--- TOC entry 2908 (class 2606 OID 24736)
+-- TOC entry 2903 (class 2606 OID 24736)
 -- Name: train_carriage fke30vv1a2lwc4phciwglvu21l4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -914,7 +774,7 @@ ALTER TABLE ONLY public.train_carriage
 
 
 --
--- TOC entry 2905 (class 2606 OID 24721)
+-- TOC entry 2900 (class 2606 OID 24721)
 -- Name: seat fkijny9i6w4att2e6sppt5vuswq; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -923,7 +783,7 @@ ALTER TABLE ONLY public.seat
 
 
 --
--- TOC entry 2906 (class 2606 OID 24726)
+-- TOC entry 2901 (class 2606 OID 24726)
 -- Name: ticket fkmvugyjf7b45u0juyue7k3pct0; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -932,7 +792,7 @@ ALTER TABLE ONLY public.ticket
 
 
 --
--- TOC entry 2909 (class 2606 OID 24741)
+-- TOC entry 2904 (class 2606 OID 24741)
 -- Name: train_station fkoif7j5hpkqr6bpt9e4p21d181; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -940,7 +800,7 @@ ALTER TABLE ONLY public.train_station
     ADD CONSTRAINT fkoif7j5hpkqr6bpt9e4p21d181 FOREIGN KEY (route_id) REFERENCES public.route(id);
 
 
--- Completed on 2023-05-29 12:39:10 EEST
+-- Completed on 2023-05-30 14:05:34 EEST
 
 --
 -- PostgreSQL database dump complete

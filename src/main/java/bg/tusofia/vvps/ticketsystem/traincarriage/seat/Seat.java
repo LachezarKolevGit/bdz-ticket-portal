@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Table(name = "seat")
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seat_id_seq")
     private Long id;
 
     @Enumerated

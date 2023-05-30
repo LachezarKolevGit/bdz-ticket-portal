@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 public class TrainStation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_station_id_seq")
     private Long id;
     private String name;
     private Double latitude;

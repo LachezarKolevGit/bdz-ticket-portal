@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "train")
 public class Train {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_id_seq")
     private Long id;
     @OneToMany(mappedBy = "train", cascade = CascadeType.PERSIST)
     private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();
