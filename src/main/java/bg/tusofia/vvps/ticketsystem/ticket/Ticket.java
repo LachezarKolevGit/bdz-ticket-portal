@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(schema="public")
 public class Ticket {
 
     @Id

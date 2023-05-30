@@ -4,6 +4,7 @@ import bg.tusofia.vvps.ticketsystem.route.Route;
 import jakarta.persistence.*;
 
 @Entity
+@Table(schema="public")
 public class TrainStation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_station_id_seq")

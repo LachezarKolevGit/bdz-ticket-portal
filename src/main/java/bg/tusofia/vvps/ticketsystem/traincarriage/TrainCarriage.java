@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Entity
-@Table(name = "train_carriage")
+@Table(name = "train_carriage", schema = "public")
 public class TrainCarriage {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_carriage_id_seq")

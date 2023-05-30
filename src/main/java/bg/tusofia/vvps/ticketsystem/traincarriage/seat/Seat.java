@@ -5,7 +5,7 @@ import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "seat")
+@Table(name = "seat", schema="public")
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seat_id_seq")

@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
+@Table(schema="public")
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "route_id_seq")

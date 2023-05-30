@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "train")
+@Table(name = "train", schema="public")
 public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_id_seq")
