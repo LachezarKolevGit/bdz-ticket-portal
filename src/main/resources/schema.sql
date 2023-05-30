@@ -27,6 +27,9 @@ SET default_table_access_method = heap;
 -- Name: flyway_schema_history; Type: TABLE; Schema: public; Owner: postgres
 --
 
+DROP SCHEMA IF EXISTS public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TABLE public.flyway_schema_history (
     installed_rank integer NOT NULL,
     version character varying(50),
