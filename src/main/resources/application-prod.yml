@@ -3,9 +3,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
   datasource:
-    url: ${DATABASE_URL}
+    url: jdbc:${DATABASE_URL}
     username: ${PROD_DB_USERNAME}
-    password : ${PROD_DB_PASSWORD}
+    password: ${PROD_DB_PASSWORD}
     name: bdj-ticket-portal
   jackson:
     serialization:
