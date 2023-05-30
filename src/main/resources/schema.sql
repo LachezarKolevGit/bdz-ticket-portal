@@ -22,7 +22,7 @@ SET row_security = off;
 -- TOC entry 3 (class 2615 OID 2200)
 -- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
-
+DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 
 
