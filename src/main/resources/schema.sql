@@ -80,7 +80,7 @@ ALTER TABLE public.route OWNER TO postgres;
 
 CREATE SEQUENCE public.seat_id_seq
     START WITH 1
-    INCREMENT BY 60
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -110,7 +110,7 @@ ALTER TABLE public.seat OWNER TO postgres;
 
 CREATE SEQUENCE public.ticket_id_seq
     START WITH 1
-    INCREMENT BY 60
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
@@ -233,7 +233,7 @@ ALTER TABLE public.train_station OWNER TO postgres;
 
 CREATE SEQUENCE public.users_id_seq
     START WITH 1
-    INCREMENT BY 60
+    INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
