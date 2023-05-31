@@ -24,5 +24,10 @@ public class UserDTO {
     @Length(min = 3)
     private String password;
 
+    public UserDTO(String email, String password){
+        this.email=email;
+        this.password=password;
+    }
+
 }
 
