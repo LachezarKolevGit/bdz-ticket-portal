@@ -2,10 +2,15 @@ package bg.tusofia.vvps.ticketsystem.user;
 
 import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -21,20 +26,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     private Long id;
-
+    @NotBlank
     private String firstName;
-
+    @NotBlank
     private String lastName;
-
+    @Email
     private String email;
-
+    @Length(min = 3)
     private String password;
+    @Min(5)
+    @Max(110)
     private int age;
     private boolean married;
     private LocalDate childBirthYear;
-
     private Role role;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> boughtTickets = new HashSet<>();
 

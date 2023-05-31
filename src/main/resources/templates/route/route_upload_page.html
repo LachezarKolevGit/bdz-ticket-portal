@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Upload route</title>
 </head>
 <body>
-<div class="login-form">
+<main>
     <form method="post" role="form" th:action="@{/route}" th:object="${route}">
         <div class="form-group">
             <label>Train stations</label>
@@ -13,7 +13,7 @@
                     type="text"
                     class="form-control"
                     placeholder="train stops"
-                    th:field="*{route.trainStations()}">
+                    th:field="*{trainStations}">
         </div>
         <p th:if="${#fields.hasErrors('route.trainStations')}" class="text-danger"></p>
         <div class="form-group">
@@ -27,5 +27,6 @@
         <p th:if="${#fields.hasErrors('route.trains()')}" class="text-danger"></p>
         <button th:href="@{/route}" type="submit" class="btn btn-secondary">Submit changes</button>
     </form>
+</main>
 </body>
 </html>

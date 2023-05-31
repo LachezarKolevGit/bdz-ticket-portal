@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.security.SecureRandom;
 @Configuration
 public class PasswordEncoderConfig {
-
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(10, new SecureRandom());
