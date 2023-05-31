@@ -12,9 +12,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/ticket")
 public class TicketController {
-
     private final TicketService ticketService;
-
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
@@ -32,9 +30,11 @@ public class TicketController {
         return "ticket/ticket_purchased_successfully";
     }
 
-    @GetMapping("/reserve")
-    public String reserveTicketPage(Model model) {
-        model.addAttribute("ticket", new TicketDTO());
+    @GetMapping("/reserve/{id}")
+    public String reserveTicketPage(Model model, @PathVariable(name = "id", required = false) String id) {
+        TicketDTO ticketDTO = new TicketDTO();
+        ticketDTO.setSeatId(Long.valueOf(id));
+        model.addAttribute("ticket", ticketDTO);
         return "ticket/reserve_ticket_page";
     }
 
@@ -74,6 +74,4 @@ public class TicketController {
         model.addAttribute("ticketId", editedTicketId);
         return "ticket/ticket_reservation_edit_successfully";
     }
-
-
 }

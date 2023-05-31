@@ -60,7 +60,6 @@ public class Route {
         return "Route{" +
                 "id=" + id +
                 ", trainStations=" + trainStations +
-                ", trains=" + trains +
                 '}';
     }
 }

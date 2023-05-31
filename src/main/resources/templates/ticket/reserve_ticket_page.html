@@ -20,18 +20,10 @@
                             type="number"
                             class="form-control"
                             placeholder="seat id"
+                            value="${seatId}"
                             th:field="*{seatId}">
                 </div>
                 <p th:if="${#fields.hasErrors('seatId')}" class="text-danger"></p>
-                <div class="form-group">
-                    <label>How many tickets would you like to purchase</label>
-                    <input
-                            type="number"
-                            class="form-control"
-                            placeholder="number of tickets"
-                            th:field="*{numberOfTickets}">
-                </div>
-                <p th:if="${#fields.hasErrors('numberOfTickets')}" class="text-danger"></p>
                 <button th:formmethod="get" th:formaction="@{/trains}" type="submit" class="btn btn-black">See available trains</button>
                 <button th:href="@{/ticket/reserve}" type="submit" class="btn btn-secondary">Reserve ticket</button>
             </form>

@@ -1,5 +1,6 @@
 package bg.tusofia.vvps.ticketsystem.user;
 
+import bg.tusofia.vvps.ticketsystem.exceptions.UserAlreadyExistsException;
 import bg.tusofia.vvps.ticketsystem.security.AuthenticationFacade;
 import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +25,9 @@ public class UserService {
     }
 
     public void registerUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()){
+            throw new UserAlreadyExistsException("User with that email already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_CLIENT);
 

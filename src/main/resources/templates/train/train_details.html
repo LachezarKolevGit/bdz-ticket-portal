@@ -11,7 +11,7 @@
 <table>
     <thead>
     <tr>
-        <th>Train carriages </th>
+        <th>Train carriage</th>
         <th>Departing at</th>
         <th>Arriving at</th>
         <th>Route</th>
@@ -20,11 +20,9 @@
     <tbody>
     <tr >
         <td>
-            <div th:each="trainCarriage : ${train.formedByTrainCarriages}">
-                <span th:text="${trainCarriage.id}"></span>
-                <span th:text="${trainCarriage.trainCarriageType}"/>
-                <span th:text="${trainCarriage.totalSeats}"/>
-            </div>
+            <a th:each="trainCarriage : ${train.formedByTrainCarriages}">
+                <a th:href="@{'/train-carriage/' + ${trainCarriage.id}}">Click here for more information about the train carriage</a>
+            </a>
         </td>
         <td th:text="${train.departingAt}"/>
         <td th:text="${train.arrivingAt}"/>

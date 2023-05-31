@@ -84,7 +84,7 @@ public class TicketService {
         if (user.getAge() > 60) {
             return ticketPrice - (ticketPrice * 34 / 100);
         }
-        if (user.getMarried()) {
+        if (user.isMarried()) {
             return ticketPrice - (ticketPrice * 10 / 100); //remove the '2'
         }
         return ticketPrice; //probably has to rework

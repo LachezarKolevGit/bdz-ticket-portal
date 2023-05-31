@@ -23,10 +23,12 @@
     </thead>
     <tbody>
     <tr th:each="seat, iterStat : ${trainCarriage.seats}">
-        <td th:text="${iterStat.index}"/>
+        <td th:text="${seat.id}"/>
         <td th:text="${seat.seatState}"/>
+        <td />
+        <a th:href="@{'/ticket/reserve/' + ${seat.id}}"> Reserve seat </a>
+        </td>
     </tr>
-
     </tbody>
 </table>
 </body>

@@ -35,6 +35,9 @@
         <td><a th:href="@{'/route/' + ${train.route.id}}" th:if="${train.route != null}">Click here for more
             information
             about the route</a></td>
+        <td><a th:href="@{'/train/' + ${train.id}}">Click here for more
+            information
+            about the train</a></td>
     </tr>
     </tbody>
 </table>
