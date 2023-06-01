@@ -10,22 +10,33 @@
 <table border="=1">
     <thead>
     <tr>
-        <th>Id</th>
-        <th>Train Stops</th>
-        <th>Trains</th>
+        <th>Route Id</th>
+        <th>Departure station</th>
+        <th>Arrival station</th>
+        <th>Train id | Departing at | Arriving at</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="route: ${routePage.content}">
         <td th:text="${route.id}"/>
-        <td th:text="${route.trainStations}"/>
-        <td th:text="${route.trains}"/>
+        <td th:if="${route.trainStations.size() != 0}"
+            th:text="${route.trainStations[0].name}"/>
+        <td th:if="${route.trainStations.size() != 0}"
+            th:with="numTrainStops=${route.trainStations.size()}"
+            th:text="${route.trainStations[numTrainStops - 1].name}"/>
+        <td >
+             <div th:each="train : ${route.trains}">
+                <span th:text="${train.id}"/>
+                <span th:text="${train.departingAt}"/>
+                <span th:text="${train.arrivingAt}"/>
+            </div>
+        </td>
+
     </tr>
-    </tbody>    
+    </tbody>
 </table>
 <div th:if="${routePage.totalPages > 0}" class="pagination"
      th:each="pageNumber :${pageNumbers}">
-
     <a th:href="@{/routes(page=${pageNumber})}"
        th:text="${pageNumber}"
        th:class="${pageNumber==routePage.number + 1} ? active"></a>

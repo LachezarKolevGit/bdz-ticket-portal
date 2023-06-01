@@ -22,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="seat, iterStat : ${trainCarriage.seats}">
+    <tr th:each="seat : ${trainCarriage.seats}">
         <td th:text="${seat.id}"/>
         <td th:text="${seat.seatState}"/>
         <td />

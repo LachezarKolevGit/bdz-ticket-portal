@@ -4,17 +4,24 @@ package bg.tusofia.vvps.ticketsystem.route;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.trainstation.TrainStation;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(schema="public")
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "route_id_seq")
+    @Setter(AccessLevel.NONE)
     private Long id;
     @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)
     @OrderColumn()
@@ -37,9 +44,6 @@ public class Route {
         }
     }
 
-    public Route() {
-    }
-
     public void addStop(TrainStation trainStation) { // call when initializing a train station
         //exception checks
         trainStations.add(trainStation);
@@ -54,23 +58,4 @@ public class Route {
                 '}';
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public List<TrainStation> getTrainStations() {
-        return this.trainStations;
-    }
-
-    public Set<Train> getTrains() {
-        return this.trains;
-    }
-
-    public void setTrainStations(List<TrainStation> trainStations) {
-        this.trainStations = trainStations;
-    }
-
-    public void setTrains(Set<Train> trains) {
-        this.trains = trains;
-    }
 }
