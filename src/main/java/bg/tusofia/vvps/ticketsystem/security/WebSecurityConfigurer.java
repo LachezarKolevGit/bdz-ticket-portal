@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer {
@@ -62,7 +61,7 @@ public class WebSecurityConfigurer {
                 .requestCache((cache) -> cache.requestCache(requestCache))
                 .formLogin(form -> form.loginPage("/user/login")
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/user/profile")
+                        .defaultSuccessUrl("/user/profile", true)
                         .failureUrl("/user/login?error=true")
                         .permitAll()
                 )

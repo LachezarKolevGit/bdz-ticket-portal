@@ -40,7 +40,7 @@ public class User {
     private boolean married;
     private LocalDate childBirthYear;
     private Role role;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ticket> boughtTickets = new HashSet<>();
 
     public User(String firstName, String lastName, int age, boolean married, LocalDate childBirthYear) {
@@ -63,7 +63,6 @@ public class User {
                 ", hasFamily=" + married +
                 ", childBirthYear=" + childBirthYear +
                 ", role=" + role +
-                ", boughtTickets=" + boughtTickets +
                 '}';
     }
 

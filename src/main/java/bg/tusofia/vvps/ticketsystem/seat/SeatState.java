@@ -1,4 +1,4 @@
-package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
+package bg.tusofia.vvps.ticketsystem.seat;
 
 public enum SeatState {
     SOLD,

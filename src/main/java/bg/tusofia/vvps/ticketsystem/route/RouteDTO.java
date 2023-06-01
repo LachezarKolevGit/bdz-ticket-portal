@@ -7,5 +7,4 @@ import java.util.List;
 import java.util.Set;
 
 public record RouteDTO(List<TrainStation> trainStations, Set<Train> trains) {
-
 }

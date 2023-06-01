@@ -1,8 +1,8 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
+import bg.tusofia.vvps.ticketsystem.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.seat.SeatRepository;
+import bg.tusofia.vvps.ticketsystem.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import jakarta.persistence.EntityNotFoundException;

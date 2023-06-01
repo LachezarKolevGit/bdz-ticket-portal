@@ -11,7 +11,6 @@ import java.util.stream.IntStream;
 
 @Controller
 public class RouteController {
-
     private final RouteService routeService;
 
     public RouteController(RouteService routeService) {

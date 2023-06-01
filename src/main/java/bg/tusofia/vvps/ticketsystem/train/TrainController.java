@@ -4,7 +4,6 @@ import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +15,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@AllArgsConstructor
 public class TrainController {
     private final TrainService trainService;
     private final RouteService routeService;
     private final TrainCarriageService trainCarriageService;
+
+    public TrainController(TrainService trainService, RouteService routeService, TrainCarriageService trainCarriageService) {
+        this.trainService = trainService;
+        this.routeService = routeService;
+        this.trainCarriageService = trainCarriageService;
+    }
 
     @GetMapping("/train")
     public String createTrain(Model model) {

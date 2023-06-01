@@ -1,9 +1,15 @@
-package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
+package bg.tusofia.vvps.ticketsystem.seat;
 
 import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "seat", schema="public")
 public class Seat {
@@ -18,40 +24,13 @@ public class Seat {
     @JoinColumn(name = "train_carriage_id", updatable = false)
     private TrainCarriage trainCarriage;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY) //check if it loads correctly
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-
-    public Seat() {
-    }
 
     public Seat(SeatState seatState, TrainCarriage trainCarriage) {
         this.seatState = seatState;
         this.trainCarriage = trainCarriage;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public TrainCarriage getTrainCarriage() {
-        return trainCarriage;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public SeatState getSeatState() {
-        return seatState;
-    }
-
-    public void setSeatState(SeatState seatState) {
-        this.seatState = seatState;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
     }
 
     @Override

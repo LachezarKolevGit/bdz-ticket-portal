@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class RouteService {
     public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
@@ -48,7 +47,7 @@ public class RouteService {
 
     public int calculateRouteDistance(Route route) {
         int totalDistance = 0;
-        List<TrainStation> trainStationList = route.getStops();
+        List<TrainStation> trainStationList = route.getTrainStations();
         for (int i = 0; i < trainStationList.size() - 1; i = i + 1) {
             TrainStation station1 = trainStationList.get(i);
             TrainStation station2 = trainStationList.get(i + 1);

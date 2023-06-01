@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDTO {
-
     private Long trainId;
     private Long seatId;
     private int numberOfTickets;

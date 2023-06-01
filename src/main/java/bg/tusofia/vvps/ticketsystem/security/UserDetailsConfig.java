@@ -22,7 +22,12 @@ public class UserDetailsConfig implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with that email was not found"));
+        if (email == null || email.isEmpty() || email.isBlank()) {
+            throw new IllegalArgumentException("Email can't  be null, empty or  blank");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with that email was not found"));
         SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRole().name());
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(role);

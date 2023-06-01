@@ -5,7 +5,6 @@ import bg.tusofia.vvps.ticketsystem.route.RouteService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 @Service
-@AllArgsConstructor
 public class TrainService {
     public static final double DIESEL_PRICE = 2.80;
     public static final int PAGE_SIZE = 10;
     private final TrainRepository trainRepository;
     private final RouteService routeService;
     private final TrainCarriageRepository trainCarriageRepository;
+
+    public TrainService(TrainRepository trainRepository, RouteService routeService, TrainCarriageRepository trainCarriageRepository) {
+        this.trainRepository = trainRepository;
+        this.routeService = routeService;
+        this.trainCarriageRepository = trainCarriageRepository;
+    }
 
     public List<Train> getTrainByArrivalStationAndDepartureTime(String destination, LocalDateTime departureDateTime) {
         return trainRepository.getTrainsByDestinationAndDateTime(destination, departureDateTime);

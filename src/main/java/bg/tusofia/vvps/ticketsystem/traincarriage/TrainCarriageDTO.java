@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainCarriageDTO {
-
     private TrainCarriageType trainCarriageType;
     private int totalSeats;
     private List<TrainCarriage> trainCarriageList;

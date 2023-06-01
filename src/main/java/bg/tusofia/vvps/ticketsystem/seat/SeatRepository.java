@@ -1,4 +1,4 @@
-package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
+package bg.tusofia.vvps.ticketsystem.seat;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import org.springframework.data.jpa.repository.Query;

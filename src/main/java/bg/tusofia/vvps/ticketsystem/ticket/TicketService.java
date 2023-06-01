@@ -1,16 +1,15 @@
 package bg.tusofia.vvps.ticketsystem.ticket;
 
 import bg.tusofia.vvps.ticketsystem.exceptions.SeatAlreadyTakenException;
+import bg.tusofia.vvps.ticketsystem.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.seat.SeatService;
+import bg.tusofia.vvps.ticketsystem.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatState;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,25 +18,19 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 @Service
 public class TicketService {
-
     private final UserService userService;
     private final TrainService trainService;
-
     private final SeatService seatService;
-
     private final TrainCarriageService trainCarriageService;
-
     private final TicketRepository ticketRepository;
 
-    private static final LocalTime morningPeakHourStart = LocalTime.of(7, 30, 0, 0);
-    private static final LocalTime morningPeakHourEnd = LocalTime.of(9, 30, 0, 0);
-    private static final LocalTime eveningPeakHourStart = LocalTime.of(16, 0, 0, 0);
-    private static final LocalTime eveningPeakHourEnd = LocalTime.of(19, 30, 0, 0);
+    private static final LocalTime MORNING_PEAK_HOUR_START = LocalTime.of(7, 30, 0, 0);
+    private static final LocalTime MORNING_PEAK_HOUR_END = LocalTime.of(9, 30, 0, 0);
+    private static final LocalTime EVENING_PEAK_HOUR_START = LocalTime.of(16, 0, 0, 0);
+    private static final LocalTime EVENING_PEAK_HOUR_END = LocalTime.of(19, 30, 0, 0);
 
-    @Autowired
     public TicketService(UserService userService, TrainService trainService, SeatService seatService, TrainCarriageService trainCarriageService, TicketRepository ticketRepository) {
         this.userService = userService;
         this.trainService = trainService;
@@ -91,10 +84,10 @@ public class TicketService {
     }
 
     public double peakHoursDiscountHandler(double ticketPrice, LocalTime localTime) {
-        if (localTime.isAfter(morningPeakHourStart) && localTime.isBefore(morningPeakHourEnd)) {
+        if (localTime.isAfter(MORNING_PEAK_HOUR_START) && localTime.isBefore(MORNING_PEAK_HOUR_END)) {
             return ticketPrice;
         }
-        if (localTime.isAfter(eveningPeakHourStart) && localTime.isBefore(eveningPeakHourEnd)) {
+        if (localTime.isAfter(EVENING_PEAK_HOUR_START) && localTime.isBefore(EVENING_PEAK_HOUR_END)) {
             return ticketPrice;
         }
 
@@ -121,7 +114,6 @@ public class TicketService {
         User currentlyLoggedInUser = userService.getLoggedInUser();
         return ticketRepository.findAllByTicketStateAndUser
                 (TicketState.RESERVED, currentlyLoggedInUser, pageRequest);
-
     }
 
     public Long editReservation(Long ticketId, Long newSeatId) {

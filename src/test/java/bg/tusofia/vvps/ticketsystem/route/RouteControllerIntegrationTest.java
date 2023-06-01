@@ -125,7 +125,7 @@ public class RouteControllerIntegrationTest {
 
         Route route = routeRepository.findById(Long.valueOf(model().toString()))
                 .orElseThrow(() -> new EntityNotFoundException());
-        assertEquals(routeDTO.trainStations(), route.getStops(),
+        assertEquals(routeDTO.trainStations(), route.getTrainStations(),
                 "The trainStations on the saved route doesn't match the trainStations on the expected route");
         assertEquals(routeDTO.trains(), route.getTrains(), "Trains in");
     }

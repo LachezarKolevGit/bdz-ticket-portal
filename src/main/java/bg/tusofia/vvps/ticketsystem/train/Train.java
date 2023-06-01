@@ -3,16 +3,23 @@ package bg.tusofia.vvps.ticketsystem.train;
 import bg.tusofia.vvps.ticketsystem.route.Route;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriage;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "train", schema="public")
 public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_id_seq")
+    @Setter(AccessLevel.NONE)
     private Long id;
     @OneToMany(mappedBy = "train", cascade = CascadeType.PERSIST)
     private Set<TrainCarriage> formedByTrainCarriages = new HashSet<>();
@@ -22,50 +29,18 @@ public class Train {
     @JoinColumn(name = "route_id")
     private Route route;
 
-    public Train() {
-    }
-
     public Train(Set<TrainCarriage> formedByTrainCarriages, LocalDateTime departingAt, LocalDateTime arrivingAt) {
         if (formedByTrainCarriages != null) {
             for (TrainCarriage trainCarriage : formedByTrainCarriages) {
                 trainCarriage.setTrain(this);
             }
         }
-
         this.formedByTrainCarriages = formedByTrainCarriages;
         this.departingAt = departingAt;
         this.arrivingAt = arrivingAt;
     }
 
     public Train(Set<TrainCarriage> trainCarriageList, LocalDateTime departingAt, LocalDateTime arrivingAt, Route route) {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Set<TrainCarriage> getFormedByTrainCarriages() {
-        return formedByTrainCarriages;
-    }
-
-    public LocalDateTime getDepartingAt() {
-        return departingAt;
-    }
-
-    public void setDepartingAt(LocalDateTime departingAt) {
-        this.departingAt = departingAt;
-    }
-
-    public LocalDateTime getArrivingAt() {
-        return arrivingAt;
-    }
-
-    public void setArrivingAt(LocalDateTime arrivingAt) {
-        this.arrivingAt = arrivingAt;
-    }
-
-    public Route getRoute() {
-        return route;
     }
 
     public void setRoute(Route route) {
@@ -79,7 +54,7 @@ public class Train {
     public String toString() {
         return "Train{" +
                 "id=" + id +
-                ", formedByTrainCarriages=" + formedByTrainCarriages +
+                ", formedByTrainCarriages=" + formedByTrainCarriages + //might trigger the lazy loading
                 ", departingAt=" + departingAt +
                 ", arrivingAt=" + arrivingAt +
                 '}';

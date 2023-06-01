@@ -1,4 +1,4 @@
-package bg.tusofia.vvps.ticketsystem.traincarriage.seat;
+package bg.tusofia.vvps.ticketsystem.seat;
 
 import bg.tusofia.vvps.ticketsystem.train.Train;
 import jakarta.persistence.EntityNotFoundException;
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SeatService {
-
     private final SeatRepository seatRepository;
 
     public SeatService(SeatRepository seatRepository) {

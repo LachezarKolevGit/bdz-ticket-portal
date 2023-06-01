@@ -11,17 +11,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationProvider authenticationProvider;
 
-    public UserService(UserRepository userRepository, AuthenticationProvider authenticationProvider, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationProvider authenticationProvider) {
         this.userRepository = userRepository;
-        this.authenticationProvider = authenticationProvider;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationProvider = authenticationProvider;
     }
 
     public void registerUser(User user) {
@@ -36,9 +33,8 @@ public class UserService {
 
     public User getLoggedInUser() {
         Authentication authentication = new AuthenticationFacade().getAuthentication();
-        User user = userRepository.findByEmail(authentication.getName())
+        return userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new EntityNotFoundException("Currently logged in user was not found"));
-        return user;
     }
 
     public void registerAdmin(UserDTO userDTO) {

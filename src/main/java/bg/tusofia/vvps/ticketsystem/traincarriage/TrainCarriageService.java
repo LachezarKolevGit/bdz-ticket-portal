@@ -1,7 +1,7 @@
 package bg.tusofia.vvps.ticketsystem.traincarriage;
 
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.Seat;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatRepository;
+import bg.tusofia.vvps.ticketsystem.seat.Seat;
+import bg.tusofia.vvps.ticketsystem.seat.SeatRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +16,7 @@ public class TrainCarriageService {
     private final TrainCarriageRepository trainCarriageRepository;
     private final SeatRepository seatRepository;
 
-    public TrainCarriageService(TrainCarriageRepository trainCarriageRepository,
-                                SeatRepository seatRepository) {
+    public TrainCarriageService(TrainCarriageRepository trainCarriageRepository, SeatRepository seatRepository) {
         this.trainCarriageRepository = trainCarriageRepository;
         this.seatRepository = seatRepository;
     }
@@ -59,6 +58,6 @@ public class TrainCarriageService {
         TrainCarriage trainCarriage = trainCarriageRepository.findTrainCarriageBySeatId(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Train Carriage was not found"));
 
-        return trainCarriage.getCarriageType().getMultiplier();
+        return trainCarriage.getTrainCarriageType().getMultiplier();
     }
 }

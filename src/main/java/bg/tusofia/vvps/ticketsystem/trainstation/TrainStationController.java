@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 @Controller
 public class TrainStationController {
-
     private final TrainStationService trainStationService;
 
     public TrainStationController(TrainStationService trainStationService) {
@@ -26,7 +24,6 @@ public class TrainStationController {
     public String getAllTrainStations(Model model, @RequestParam("page") int page) {
         Page<TrainStation> trainStationsPage = trainStationService.getAllTrainStations(page);
         model.addAttribute("trainStationsPage", trainStationsPage);
-        //trainStationsPage.getContent()
 
        int totalPages = trainStationsPage.getTotalPages();
        if(totalPages > 0){

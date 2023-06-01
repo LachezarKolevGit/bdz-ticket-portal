@@ -2,7 +2,7 @@ package bg.tusofia.vvps.ticketsystem.ticket;
 
 import bg.tusofia.vvps.ticketsystem.train.TrainService;
 import bg.tusofia.vvps.ticketsystem.traincarriage.TrainCarriageService;
-import bg.tusofia.vvps.ticketsystem.traincarriage.seat.SeatService;
+import bg.tusofia.vvps.ticketsystem.seat.SeatService;
 import bg.tusofia.vvps.ticketsystem.user.User;
 import bg.tusofia.vvps.ticketsystem.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
