@@ -37,9 +37,9 @@
 
 <form method="post" role="form" th:action="@{/user/profile}" th:object="${user}">
     <div class="form-group">
-        <label>Id</label>
+        <label></label>
         <input
-                type="text"
+                type="hidden"
                 class="form-control"
                 th:placeholder="*{id}"
                 th:field="*{id}">
