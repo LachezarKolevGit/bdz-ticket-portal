@@ -17,6 +17,29 @@ public class RouteController {
         this.routeService = routeService;
     }
 
+    @GetMapping("/route")
+    public String createRoute(Model model) {
+        RouteDTO routeDTO = new RouteDTO(null, null);
+        model.addAttribute("routeDTO", routeDTO);
+        return "route/route_upload_page";
+    }
+
+    @PostMapping("/route")
+    public String createRoutes(Model model, @ModelAttribute RouteDTO routeDTO) {
+        Long newRouteId = routeService.createNewRoute(routeDTO);
+        model.addAttribute("newRouteId", newRouteId);
+
+        return "route/route_created_successfully";
+    }
+
+    @GetMapping("/route/{id}")
+    public String getRoute(Model model, @PathVariable(name = "id") String id) {
+        Route route = routeService.getRoute(Long.valueOf(id));
+        model.addAttribute("route", route);
+
+        return "route/route_train_stations";
+    }
+
     @GetMapping("/routes")
     public String getRoutes(Model model, @RequestParam(name = "page", defaultValue = "0") int page) {
         Page<Route> routePage = routeService.getRoutes(page);
@@ -32,29 +55,4 @@ public class RouteController {
 
         return "route/routes";
     }
-
-    @GetMapping("/route/{id}")
-    public String getRoute(Model model, @PathVariable(name = "id") String id) {
-        Route route = routeService.getRoute(Long.valueOf(id));
-        model.addAttribute("route", route);
-
-        return "route/route_train_stations";
-    }
-
-    @GetMapping("/route")
-    public String createRoute(Model model) {
-        RouteDTO routeDTO = new RouteDTO(null, null);
-        model.addAttribute("route", routeDTO);
-        return "route/route_upload_page";
-    }
-
-    @PostMapping("/route")
-    public String createRoutes(Model model, @ModelAttribute RouteDTO routeDTO) {
-        Long newRouteId = routeService.createNewRoute(routeDTO);
-        model.addAttribute("newRouteId", newRouteId);
-
-        return "route/route_created_successfully";
-    }
-
-
 }

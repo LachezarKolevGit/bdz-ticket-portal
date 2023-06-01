@@ -17,11 +17,11 @@
     </thead>
     <tbody>
     <tr th:each="route: ${routePage.content}">
-        <td th:text="${route.getId()}"/>
-        <td th:text="${route.getStops()}"/>
-        <td th:text="${route.getTrains()}"/>
+        <td th:text="${route.id}"/>
+        <td th:text="${route.trainStations}"/>
+        <td th:text="${route.trains}"/>
     </tr>
-    </tbody>
+    </tbody>    
 </table>
 <div th:if="${routePage.totalPages > 0}" class="pagination"
      th:each="pageNumber :${pageNumbers}">

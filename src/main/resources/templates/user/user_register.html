@@ -16,12 +16,12 @@
 <header></header>
 <aside></aside>
 <main>
-
     <div th:if="${param.fail}" class="alert alert-success">
         Username or email already exists
     </div>
     <div class="login-form">
         <form method="post" role="form" th:action="@{/user/register}" th:object="${user}">
+            <fieldset>
             <div class="form-group">
                 <label>Email</label>
                 <input
@@ -93,12 +93,11 @@
                 here.
             </button>
             <button th:href="@{/register}" type="submit" class="btn btn-secondary">Register</button>
+            </fieldset>
         </form>
     </div>
 </main>
 <aside></aside>
 <footer></footer>
 </body>
-<section>
-</section>
 </html>
