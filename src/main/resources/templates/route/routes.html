@@ -13,7 +13,7 @@
         <th>Route Id</th>
         <th>Departure station</th>
         <th>Arrival station</th>
-        <th>Train id | Departing at | Arriving at</th>
+        <th>Departing at | Arriving at</th>
     </tr>
     </thead>
     <tbody>
@@ -24,14 +24,13 @@
         <td th:if="${route.trainStations.size() != 0}"
             th:with="numTrainStops=${route.trainStations.size()}"
             th:text="${route.trainStations[numTrainStops - 1].name}"/>
-        <td >
-             <div th:each="train : ${route.trains}">
-                <span th:text="${train.id}"/>
-                <span th:text="${train.departingAt}"/>
-                <span th:text="${train.arrivingAt}"/>
+        <td>
+            <div th:each="train : ${route.trains}">
+                <span th:text="${train.departingAt}"/> |
+                <span th:text="${train.arrivingAt}"/> |
+                <a th:href="@{'/train/' + ${train.id}}">Train details</a>
             </div>
         </td>
-
     </tr>
     </tbody>
 </table>
