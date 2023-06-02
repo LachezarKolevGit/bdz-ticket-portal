@@ -20,7 +20,9 @@ The application is deployed at: https://bdz-ticket-portal-production.up.railway.
 * PostgreSQL
 * Lombok
 * Thymeleaf
+* Flyway
 * Deployed on Railway
+
 
 ### Instructions:
 
@@ -40,12 +42,16 @@ Click on "Click here for more information about the train carriage" for the trai
 Click on "Reserve seat" on the seat you would like to reserve
 
 
-Note:
+#### Note!
 Some of the functionality is not enabled for users.
+
 You have to be logged in as admin
+
 Use the following account for that:
-email:
-password:
+
+email: admin@admin.com
+
+password: 123
 
 ### Bussines requirments:
 * The system must allow management of user accounts
