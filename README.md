@@ -1,6 +1,7 @@
 # Bulgarian State Railways ticket portal (In development)
 
 ### Overview:
+<hr>
 
 Clone of the train system used by the Bulgarian State Railways.
 
@@ -12,6 +13,7 @@ The application is deployed at: https://bdz-ticket-portal-production.up.railway.
 
 
 ### Technologies:
+<hr>
 
 * Java and Gradle
 * SpringBoot and more concrete:
@@ -24,13 +26,11 @@ The application is deployed at: https://bdz-ticket-portal-production.up.railway.
 * Deployed on Railway
 
 
-### Instructions:
+### Installation and Getting Started:
+<hr>
 
-Click register
-
+Installation:
 Register as a new user
-
-Login as the user you registered as
 
 Search for trains at:
 https://bdz-ticket-portal-production.up.railway.app/trains
@@ -54,6 +54,8 @@ email: admin@admin.com
 password: 123
 
 ### Bussines requirments:
+<hr>
+
 * The system must allow management of user accounts
 * The system must allow reservation and purchase of tickets for train
 * The system must apply discounts on tickets depending on rules 
