@@ -2,12 +2,59 @@
 <html xmlns:th="http://thymeleaf.org"
       lang="en">
 <head>
+    <link th:href="@{/css/user/user_login.css}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>User Login</title>
 </head>
 <body>
-<header></header>
-<aside></aside>
+<div class=container>
+    <header>
+        <div class="col-3 left"></div>
+        <div class="col-6 center">Ticket portal</div>
+        <div class="col-3 right"></div>
+    </header>
+    <main>
+        <div class="login-wrapper">
+            <div class="login-header">Login</div>
+            <div class="login-main">
+                <form th:action="@{/user/login}" method="post">
+                    <div th:if="${param.error}">
+                        Invalid username and password.
+                    </div>
+                    <div th:if="${param.logout}">
+                        You have been logged out.
+                    </div>
+                    <div class="form-group">
+                        <input class="form-input" type="text" placeholder="Email" name="username">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-input" type="password" placeholder="Password" name="password">
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" value="Log in" class="btn btn-primary">Login</button>
+                        <button th:formmethod="get" th:formaction="@{/user/register}" type="submit"
+                                class="btn btn-secondary">
+                            Register
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="col-1">About us</div>
+            <div class="col-1">Privacy notice</div>
+            <div class="col-1">Contacts</div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
+
+
+<!--
 <main>
     <div class="login-form">
         <form th:action="@{/user/login}" method="post">
@@ -49,6 +96,6 @@
 </main>
 <aside></aside>
 <footer></footer>
-</body>
-</html>
+-->
+
 

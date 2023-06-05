@@ -3,42 +3,73 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <head>
+    <link th:href="@{css/route/routes_style.css}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Routes</title>
 </head>
 <body>
-<table border="=1">
-    <thead>
-    <tr>
-        <th>Route Id</th>
-        <th>Departure station</th>
-        <th>Arrival station</th>
-        <th>Departing at | Arriving at</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="route: ${routePage.content}">
-        <td th:text="${route.id}"/>
-        <td th:if="${route.trainStations.size() != 0}"
-            th:text="${route.trainStations[0].name}"/>
-        <td th:if="${route.trainStations.size() != 0}"
-            th:with="numTrainStops=${route.trainStations.size()}"
-            th:text="${route.trainStations[numTrainStops - 1].name}"/>
-        <td>
-            <div th:each="train : ${route.trains}">
-                <span th:text="${train.departingAt}"/> |
-                <span th:text="${train.arrivingAt}"/> |
-                <a th:href="@{'/train/' + ${train.id}}">Train details</a>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<div th:if="${routePage.totalPages > 0}" class="pagination"
-     th:each="pageNumber :${pageNumbers}">
-    <a th:href="@{/routes(page=${pageNumber})}"
-       th:text="${pageNumber}"
-       th:class="${pageNumber==routePage.number + 1} ? active"></a>
+<div class=container>
+    <header>
+        <div class="col-3 left"></div>
+
+        <div class="col-6 center">Ticket portal</div>
+        <div class="col-3 right"><a th:href="@{/user/profile}">Profile</a></div>
+
+    </header>
+    <main>
+        <div class="search-bar">
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <form class="search-form">
+                <input class="form__input" type="text" placeholder="Search for destination" name="search">
+                <button class="btn-search" type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="main-content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Route Id</th>
+                    <th>Departure station</th>
+                    <th>Arrival station</th>
+                    <th>Departing at | Arriving at</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="route: ${routePage.content}">
+                    <td th:text="${route.id}"/>
+                    <td th:if="${route.trainStations.size() != 0}"
+                        th:text="${route.trainStations[0].name}"/>
+                    <td th:if="${route.trainStations.size() != 0}"
+                        th:with="numTrainStops=${route.trainStations.size()}"
+                        th:text="${route.trainStations[numTrainStops - 1].name}"/>
+                    <td>
+                        <div th:each="train : ${route.trains}">
+                            <span th:text="${train.departingAt}"/> |
+                            <span th:text="${train.arrivingAt}"/> |
+                            <a th:href="@{'/train/' + ${train.id}}">Train details</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${routePage.totalPages > 0}" class="pagination"
+             th:each="pageNumber :${pageNumbers}">
+            <p>Page:</p>
+            <a th:href="@{/routes(page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:class="${pageNumber==routePage.number + 1} ? active"></a>
+        </div>
+    </main>
+    <footer>
+        <div class="content">
+            <div class="col-1">About us</div>
+            <div class="col-1">Privacy notice</div>
+            <div class="col-1">Contacts</div>
+        </div>
+    </footer>
 </div>
 </body>
 </html>

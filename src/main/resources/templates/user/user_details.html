@@ -32,9 +32,7 @@
     </tr>
     </tbody>
 </table>
-
 <h3>Edit user details below</h3>
-
 <form method="post" role="form" th:action="@{/user/profile}" th:object="${user}">
     <div class="form-group">
         <label></label>
@@ -99,7 +97,7 @@
                     th:value="${roleOpt}" th:text="${roleOpt}"></option>
         </select>
     </div>
-    <button type="submit" class="btn btn-black">Edit user details</button>
+    <button type="submit" class="btn btn-black">Save changes to user details</button>
     <button th:formmethod="post" th:formaction="@{/user/logout}" type="submit" class="btn btn-black">Logout</button>
 </form>
 </body>
