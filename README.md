@@ -5,7 +5,7 @@
 
 Clone of the train system used by the Bulgarian State Railways.
 
-Let's you create routes, trains, upload train stations by coordinates (latitude and longitude). 
+Lets you create routes, trains, upload train stations by coordinates (latitude and longitude). 
 
 The system supports ticket discounts based on the client's profile and applies outside peak hour discounts.
 
