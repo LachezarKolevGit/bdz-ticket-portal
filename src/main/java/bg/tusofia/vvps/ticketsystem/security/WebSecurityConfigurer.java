@@ -43,13 +43,9 @@ public class WebSecurityConfigurer {
                                 .permitAll()
                 )
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/user/profile", "/user/edit")
-                                .authenticated()
-                )
-                .authorizeHttpRequests(request ->
                         request.requestMatchers("/user/register/admin", "/user/add",
                                 "/user/profile/**")
-                                .hasRole(Role.ROLE_ADMINISTRATOR.name())
+                                .hasAnyRole(Role.ROLE_ADMINISTRATOR.name())
                 )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/route")

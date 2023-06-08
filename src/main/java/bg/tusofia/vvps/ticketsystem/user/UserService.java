@@ -33,6 +33,7 @@ public class UserService {
 
     public User getLoggedInUser() {
         Authentication authentication = new AuthenticationFacade().getAuthentication();
+        System.out.println("Logged in " + authentication.getName());
         return userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new EntityNotFoundException("Currently logged in user was not found"));
     }

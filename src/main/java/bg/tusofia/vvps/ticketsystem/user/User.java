@@ -2,10 +2,7 @@ package bg.tusofia.vvps.ticketsystem.user;
 
 import bg.tusofia.vvps.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,6 +35,7 @@ public class User {
     private int age;
     private boolean married;
     private LocalDate childBirthYear;
+    @NotNull
     private Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ticket> boughtTickets = new HashSet<>();

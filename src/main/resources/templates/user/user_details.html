@@ -1,104 +1,115 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns="http://www.w3.org/1999/xhtml"
+
+>
 <head>
+    <link th:href="@{~/css/user/user_details.css}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>User details</title>
 </head>
-<body> <!- Add an edit button that forwards the request to get user/edit and that contains info for the user -->
-<table>
-    <thead>
-    <th>Id</th>
-    <th>Email</th>
-    <th>First name</th>
-    <th>Last name</th>
-    <th>Age</th>
-    <th>Married</th>
-    <th>Child birth year</th>
-    <th>Role</th>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${user.id}"/>
-        <td th:text="${user.email}"/>
-        <td th:text="${user.firstName}"/>
-        <td th:text="${user.lastName}"/>
-        <td th:text="${user.age}"/>
-        <td th:text="${user.married}"/>
-        <td th:text="${user.childBirthYear}"/>
-        <td th:text="${user.role}"/>
-    </tr>
-    </tbody>
-</table>
-<h3>Edit user details below</h3>
-<form method="post" role="form" th:action="@{/user/profile}" th:object="${user}">
-    <div class="form-group">
-        <label></label>
-        <input
-                type="hidden"
-                class="form-control"
-                th:placeholder="*{id}"
-                th:field="*{id}">
-    </div>
-    <div class="form-group">
-        <label>Email</label>
-        <input
-                type="text"
-                class="form-control"
-                th:placeholder="*{email}"
-                th:field="*{email}">
-    </div>
-    <div class="form-group">
-        <label>First name</label>
-        <input
-                type="text"
-                class="form-control"
-                th:placeholder="*{firstName}"
-                th:field="*{firstName}">
-    </div>
-    <div class="form-group">
-        <label>Last name</label>
-        <input
-                type="text"
-                class="form-control"
-                th:placeholder="*{lastName}"
-                th:field="*{lastName}">
-    </div>
-    <div class="form-group">
-        <label>Age</label>
-        <input
-                type="text"
-                class="form-control"
-                th:placeholder="*{age}"
-                th:field="*{age}">
-    </div>
-    <div class="form-group">
-        <label>Married</label>
-        <input
-                type="checkbox"
-                class="form-control"
-                th:checked="*{married}"
-                th:field="*{married}">
-    </div>
-    <div class="form-group">
-        <label>Birth date of child</label>
-        <input
-                type="text"
-                class="form-control"
-                th:placeholder="*{childBirthYear}"
-                th:field="*{childBirthYear}">
-    </div>
-    <div class="form-group">
-        <label>Role</label>
-        <select name="role">
-            <option th:each="roleOpt : ${T(bg.tusofia.vvps.ticketsystem.user.Role).values()}"
-                    th:value="${roleOpt}" th:text="${roleOpt}"></option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-black">Save changes to user details</button>
-    <button th:formmethod="post" th:formaction="@{/user/logout}" type="submit" class="btn btn-black">Logout</button>
-</form>
+<body>
+<div class=container>
+    <header>
+        <div class="col-3 left"></div>
+        <div class="col-6 center">Ticket portal</div>
+        <div class="col-3 right"></div>
+    </header>
+    <main>
+        <div class="form-wrapper">
+            <h3>User details</h3>
+            <form method="post" role="form" th:action="@{/user/profile}" th:object="${user}">
+                <div class="form-group">
+                    <input
+                            class="form-input"
+                            type="hidden"
+                            th:placeholder="*{id}"
+                            th:field="*{id}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input
+                            type="text"
+                            class="form-input"
+                            th:placeholder="*{email}"
+                            th:field="*{email}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">First name</label>
+                    <input
+                            type="text"
+                            class="form-input"
+                            th:placeholder="*{firstName}"
+                            th:field="*{firstName}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last name</label>
+                    <input
+                            type="text"
+                            class="form-input"
+                            th:placeholder="*{lastName}"
+                            th:field="*{lastName}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input
+                            type="text"
+                            class="form-input"
+                            th:placeholder="*{age}"
+                            th:field="*{age}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Married</label>
+                    <input
+                            type="checkbox"
+                            class="form-input"
+                            th:checked="*{married}"
+                            th:field="*{married}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Birth date of child</label>
+                    <input
+                            type="text"
+                            class="form-input"
+                            th:placeholder="*{childBirthYear}"
+                            th:field="*{childBirthYear}">
+                </div>
+                <div class="form-group"
+                     th:if="${#authorization.expression('hasRole(''ADMINISTRATOR'')')}">
+                    <label class="form-label">Role</label>
+                    <select name="role">
+                        <option th:each="roleOpt : ${T(bg.tusofia.vvps.ticketsystem.user.Role).values()}"
+                                th:value="${roleOpt}" th:text="${roleOpt}"></option>
+                    </select>
+                </div>
+                <div class="form-group" id="role"
+                     th:if="${#authorization.expression('hasRole(''CLIENT'')')}">
+                    <label class="form-label">Role</label>
+                    <select name="role" >
+                        <option th:each="roleOpt : ${T(bg.tusofia.vvps.ticketsystem.user.Role).values()}"
+                                th:value="${roleOpt}" th:text="${roleOpt}"></option>
+                    </select>
+                </div>
+                <div class="form-footer">
+                <button type="submit" class="btn form">Save</button>
+                <button th:formmethod="post" th:formaction="@{/user/logout}" type="submit" class="btn form">
+                    Logout
+                </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="col-1">About us</div>
+            <div class="col-1">Privacy notice</div>
+            <div class="col-1">Contacts</div>
+        </div>
+    </footer>
+</div>
 </body>
 </html>
+
+
